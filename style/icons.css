@@ -1,0 +1,82 @@
+
+[class^="fam-"],
+[class*=" fam-"] {
+  display: inline-block;
+  width: 17px;
+  height: 16px;
+  line-height: 14px;
+  vertical-align: middle;
+  background-image: url("../images/famfamfam-icons.png");
+  background-position: 14px 14px;
+  background-repeat: no-repeat;
+}
+[class^="fam-"]:last-child,
+[class*=" fam-"]:last-child {
+  margin-left: 0.6em;
+}
+.fam-house {
+  background-position: -1302px -63px;
+}
+.fam-application-form {
+  background-position: -210px 0;
+}
+.fam-chart-line {
+  background-position: -1323px -21px;
+}
+.fam-application-view-columns {
+  background-position: -672px 0;
+}
+.fam-briefcase {
+  background-position: -1827px 0;
+}
+.fam-picture {
+  background-position: -420px -105px;
+}
+.fam-calendar-view-day {
+  background-position: -798px -21px;
+}
+.fam-rosette {
+  background-position: -1386px -105px;
+}
+.fam-text-padding-left {
+  background-position: -252px -126px;
+}
+.fam-cog {
+  background-position: -1659px -21px;
+}
+.fam-heart {
+  background-position: -1113px -63px;
+}
+.fam-page-white-zip {
+  background-position: -168px -105px;
+}
+.fam-page-white-wrench {
+  background-position: -147px -105px;
+}
+.fam-page-white-edit {
+  background-position: -1386px -84px;
+}
+.fam-page-white-medal {
+  background-position: -1701px -84px;
+}
+.fam-bullet-wrench {
+  background-position: -504px -21px;
+}
+.fam-database-save {
+  background-position: -798px -42px;
+}
+.fam-bomb {
+  background-position: -1512px 0;
+}
+.fam-flag-blue {
+  background-position: -189px -63px;
+}
+.fam-application-xp-terminal {
+  background-position: -819px 0;
+}
+.fam-attention {
+  background-position: -1616px -42px;
+}
+.fam-edition {
+  background-position: -333px -105px;
+}

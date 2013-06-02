@@ -1,0 +1,12 @@
+@media (max-height: 700px) {
+  footer{
+    display: none;
+    opacity: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  div.central{
+    width: 100%;
+  }
+}

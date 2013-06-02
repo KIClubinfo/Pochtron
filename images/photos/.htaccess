@@ -1,0 +1,3 @@
+# <FilesMatch ".(jpg|png|gif)$">
+# ErrorDocument 404 "/dev-foyer/images/photos/inconnu.jpg"
+# </FilesMatch>

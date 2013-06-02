@@ -1,0 +1,143 @@
+
+textarea:focus, select:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {
+  border-color: rgba(82, 168, 236, 0.8);
+  outline: 0;
+  outline: thin dotted 9;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+}
+
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+  background-color: #403e3f;
+  border: 1px solid #1a1819;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border linear .2s, box-shadow linear .2s;
+  -moz-transition: border linear .2s, box-shadow linear .2s;
+  -o-transition: border linear .2s, box-shadow linear .2s;
+  transition: border linear .2s, box-shadow linear .2s;
+}
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+  display: inline-block;
+  min-height: 20px;
+  padding: 4px 6px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #CECECE;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+input[type="submit"],
+input[type="reset"]{
+  padding: 5px 15px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  color: #555555;
+  background-image: linear-gradient(to bottom, #ffffff, #f7f7f7);
+  background-repeat: repeat-x;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(255, 255, 255, 0.3) inset;
+  cursor: pointer;
+}
+input.large{
+  width: 100%;
+}
+
+input.vert{
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  background-color: #559856;
+  background-image: -moz-linear-gradient(top, #5ea35f, #468847);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5ea35f), to(#468847));
+  background-image: -webkit-linear-gradient(top, #5ea35f, #468847);
+  background-image: -o-linear-gradient(top, #5ea35f, #468847);
+  background-image: linear-gradient(to bottom, #5ea35f, #468847);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5ea35f', endColorstr='#ff468847', GradientType=0);
+  border-color: #468847 #468847 #2c552d;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-color: #5ea35f;
+  border: none;
+  -webkit-box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2), 1px 1px 2px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2), 1px 1px 2px rgba(0, 0, 0, 0.6);
+  box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.2), 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+input.vert.ajout-client{
+  background-image: url(../images/icones/icons/user_add.png),linear-gradient(to bottom, #5ea35f, #468847);
+  background-position: 7px center ;
+  background-repeat: no-repeat, repeat-x;
+  padding-left: 30px;
+}
+
+
+input.vert:hover,
+input.vert:focus,
+input.vert:active,
+input.vert[disabled] {
+  color: #ffffff;
+  background-position: 0 0;
+  background-color: #356635;
+  background-image: none;
+  background-repeat: no-repeat;
+}
+input.vert.ajout-client:hover,
+input.vert.ajout-client:focus,
+input.vert.ajout-client:active,
+input.vert.ajout-client[disabled] {
+  color: #ffffff;
+  background-position: 7px center ;
+  background-color: #356635;
+  background-image: url(../images/icones/icons/user_add.png);
+}
+
+input.vert:active {
+  outline: 0;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05);
+  -moz-box-shadow: inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05);
+}
+
+input[type="number"],
+input.small{
+  width: 6em;
+}
+
+select {
+  width: 220px;
+  border: 1px solid #1a1819;
+  background-color: #403e3f;
+}
+select, input[type="file"] {
+  height: 30px;
+  line-height: 30px;
+}
+
+label{
+  vertical-align: top;
+  line-height: 30px;
+}
+th > label{
+  line-height: normal;
+}
+label:after{
+  display: inline-block;
+  vertical-align: top;
+  line-height: 30px;
+  content:":";
+  width: 1.5em;
+  text-align: center;
+}
+th > label:after{
+  line-height: normal;
+  content: "";
+}
