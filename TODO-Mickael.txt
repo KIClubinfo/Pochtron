@@ -1,5 +1,4 @@
 TODO pour Mickaël :
 
 Apparence pré-infos menu administration
-Bug d'encodage pour le statut des clients [DONE]
-Bugs de défilement pour les pages [DONE]
+A re-remplir
