@@ -724,3 +724,14 @@ div.journal div.tscroll{
   margin: 1em;
   max-height: 60%;
 }
+
+div.installation{
+  text-align: left;
+}
+div.installation h2{
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+div.bloc ol{
+  margin-left: 20px;
+}
