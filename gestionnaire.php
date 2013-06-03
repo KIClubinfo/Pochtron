@@ -1,7 +1,7 @@
 <?php
 define('page_titre', "Gestion courante &bull; Caisse Foyer");
 
-$head_HTML = '<link rel="stylesheet" href="style/gestionnaire.css"><link rel="stylesheet"  href="style/jquery.jgrowl.css" type="text/css"><link rel="stylesheet"  href="style/scroll.css" type="text/css"><script type="text/javascript" src="scripts/jquery.jgrowl.js"></script><script src="/scripts/scroll.js"></script>';
+$head_HTML = '<link rel="stylesheet" href="style/gestionnaire.css"><link rel="stylesheet"  href="style/jquery.jgrowl.css" type="text/css"><link rel="stylesheet"  href="style/scroll.css" type="text/css"><script type="text/javascript" src="scripts/jquery.jgrowl.js"></script><script src="scripts/scroll.js"></script>';
 
 include_once 'inclus/tete.html.php';
 ?>
@@ -37,7 +37,6 @@ include_once 'inclus/tete.html.php';
 								<ul class="table_content">
 								<?php
 									$sql->rek( 'SELECT `id` ,prenom,nom,solde,active,nb_consos FROM clients ORDER BY nom ASC' );
-
 									while($a = $sql->fetch())
 									{
 									?>
@@ -133,7 +132,7 @@ include_once 'inclus/tete.html.php';
 									</div>
 									<div class="product_button">
 										<?php 
-										if ($produits[$i]['nom'] == $produits[$i+1]['nom'])
+										if ($i+1!=$it and $produits[$i]['nom'] == $produits[$i+1]['nom'])
 										{
 											?>
 											<input type="submit" data-id="<?php echo $produits[$i]['id']; ?>" class="product_order vert half" value="<?php echo $produits[$i]['prix']; ?> €"/><input type="submit" data-id="<?php echo $produits[$i+1]['id']; ?>" class="product_order vert half" value="<?php echo $produits[$i+1]['prix']; ?> €"/>

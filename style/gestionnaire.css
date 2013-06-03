@@ -393,17 +393,35 @@
 .product_item .whole
 {
 	width:100%;
+	border-radius: 0px 0px 4px 4px;
 }
 
 .product_item  .half
 {
 	width:50%;
 }	
+.product_item  .half:last-child
+{
+	border-radius: 0px 0px 4px 0px;
+}	
+.product_item  .half:first-child
+{
+	border-radius: 0px 0px 0px 4px;
+}	
 
 .product_item .third
 {
 	width:33%;
+	border-radius: 0px;
 }
+.product_item .third:first-child
+{
+	border-radius: 0px 0px 0px 4px;
+}	
+.product_item .third:last-child
+{
+	border-radius: 0px 0px 4px 0px;
+}	
 
 
 html body #jGrowl .white_popup
