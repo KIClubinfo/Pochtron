@@ -11,10 +11,7 @@ include_once 'inclus/tete.html.php';
     Logiciel réalisé pour le foyer de l'École des Ponts, par <strong>Mickaël Bergem</strong> et <strong>Charles Bochet</strong> (promo 015) pendant leur stage chiant.
     </div>
     <div class="bloc">
-    <div class="logo-foyer">
-    <img src="images/logo_foyer.png" alt="">
-    <strong class="version">Version <?php echo _VERSION; ?></strong>
-    </div>
+    <div class="logo-foyer"><img src="images/logo_foyer.png" alt=""><strong class="version">Version <?php echo _VERSION; ?></strong></div>
     </div>
   </div>
 <?php

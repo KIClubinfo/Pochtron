@@ -425,6 +425,9 @@ div[class^="central"] h1{
 }
 div.stocks img.ico-produit{
   margin-right: 6px;
+  max-height: 40px;
+  max-width: 60px;
+  border: 1px solid black;
 }
 
 tr[class$="-alerte"]{
@@ -434,24 +437,31 @@ tr[class$="-alerte"]{
 div.stocks tr.stock-alerte td{
 /*   vertical-align: top; */
 }
-div.stocks thead th:last-child{
+table.stocks thead th:last-child{
   background: url(../images/icones/icons/cog.png) center center no-repeat;
   background-color: rgba(0, 0, 0, 0.3);
 }
-
-
-div.stocks tr td:not([colspan]),
-div.stocks tr th:not([colspan]){
-  width: 22%;
+table.stocks tbody td{
+  vertical-align: middle;
 }
-div.stocks tr td:not([colspan]):first-child,
-div.stocks tr th:not([colspan]):first-child{
+
+table.stocks tr td:not([colspan]),
+table.stocks tr th:not([colspan]){
+  width: 15%;
+}
+table.stocks tr td:not([colspan]):first-child,
+table.stocks tr th:not([colspan]):first-child{
   width: 25%;
 }
-div.stocks tr td:last-child,
-div.stocks tr th:last-child{
+table.stocks tr td:last-child,
+table.stocks tr th:last-child{
   width: 9%;
   min-width: 60px;
+}
+
+table#nouveauproduit{
+  margin-top: 30px;
+  width: 100%;
 }
 
 .action{

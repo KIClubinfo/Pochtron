@@ -3,7 +3,7 @@
 $sql->deconnecte();
 ?>
 <footer>
-Logiciel réalisé par <big>MB015</big> &amp; <small>CB015</small>, parce que c'était mieux avant !
+Logiciel réalisé par MB015 &amp; <small>CB015</small>, parce que c'était mieux avant !
 </footer>
 <?php
 if((!empty($_SERVER['SCRIPT_URL']) and $_SERVER['SCRIPT_URL'] == '/gestionnaire.php')

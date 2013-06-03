@@ -35,3 +35,8 @@ function suppc(id){
       location.href="clients.php?efface="+id
   }
 }
+function suppp(id){
+  if(confirm("Voulez-vous vraiment effacer ce produit ?")){
+      location.href="stock.php?efface="+id
+  }
+}

@@ -5,17 +5,19 @@ include_once 'inclus/zoneadmin.inc.php';
 
 // Traitement AJAX
 if(isset($_GET['ajax'])
+  and !empty($_POST['id'])
   and !empty($_POST['nom'])
   and !empty($_POST['prenom'])
   and isset($_POST['solde'])
   and !empty($_POST['statut'])
   ){
+    logue("Modification du client {$_POST['prenom']} {$_POST['nom']} ({$_POST['solde']}€ et {$_POST['statut']})","clients","warn");
+    
     $_POST['id'] = intval($_POST['id']);
     $_POST['solde'] = floatval($_POST['solde']);
     $_POST['nom'] = htmlentities(ucwords($_POST['nom']),ENT_QUOTES,'utf-8');
     $_POST['prenom'] = htmlentities(ucwords($_POST['prenom']),ENT_QUOTES,'utf-8');
     $_POST['statut'] = $sql->secur($_POST['statut']);
-    logue("Modification du client {$_POST['prenom']} {$_POST['nom']} ({$_POST['solde']}€ et {$_POST['statut']})","clients","warn");
     $sql->rek( "UPDATE clients SET nom='{$_POST['nom']}',prenom='{$_POST['prenom']}',solde='{$_POST['solde']}',active='{$_POST['statut']}' WHERE id='{$_POST['id']}'" );
     echo $sql->nbrchangements();
     exit();
@@ -94,7 +96,7 @@ while($a = $sql->fetch()){
   <td>
   <img class='ico-client' src='images/photos/$photo.png' alt=''>
   <input type='hidden' value='{$a['id']}' name='id'></td>
-  <td><input name='nom' type='text' value='{$a['nom']}'></span></td>
+  <td><input name='nom' type='text' value='{$a['nom']}'></td>
   <td><input name='prenom' type='text' value='{$a['prenom']}'></td>
   <td><input name='solde' type='number' step='0.1' value='{$a['solde']}'>€".(($a['solde']<0) ? '<span class="fam-attention" title="Le solde est négatif !"></span>' : '')."</td>
   <td>{$a['nb_consos']}</td>
@@ -120,14 +122,14 @@ while($a = $sql->fetch()){
 <caption><span>Enregistrer un client</span></caption>
 <thead><tr>
       <th>
-       <label for="nom">Prénom</label>
+       <label for="prenom">Prénom</label>
       </th>
       <th>
-       <label for="prix">Nom</label></th>
+       <label for="nom">Nom</label></th>
       <th>
-       <label for="qtt_reserve">Solde de départ</label></th>
+       <label for="solde">Solde de départ</label></th>
       <th>
-       <label for="qtt_alerte">Statut</label></th>
+       <label for="statut">Statut</label></th>
      </tr>
      </thead>
      <tbody>
@@ -139,7 +141,7 @@ while($a = $sql->fetch()){
        <input type="text" name="nom" id="nom" required></td>
       <td>
        <input type="number" value="0" min="0" step="0.1" name="solde" id="solde" required title="Solde placé sur le compte pour l'ouverture"> €</td>
-      <td><select name="statut">
+      <td><select name="statut" id="statut">
       <option value="activé">Normal</option>
       <option value="inactif">Désactivé</option>
       <option value="bloqué">Bloqué</option>
