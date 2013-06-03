@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `produits` (
 INSERT INTO `produits` (`id`, `nom`, `vol`, `prix`, `icone`, `qtt_reserve`, `qtt_alerte`, `ventes`) VALUES
 (20, '1664', '0.33', '1.50', '1664', 80, 20, 0),
 (21, 'Bud', '0.33', '1.50', 'bud', 80, 20, 0),
-(22, 'Caffrey''s ale', '0.44', '2.00', 'caffrey', 80, 20, 0),
+(22, 'Caffrey&#039;s ale', '0.44', '2.00', 'caffrey', 80, 20, 0),
 (23, 'Chouffe', '0.33', '2.00', 'chouffe', 80, 20, 0),
 (24, 'Coca-cola', '0.33', '0.50', 'coca', 80, 20, 0),
 (25, 'Corona Extra', '0.36', '1.50', 'corona', 80, 20, 0),
@@ -126,8 +126,8 @@ INSERT INTO `produits` (`id`, `nom`, `vol`, `prix`, `icone`, `qtt_reserve`, `qtt
 (35, 'Kwak', '0.33', '1.70', 'kwak', 80, 20, 0),
 (36, 'Leffe blonde', '0.25', '0.70', 'leffe', 80, 20, 0),
 (37, 'Leffe triple', '0.25', '0.70', 'leffe', 80, 20, 0),
-(38, 'Murphy''s stout', '0.50', '2.20', 'murphy', 80, 20, 0),
+(38, 'Murphy&#039;s stout', '0.50', '2.20', 'murphy', 80, 20, 0),
 (39, 'Pietra', '0.33', '1.70', 'pietra', 80, 20, 0),
 (40, 'Smirnoff Ice', '0.33', '1.50', 'smirnoff_ice', 80, 20, 0),
-(41, 'Smithwick''s Irish Ale', '0.50', '2.00', 'smithwick', 80, 20, 0),
+(41, 'Smithwick&#039;s Irish Ale', '0.50', '2.00', 'smithwick', 80, 20, 0),
 (42, 'Westmalle Blonde', '0.33', '2.00', 'westmalle', 80, 20, 0);
