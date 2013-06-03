@@ -2,7 +2,7 @@
 
 
 if(!file_exists('inclus/config.inc.php')){
-  include 'installation.php';
+  include 'installation.html';
   exit();
 }
 
