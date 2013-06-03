@@ -1,5 +1,11 @@
 <?php
 
+
+if(!file_exists('inclus/config.inc.php')){
+  include 'installation.php';
+  exit();
+}
+
 // Fichiers d'en-tête
 
 include_once 'inclus/config.inc.php';
