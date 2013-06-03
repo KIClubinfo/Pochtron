@@ -720,9 +720,28 @@ div.journal div.tscroll{
 
 .logo-foyer{
   max-width: 90%;
+  width: 720px;
   border: 1px solid black;
-  margin: 1em;
+  margin: 1em auto;
+  padding: 0;
   max-height: 60%;
+  position: relative;
+}
+
+.apropos .logo-foyer .version{
+  display:block;
+  position: absolute;
+  margin: 0px;
+  padding: 5px;
+  line-height: 1.5em;
+  width: 100%;
+  top: 0px;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.apropos .logo-foyer img{
+  width: 100%;
+  margin: 0;
 }
 
 div.installation{
