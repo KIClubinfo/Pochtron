@@ -493,7 +493,8 @@ div.clients table td.statut{
 }
 
 div.clients table img.ico-client{
-  height: 30px;
+  width: 30px;
+  border: 1px solid white;
 }
 
 

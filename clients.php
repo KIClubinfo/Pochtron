@@ -94,7 +94,7 @@ while($a = $sql->fetch()){
   
   echo "<tr".(($a['solde']<0) ? ' class="stock-alerte"' : '')." id='c{$a['id']}'>
   <td>
-  <img class='ico-client' src='images/photos/$photo.png' alt=''>
+  <img class='ico-client' src='images/photos/$photo.jpg' alt=''>
   <input type='hidden' value='{$a['id']}' name='id'></td>
   <td><input name='nom' type='text' value='{$a['nom']}'></td>
   <td><input name='prenom' type='text' value='{$a['prenom']}'></td>
