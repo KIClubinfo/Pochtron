@@ -492,9 +492,13 @@ div.clients table td.statut{
   font-size: 80%;
 }
 
-div.clients table img.ico-client{
-  width: 30px;
+table.clients img.ico-client{
+  width: 35px;
   border: 1px solid white;
+}
+table.clients tbody td:first-child{
+ padding: 2px;
+  vertical-align: middle;
 }
 
 
