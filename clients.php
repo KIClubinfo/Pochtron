@@ -90,7 +90,7 @@ echo $sql->nbrlignes();
 <?php
 while($a = $sql->fetch()){
   
-  $photo = (file_exists("images/photos/".$a['id'].".png")) ? $a['id'] :  "sans_photo";
+  $photo = (file_exists("images/photos/".$a['id'].".jpg")) ? $a['id'] :  "sans_photo";
   
   echo "<tr".(($a['solde']<0) ? ' class="stock-alerte"' : '')." id='c{$a['id']}'>
   <td>
