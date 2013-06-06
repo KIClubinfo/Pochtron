@@ -2,7 +2,6 @@
 
  header('Content-type: application/json'); 
 
-require_once("scripts/facebook.php");
 include_once 'inclus/tete.inc.php';
 
 function sa($string)
@@ -14,46 +13,63 @@ $config = array();
 $config['appId'] = '326367797490340';
 $config['secret'] = '420680b82af60aaeb0be9335bd8b6f1b';
 
-$facebook = new Facebook($config);
-$access_token = 'CAAEo1GyisqQBACZBQYEWLGpAlHLgQ9zZBIVfx4oqZCpc30r1voPx2ekKJR4U5qnsD4ZBvZAJje284h4ryBE7MLZBoQLnwLIZBjbZCFEZAKrtQmv2ZByK6ZAKimAspl5rf6lSWhqzZB9ghIZBNVmBzyWFaNVLfOGbZAi86DHeQZD';
-
-function search_in_friends($fullname, $id, $friend_id)
+if (!$fp = fopen("scripts/facebook/active_access_token","r")) 
 {
-	global $facebook;
-	global $access_token;
-	
-	
-	$friends = $facebook->api('/'.$friend_id.'/friends',array('access_token'=>$access_token));
-	
-	for ($i=0;$i < count($friends['data']); $i++)
-	{		
-		if ($friends['data'][$i]['name'] == $fullname)
-		{
-			return $friends['data'][$i]['id'];
-		}
+	echo "Echec de l'ouverture du fichier";
+}
+else
+{
+	while(!feof($fp)) 
+	{
+		$config['old_access_token']= fgets($fp,255);
 	}
-	
-	
-	return 0;
+	fclose($fp);
 }
 
-function search_in_groups($fullname, $id, $group_id)
+
+
+$req_new_access_token = "https://graph.facebook.com/oauth/access_token?client_id=".$config['appId']."&client_secret=".$config['secret']."&grant_type=fb_exchange_token&fb_exchange_token=".$config['old_access_token'];
+$resp = file_get_contents($req_new_access_token);
+parse_str($resp,$output);
+$access_token = $output['access_token'];
+
+function search_in_friends($fullname, $friend_id)
 {
-	global $facebook;
+	global $access_token;
+		
+	$graph_url = "https://graph.facebook.com/".$friend_id."/friends?access_token=$access_token";
+	$id = search_on_facebook($graph_url, $fullname);
+	
+	return $id;
+}
+
+function search_in_groups($fullname, $group_id)
+{
 	global $access_token;
 	
 	$graph_url = "https://graph.facebook.com/$group_id/members?access_token=$access_token";
-	$results = file_get_contents( $graph_url );
+	$id = search_on_facebook($graph_url, $fullname);
+	
+	return $id;
+}
+
+function search_on_facebook($graph_url, $fullname)
+{
+	
+	$results = file_get_contents($graph_url);
 	$json = json_decode($results);
-						
+
 	foreach( $json->data as $show ) 
 	{
-		if ($show->name == $fullname)
+		if (strtolower($show->name) == strtolower($fullname))
+		{
 			return $show->id;
+		}
 	}
-	
 	return 0;
 }
+
+
 
 $erreur=0;
 
@@ -67,7 +83,7 @@ if (isset($_GET['id']))
 						
 		try 
 		{
-			$pict_groups = search_in_groups($fullname, $a['id'],'470254749665448');
+			$pict_groups = search_in_groups($fullname,'470254749665448');
 			
 			if ($pict_groups)
 			{
@@ -76,7 +92,7 @@ if (isset($_GET['id']))
 			}
 			else
 			{
-				$pict_friends = search_in_friends($fullname, $a['id'],'me');
+				$pict_friends = search_in_friends($fullname,'me');
 			
 				if ($pict_friends)
 				{
