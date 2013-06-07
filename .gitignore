@@ -2,3 +2,4 @@ inclus/config.inc.php
 .htaccess
 *~
 *.kdev4
+images/photos/*.jpg
