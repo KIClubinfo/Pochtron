@@ -142,7 +142,7 @@ if ($erreur==-1) //On vérifie que tout s'est bien déroulé avant
 			}
 		}
 		
-		if ($erreur=-1)
+		if ($erreur==-1)
 		{
 			$erreur = 201;
 			$reponse = "Id invalide";
@@ -159,13 +159,9 @@ if ($erreur==-1) //On vérifie que tout s'est bien déroulé avant
 
 /*/////////////////////////////AFFICHAGE DES ERREURS/////////////////////////////*/
 
-if ($erreur)
-{
+
 ?>
 {
 	"code_erreur": "<?php echo $erreur; ?>",
 	"reponse": "<?php echo $reponse;?>"
 }    
-<?php
-}
-?>
