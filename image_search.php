@@ -28,7 +28,7 @@ function search_on_facebook($graph_url, $fullname)
 
 	foreach( $json->data as $show ) 
 	{
-		if (strtolower($show->name) == strtolower($fullname))//Recherche
+		if (sa(strtolower($show->name)) == sa(strtolower($fullname)))//Recherche
 		{
 			return $show->id;
 		}
