@@ -56,8 +56,8 @@ include_once 'inclus/tete.html.php';
 											<span class="solde"><?php echo $a['solde'];?></span>
 											<span class="not_shown"><?php echo $a['prenom'];?> <?php echo $a['nom'];?> <?php echo $a['prenom'];?> <?php echo substr($a['prenom'],0,1).substr($a['nom'],0,1);?></span>
 											<span class="selected">0</span>
-											<span class="stars"><img src="images/icones/icons/star" /><img src="images/icones/icons/star" /><img src="images/icones/icons/star" /><img src="images/icones/icons/star" /><img src="images/icones/icons/star" /></span>
-											<span class="distinctions"><img src="images/icones/icons/medal_gold_1" /><img src="images/icones/icons/medal_gold_2" /><img src="images/icones/icons/medal_gold_3" /></span>
+											<span class="stars"><img src="images/icones/icons/star.png" /><img src="images/icones/icons/star.png" /><img src="images/icones/icons/star.png" /><img src="images/icones/icons/star.png" /><img src="images/icones/icons/star.png" /></span>
+											<span class="distinctions"><img src="images/icones/icons/medal_gold_1.png" /><img src="images/icones/icons/medal_gold_2.png" /><img src="images/icones/icons/medal_gold_3.png" /></span>
 											<span class="comment"></span>
 											<span class="active"><?php echo $a['active'];?></span>
 											<span class="url_photo"><?php echo $photo; ?></span>
