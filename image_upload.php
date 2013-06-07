@@ -47,15 +47,12 @@ else
 
 /*/////////////////////////////AFFICHAGE DE LA REPONSE/////////////////////////////*/
 
-if ($erreur==-1)
-{
+
 ?>
 {
 	"code_erreur": "<?php echo $erreur; ?>",
 	"reponse": "<?php echo $reponse;?>"
 }    
-<?php
-}
-?>
+
 
 
