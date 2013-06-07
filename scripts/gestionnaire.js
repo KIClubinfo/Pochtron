@@ -3,6 +3,10 @@
 //Inclusion des librairies nécéssaires au bon fonctionnement de ces scripts
 //ATTENTION, les fichiers suivants doivent avoir été préalablement chargés : jquery-1.9.1.js, jquery.jgrowl.js et scroll.js
 
+var AJAX_OK = 0;
+var AJAX_UNKNOW_FAIL = 1;
+var AJAX_NOT_IMPLEMENTED = 2;
+
 /*------------------------------------------FIN #1----------------------------------------*/
 
 
@@ -199,7 +203,7 @@ function add_selected_eleve(eleve)
 	{
 		//Sélection de l'élève à proprement parlé
 		$(eleve).children(".selected").html(1); //Changement de l'état de l'élève afin de ne plus l'afficher dans la liste des élèves
-		$("#selected_eleves .table_content").append("<li data-id=\""+id+"\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/"+url_photo+".jpg\"></span><span class=\"full_name\">"+firstname+" "+surname+"<br />"+stars+"<br />Distinctions : "+distinctions+"</span><span class=\"order\"><span class=\"old_solde\">Ancien solde : "+solde+" €</span><br /><span class=\"command\">Commande : </span><br /><div class=\"command_pop\">Détails</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div><span class=\"new_solde\">Nouveau solde :  "+solde+" €</span></span><span class=\"actions\"><a href=\"javascript:return false;\" onClick=\"valid_user(this)\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a onClick=\"cancel_user(this)\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a><a onClick=\"add_cash(this)\" href=\"javascript:return false;\"><img alt=\"Ajout liquide\" src=\"images/add.png\" /></a></span></li>");
+		$("#selected_eleves .table_content").append("<li data-id=\""+id+"\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/"+url_photo+".jpg\"></span><span class=\"full_name\">"+firstname+" "+surname+"<br />"+stars+"<br />Distinctions : "+distinctions+"</span><span class=\"order\"><span class=\"old_solde\">Ancien solde : "+solde+" €</span><br /><span class=\"command\">Commande : </span><br /><div class=\"command_pop\">Détails</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div><span class=\"new_solde\">Nouveau solde :  "+solde+" €</span></span><span class=\"actions\"><a href=\"javascript:return false;\" onClick=\"valid_user(this)\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a onClick=\"cancel_user(this)\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a><a onClick=\"add_cash(this)\" href=\"javascript:return false;\"><img alt=\"Ajout liquide\"  src=\"images/add.png\" /></a></span></li>");
 		$("#selected_eleves li").last().css("border-left","3px solid #12A332");
 		search();//Rafraichissement de la liste des élèves et redimensionnement via resize_boxes()
 	}
@@ -410,12 +414,13 @@ function valid_user(elem)
           cache: false,
           dataType: "json",
         error : function(request, error) {          
-                 $.jGrowl("Erreur", { group:'red_popup', life: 10000 });
+                 $.jGrowl("Erreur : " + error, { group:'red_popup', life: 10000 });
                 },
-          success: function(data) {                
-                    $.jGrowl(data.reponse, { group:'green_popup', life: 10000 });
-                      
-                                        
+          success: function(data) {   
+		    if(data.code_erreur==AJAX_OK)
+			$.jGrowl(data.reponse, { group:'green_popup', life: 10000 });
+                    else
+			$.jGrowl(data.reponse, { group:'red_popup', life: 10000 });         
                   }
       });
 	  
