@@ -121,6 +121,7 @@ if ($erreur==-1) //On vérifie que tout s'est bien déroulé avant
 			
 			if ($pict_groups)
 			{
+				$erreur=0;
 				$reponse = $pict_groups;
 				continue;
 			}
