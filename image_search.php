@@ -68,7 +68,7 @@ $config['appId'] = '326367797490340';//Id de l'application
 $config['secret'] = '420680b82af60aaeb0be9335bd8b6f1b';//Code secret de l'application
 
 //Par défaut, pas d'erreur
-$erreur=0;
+$erreur=-1;
 
 //Pour utiliser l'API de facebook, il est nécéssaire d'avoir un access_token (une sorte d'id de session) relatif à un compte FB (le mien pour le moment).
 //Il se périme au bout de 60 jours. Dans le doute je le renouvelle à chaque fois.
@@ -105,7 +105,7 @@ else
 
 /*/////////////////////////////RECHERCHE/////////////////////////////*/
 
-if (!$erreur) //On vérifie que tout s'est bien déroulé avant
+if ($erreur==-1) //On vérifie que tout s'est bien déroulé avant
 {
 	if (isset($_GET['id']))//Que l'id est bien défini
 	{
@@ -129,6 +129,7 @@ if (!$erreur) //On vérifie que tout s'est bien déroulé avant
 			
 				if ($pict_friends)
 				{
+					$erreur = 0;
 					$reponse = $pict_friends;
 					continue;
 				}
@@ -140,21 +141,12 @@ if (!$erreur) //On vérifie que tout s'est bien déroulé avant
 			}
 		}
 		
-		if ($reponse=='')
+		if ($erreur=-1)
 		{
 			$erreur = 201;
 			$reponse = "Id invalide";
 		}
 		
-		if (!$erreur)
-		{
-		?>
-{
-		"code_erreur": "<?php echo $erreur; ?>",
-		"reponse": "<?php echo $reponse;?>"
-}    
-		<?php
-		}
 	}
 	else
 	{ 
