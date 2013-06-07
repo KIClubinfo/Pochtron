@@ -47,7 +47,7 @@ else
 
 /*/////////////////////////////AFFICHAGE DE LA REPONSE/////////////////////////////*/
 
-if ($erreur)
+if ($erreur==-1)
 {
 ?>
 {
