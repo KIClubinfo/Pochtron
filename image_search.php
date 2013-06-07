@@ -109,7 +109,8 @@ if ($erreur==-1) //On vérifie que tout s'est bien déroulé avant
 {
 	if (isset($_GET['id']))//Que l'id est bien défini
 	{
-		$sql->rek( 'SELECT `id` ,prenom,nom FROM clients WHERE id = '.$_GET['id'].' ORDER BY nom ASC');//On crée la requete
+		$_GET['id'] = intval($_GET['id']); // Empêche l'injection SQL
+		$sql->rek( 'SELECT `id` ,prenom,nom FROM clients WHERE id = \''.$_GET['id'].'\' ORDER BY nom ASC');//On crée la requete
 		$reponse = '';
 		
 		while($a = $sql->fetch())//On la parcourt. A priori, y en a qu'un :p)
