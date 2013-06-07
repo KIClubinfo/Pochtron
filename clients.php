@@ -26,7 +26,7 @@ if(isset($_GET['ajax'])
 
 
 
-$head_HTML = '<script type="text/javascript" src="scripts/admin.js"></script><script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.js"></script>';
+$head_HTML = '<script type="text/javascript" src="scripts/admin.js"></script><script type="text/javascript" src="scripts/ajax.js"></script><script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.js"></script>';
 
 include_once 'inclus/tete.html.php';
 
@@ -106,6 +106,7 @@ while($a = $sql->fetch()){
       <option value='bloqué'".(($a['active']=='bloqué') ? ' selected' : '').">Bloqué</option>
       </select> ".(($a['active']!='activé') ? '<span class="fam-attention" title="Ce client n\'est pas activé !"></span>' : '')."</td>
   <td><input title='Appliquer les modifications' type='image' class='action invisible' alt='Édition' src='images/icones/icons/pencil_go.png'>
+  <img title='Télécharger la photo du client à partir de Facebook' class='action' name='dlFBimg' alt='Télécharger la photo' src='images/icones/icons/user_go.png'>
   <img title='Éditer cette ligne' class='action' name='edit' alt='Édition' src='images/icones/icons/pencil.png'>
   <img title='Supprimer cette ligne' class='action' onclick='suppc({$a['id']})' alt='Supprimer' src='images/icones/icons/delete.png'></td></tr>";
   /*
@@ -215,6 +216,32 @@ $("table#clients input[type='image']").click(function(){
     }
   });
 });
+
+
+
+function dlFBimg_post_Callback(erreur_id, reponse, old_GET_args)
+{
+var GET_args =  {'id' : old_GET_args.id, 'fb_id':reponse}; //Arguments de la requète GET
+ajax_url("image_upload.php", GET_args, fonction_callback_upload, dlFBimg_err_Callback);//Appel AJAX
+
+}
+
+function dlFBimg_err_Callback(erreur_id, reponse, old_GET_args)
+{
+    alert("Erreur "+erreur_id+" : "+reponse);
+    $("#notifs").prepend('<div class="notif argh"><strong>Erreur ' + erreur_id + '</strong>Une erreur s\'est produite : <em>' + reponse + '</em></div>');
+}
+
+function fonction_callback_upload(erreur_id, reponse, old_GET_args)
+{
+alert("Tout est pour le mieux :)")
+}
+
+$("img[name='dlFBimg']").click(function () {
+    var GET_args =  {'id' : $(this).closest("tr").find("input[name='id']").val() }; //Arguments de la requête GET
+    ajax_url("image_search.php", GET_args, dlFBimg_post_Callback, dlFBimg_err_Callback);//Appel AJAX
+});
+
 
 </script>
 <?php

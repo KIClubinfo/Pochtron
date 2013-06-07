@@ -7,8 +7,7 @@ Logiciel réalisé par MB015 &amp; <small>CB015</small>, parce que c'était mieu
 </footer>
 <?php
 if((!empty($_SERVER['SCRIPT_URL']) and $_SERVER['SCRIPT_URL'] == '/gestionnaire.php')
-  or (!empty($_SERVER['SCRIPT_NAME']) and $_SERVER['SCRIPT_NAME'] == '/gestionnaire.php')
-  or $_SERVER['REMOTE_ADDR']=='127.0.0.1'){
+  or (!empty($_SERVER['SCRIPT_NAME']) and $_SERVER['SCRIPT_NAME'] == '/gestionnaire.php')){
 ?>
 <script src="scripts/scroll.js"></script>
 <script type="text/javascript">
