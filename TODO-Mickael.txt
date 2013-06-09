@@ -1,5 +1,4 @@
 TODO pour Mickaël :
 
-Apparence pré-infos menu administration
-A re-remplir...
-#4 ?
+Gestionnaire d'historique
+Gestionnaire de sessions

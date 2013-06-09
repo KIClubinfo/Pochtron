@@ -228,13 +228,15 @@ ajax_url("image_upload.php", GET_args, fonction_callback_upload, dlFBimg_err_Cal
 
 function dlFBimg_err_Callback(erreur_id, reponse, old_GET_args)
 {
-    alert("Erreur "+erreur_id+" : "+reponse);
+//     alert("Erreur "+erreur_id+" : "+reponse);
     $("#notifs").prepend('<div class="notif argh"><strong>Erreur ' + erreur_id + '</strong>Une erreur s\'est produite : <em>' + reponse + '</em></div>');
 }
 
 function fonction_callback_upload(erreur_id, reponse, old_GET_args)
 {
-alert("Tout est pour le mieux :)")
+alert(old_GET_args.id)
+    $("tr#c"+old_GET_args.id).find("img[class='ico-client']").attr("src","images/photos/"+old_GET_args.id+".jpg");
+    $("#notifs").prepend('<div class="yeah argh"><strong>Téléchargement réussi</strong>La photo de profil a bien été mise à jour pour cet invidu.</div>');
 }
 
 $("img[name='dlFBimg']").click(function () {
