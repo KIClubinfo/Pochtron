@@ -96,7 +96,7 @@ function search_callback(code_erreur, reponse, GET_args)
 	 
 	 $("#results").text(nb_done+'/'+nb_tot+' éléments trouvés');
 	 
-	 if (avancement >= 100)
+	 if (avancement >= 99)
 	 $('#progress_bar .ui-progress').animateProgress(avancement, function() 
 	 {
 		$('.ui-label').delay(1500).text('Clickez-ici pour télécharger les photos').css({'display':'block','cursor':'pointer'}).click(function(){
