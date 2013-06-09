@@ -1,4 +1,5 @@
 <?php
+//Titre de la page
 define('page_titre', "Gestion courante &bull; Caisse Foyer");
 
 $head_HTML = '<link rel="stylesheet" href="style/gestionnaire.css"><link rel="stylesheet"  href="style/jquery.jgrowl.css" type="text/css"><link rel="stylesheet"  href="style/scroll.css" type="text/css">';
@@ -161,7 +162,7 @@ include_once 'inclus/tete.html.php';
 			</div>
 			<div class="article_content">
 				<input class="vert valid_users" type="submit" value="Valider" onClick="valid_all_users()">
-				<input class="cancel" type="reset" value="Annuler" onClick="cancel_all_users()">
+				<input class="cancel" type="reset" value="Annuler une commande" onClick="cancel_all_users()">
 				<input class="vert add_extern_user" type="submit" value="Client externe" onClick="add_extern_user()">
 				<input class="cancel" type="reset" value="Historique" onClick="show_stats()">
 			</div>

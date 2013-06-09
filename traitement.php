@@ -8,6 +8,8 @@ define('AJAX_UNKNOW_FAIL',1);
 define('AJAX_NOT_IMPLEMENTED',2);
 define('UNDEFINED_ACTION',100);
 define('INVALID_ACTION',101);
+define('UNDEFINED_ID',200);
+define('INVALID_ID',201);
 
 //Initialisations
 $erreur=-1;
@@ -22,6 +24,13 @@ function new_order()
 {
 	global $erreur;
 	global $reponse;
+	
+	if (!isset($_GET['id']))
+	{
+		$erreur=UNDEFINED_ID;
+		$reponse="Id indéfini";
+	}
+	
 	
 	$erreur = AJAX_OK;
 	$reponse = "Commande passée avec succès pour l'élève dont l'id est : xx !";
@@ -79,7 +88,7 @@ if ($erreur == AJAX_OK)
 	$reponse = "Cette fonction n'a pas encore été implémentée !";
 }
 
-  ?>
+?>
 {
 	"code_erreur": "<?php echo $erreur; ?>",
 	"reponse": "<?php echo $reponse;?>"
