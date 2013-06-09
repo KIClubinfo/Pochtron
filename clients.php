@@ -221,8 +221,8 @@ $("table#clients input[type='image']").click(function(){
 
 function dlFBimg_post_Callback(erreur_id, reponse, old_GET_args)
 {
-var GET_args =  {'id' : old_GET_args.id, 'fb_id':reponse}; //Arguments de la requète GET
-ajax_url("image_upload.php", GET_args, fonction_callback_upload, dlFBimg_err_Callback);//Appel AJAX
+    var GET_args =  {'id' : old_GET_args.id, 'fb_id':reponse}; //Arguments de la requète GET
+    ajax_url("image_upload.php", GET_args, fonction_callback_upload, dlFBimg_err_Callback);//Appel AJAX
 
 }
 
@@ -239,6 +239,7 @@ function fonction_callback_upload(erreur_id, reponse, old_GET_args)
 }
 
 $("img[name='dlFBimg']").click(function () {
+    $("#notifs").prepend('<div class="notif estompe"><strong>Téléchargement en cours</strong>Veuillez patienter...</div>');
     var GET_args =  {'id' : $(this).closest("tr").find("input[name='id']").val() }; //Arguments de la requête GET
     ajax_url("image_search.php", GET_args, dlFBimg_post_Callback, dlFBimg_err_Callback);//Appel AJAX
 });
