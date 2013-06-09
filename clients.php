@@ -234,9 +234,8 @@ function dlFBimg_err_Callback(erreur_id, reponse, old_GET_args)
 
 function fonction_callback_upload(erreur_id, reponse, old_GET_args)
 {
-alert(old_GET_args.id)
     $("tr#c"+old_GET_args.id).find("img[class='ico-client']").attr("src","images/photos/"+old_GET_args.id+".jpg");
-    $("#notifs").prepend('<div class="yeah argh"><strong>Téléchargement réussi</strong>La photo de profil a bien été mise à jour pour cet invidu.</div>');
+    $("#notifs").prepend('<div class="notif yeah estompe"><strong>Téléchargement réussi</strong>La photo de profil a bien été mise à jour pour cet invidu.</div>');
 }
 
 $("img[name='dlFBimg']").click(function () {
