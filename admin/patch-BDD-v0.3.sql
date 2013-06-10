@@ -5,3 +5,6 @@ ALTER TABLE clients
   ADD `commentaire` text COLLATE utf8_bin NOT NULL;
 
 ALTER TABLE commandes ADD  `id_produit` smallint(5) NOT NULL, ADD  `qtte_produit` int(11) NOT NULL, DROP commande;
+
+INSERT INTO `bar` (`id`, `val`) VALUES
+('version', '0.3');
