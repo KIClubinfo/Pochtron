@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS `bar` (
 --
 
 INSERT INTO `bar` (`id`, `val`) VALUES
-('caisse', '0.00');
+('caisse', '0.00'),
+('version', '0.3');
 
 -- --------------------------------------------------------
 
