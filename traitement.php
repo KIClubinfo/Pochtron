@@ -84,9 +84,11 @@ function new_order()
 			for ($i=1;$i<=count($order);$i++)
 			{
 				if ($products['id']==$order[($i)][0])
+				{
 					$new_solde -= $products['prix']*$order[$i][1];
+					$sql->rek( 'UPDATE produits SET qtt_reserve=\''.($products['qtt_reserve']-$order[$i][1].'\', ventes=\''.($products['ventes']+$order[$i][1].'\' WHERE id=\''.$products['id'].'\'');
+				}
 			}
-
 		}
 		
 		
@@ -103,7 +105,7 @@ function add_cash()
 	global $erreur;
 	global $reponse;
 	
-	$erreur = AJAX_OK;
+	$erreur = AJAX_OK;t
 	$reponse = "Le solde de l'élève a bien été augmenté";
 }
 
