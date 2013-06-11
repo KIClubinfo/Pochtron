@@ -10,6 +10,7 @@ define('UNDEFINED_ACTION',100);
 define('INVALID_ACTION',101);
 define('UNDEFINED_ID',200);
 define('INVALID_ID',201);
+define('BAD_REQUEST',300);
 
 //Initialisations
 $erreur=-1;
@@ -24,16 +25,39 @@ function new_order()
 {
 	global $erreur;
 	global $reponse;
+	global $sql;
 	
 	if (!isset($_GET['id']))
 	{
 		$erreur=UNDEFINED_ID;
 		$reponse="Id indéfini";
+		return;
 	}
 	
+	$_GET['id'] = intval($_GET['id']); // Empêche l'injection SQL
+	$sql->rek( 'SELECT * FROM clients WHERE id=\''.$_GET['id'].'\'');//Requète
 	
-	$erreur = AJAX_OK;
-	$reponse = "Commande passée avec succès pour l'élève dont l'id est : xx !";
+	if ($sql->nbrlignes() != 1)
+	{
+		$erreur=INVALID_ID;
+		$reponse="Id invalide";
+	}
+	else
+	{
+		$eleve = $sql->fetch();
+		
+		if ($sql->rek( 'UPDATE clients SET solde=\''.($eleve['solde']-1).'\' WHERE id=\''.$_GET['id'].'\''))
+		{
+			$erreur = AJAX_OK;
+			$reponse = "Commande de ".$eleve['prenom']." ".$eleve['nom']." passée avec succès. Nouveau solde : ".($eleve['solde']-1);
+		}
+		else
+		{
+			$erreur = BAD_REQUEST;
+			$reponse = "Un problème est survenue lors des échanges avec la base de données";
+		}
+	
+	}
 }
 
 //Ajouter du liquide à un élève
@@ -79,13 +103,6 @@ else
 {
 	$erreur = UNDEFINED_ACTION;
 	$reponse = "Action indéfinie";
-}
-
-//A ôter dès que les fonctions seront correctement implémentées
-if ($erreur == AJAX_OK)
-{
-	$erreur = AJAX_NOT_IMPLEMENTED;
-	$reponse = "Cette fonction n'a pas encore été implémentée !";
 }
 
 ?>
