@@ -86,7 +86,7 @@ function new_order()
 				if ($products['id']==$order[($i)][0])
 				{
 					$new_solde -= $products['prix']*$order[$i][1];
-					$sql->rek( 'UPDATE produits SET qtt_reserve=\''.($products['qtt_reserve']-$order[$i][1]).'\', ventes=\''.($products['ventes']+$order[$i][1]).'\' WHERE id=\''.$products['id'].'\'');
+					$sql->rek('UPDATE produits SET qtt_reserve=\''.($products['qtt_reserve']-$order[$i][1]).'\', ventes=\''.($products['ventes']+$order[$i][1]).'\' WHERE id=\''.$products['id'].'\'', false);
 				}
 			}
 		}
