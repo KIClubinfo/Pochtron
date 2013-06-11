@@ -71,6 +71,8 @@ function new_order()
 		
 		$order = parse_order(htmlspecialchars($_GET['consom'], ENT_QUOTES, 'UTF-8'));
 		$new_solde=$eleve['solde'];
+		$new_nb_consos = $eleve['nb_consos'];
+		$new_litres_bus = $eleve['litres_bus'];
 		
 		if (count($order) < 1)
 		{
@@ -87,13 +89,15 @@ function new_order()
 				if ($products['id']==$order[($i)][0])
 				{
 					$new_solde -= $products['prix']*$order[$i][1];
+					$new_nb_consos += $order[$i][1];
+					$new_litres_bus += $products['vol']*$order[$i][1];
 					$sql->rek('UPDATE produits SET qtt_reserve=\''.($products['qtt_reserve']-$order[$i][1]).'\', ventes=\''.($products['ventes']+$order[$i][1]).'\' WHERE id=\''.$products['id'].'\'', false);
 					$sql->rek('INSERT INTO commandes (id_user, timestamp, id_produit, qtte_produit) VALUES (\''.$_GET['id'].'\',\''.date("Y-m-d H:i:s").'\',\''.$products['id'].'\',\''.$order[$i][1].'\')', false);
 				}
 			}
 		}
 
-		$sql->rek( 'UPDATE clients SET solde=\''.($new_solde).'\' WHERE id=\''.$_GET['id'].'\'');
+		$sql->rek( 'UPDATE clients SET solde=\''.($new_solde).'\', litres_bus=\''.($new_litres_bus).'\', nb_consos=\''.($new_nb_consos).'\' WHERE id=\''.$_GET['id'].'\'');
 		
 		$erreur = AJAX_OK;
 		$reponse = "Commande de ".$eleve['prenom']." ".$eleve['nom']." passée avec succès. Nouveau solde : ".($new_solde);
@@ -106,7 +110,7 @@ function add_cash()
 	global $erreur;
 	global $reponse;
 	
-	$erreur = AJAX_OK;
+	$erreur = AJAX_NOT_IMPLEMENTED;
 	$reponse = "Le solde de l'élève a bien été augmenté";
 }
 
@@ -116,7 +120,7 @@ function cancel()
 	global $erreur;
 	global $reponse;
 	
-	$erreur = AJAX_OK;
+	$erreur = AJAX_NOT_IMPLEMENTED;
 	$reponse = "Commande annulée avec succès";
 }
 
