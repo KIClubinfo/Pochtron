@@ -773,7 +773,7 @@ div.bloc ol{
   margin-left: 20px;
 }
 
-table.events tr.spacer td{
+table.suivi tr.spacer td{
     height: 15px;
     padding: 2px 5px 2px 5px;
     line-height: 15px;
@@ -782,26 +782,30 @@ table.events tr.spacer td{
     color: white;
 }
 
-table.events tr[class^="spacer-"] td{
+table.suivi tr[class^="spacer-"] td{
     height: 15px;
     padding: 2px 5px 2px 5px;
     line-height: 15px;
     font-size: 15px;
     color: white;
 }
-table.events tr.spacer-a td{
+table.suivi tr.spacer-a td{
     background-color: rgba(255,128,0,0.5) !important;
     color: white;
 }
-table.events tr.spacer-b td{
+table.suivi tr.spacer-b td{
     background-color: rgba(38,110,255,0.5) !important;
     color: white;
 }
-table.events tr.sess-a{
+table.suivi tr.sess-a{
     background-color: rgba(255,128,0,0.2) !important;
 }
-table.events tr.sess-b{
+table.suivi tr.sess-b{
     background-color: rgba(38,110,255,0.2) !important;
+}
+table.suivi{
+    width: auto !important;
+    max-width: 50% !important;
 }
 table.suivi td{
     white-space: nowrap;
