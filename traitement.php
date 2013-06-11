@@ -105,7 +105,7 @@ function add_cash()
 	global $erreur;
 	global $reponse;
 	
-	$erreur = AJAX_OK;t
+	$erreur = AJAX_OK;
 	$reponse = "Le solde de l'élève a bien été augmenté";
 }
 
