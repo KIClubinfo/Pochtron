@@ -80,21 +80,27 @@ function new_order()
 			$reponse="Commande invalide";
 			return;
 		}
+
+		array_multisort($order, SORT_ASC);
 		
-		$sql->rek( 'SELECT * FROM produits');
+		$rek_in='';
+		for ($i=0;$i<count($order);$i++) $rek_in = $rek_in.$order[$i][0].',';
+		$rek_in = substr($rek_in, 0, strlen($rek_in)-1);
+		
+		$i=0;
+		
+		$sql->rek( 'SELECT * FROM produits WHERE id IN ('.$rek_in.') ORDER BY id ASC');
 		while($products = $sql->fetch())
 		{
-			for ($i=1;$i<=count($order);$i++)
+			if ($products['id']==$order[($i)][0])
 			{
-				if ($products['id']==$order[($i)][0])
-				{
-					$new_solde -= $products['prix']*$order[$i][1];
-					$new_nb_consos += $order[$i][1];
-					$new_litres_bus += $products['vol']*$order[$i][1];
-					$sql->rek('UPDATE produits SET qtt_reserve=\''.($products['qtt_reserve']-$order[$i][1]).'\', ventes=\''.($products['ventes']+$order[$i][1]).'\' WHERE id=\''.$products['id'].'\'', false);
-					$sql->rek('INSERT INTO commandes (id_user, timestamp, id_produit, qtte_produit) VALUES (\''.$_GET['id'].'\',\''.date("Y-m-d H:i:s").'\',\''.$products['id'].'\',\''.$order[$i][1].'\')', false);
-				}
+				$new_solde -= $products['prix']*$order[$i][1];
+				$new_nb_consos += $order[$i][1];
+				$new_litres_bus += $products['vol']*$order[$i][1];
+				$sql->rek('UPDATE produits SET qtt_reserve=\''.($products['qtt_reserve']-$order[$i][1]).'\', ventes=\''.($products['ventes']+$order[$i][1]).'\' WHERE id=\''.$products['id'].'\'', false);
+				$sql->rek('INSERT INTO commandes (id_user, timestamp, id_produit, qtte_produit) VALUES (\''.$_GET['id'].'\',\''.date("Y-m-d H:i:s").'\',\''.$products['id'].'\',\''.$order[$i][1].'\')', false);
 			}
+			$i++;
 		}
 
 		$sql->rek( 'UPDATE clients SET solde=\''.($new_solde).'\', litres_bus=\''.($new_litres_bus).'\', nb_consos=\''.($new_nb_consos).'\' WHERE id=\''.$_GET['id'].'\'');
