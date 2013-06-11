@@ -27,7 +27,7 @@ function parse_order($string_order)
 	$array_temp = explode(',',$string_order);
 	$array_order = array();
 	
-	for ($i=1;$i<count($array_temp);$i++)
+	for ($i=1;$i<count($array_temp)-1;$i++)
 	{
 		$array_order[$i] = explode(':',$array_temp[$i]);
 	}
@@ -61,8 +61,6 @@ function new_order()
 	{
 		$eleve = $sql->fetch();
 		
-		$sql->rek( 'UPDATE clients SET solde=\''.($eleve['solde']-1).'\' WHERE id=\''.$_GET['id'].'\'');
-		
 		if (!isset($_GET['consom']))
 		{
 			$erreur=EMPTY_ORDER;
@@ -71,16 +69,31 @@ function new_order()
 		}
 		
 		$order = parse_order(htmlspecialchars($_GET['consom'], ENT_QUOTES, 'UTF-8'));
+		$new_solde=$eleve['solde'];
 		
-		if (count($order) < 2)
+		if (count($order) < 1)
 		{
 			$erreur=INVALID_ORDER;
 			$reponse="Commande invalide";
 			return;
 		}
 		
+		$sql->rek( 'SELECT * FROM produits');
+		while($products = $sql->fetch())
+		{
+			for ($i=1;$i<=count($order);$i++)
+			{
+				if ($products['id']==$order[($i)][0])
+					$new_solde -= $products['prix']*$order[$i][1];
+			}
+
+		}
+		
+		
+		$sql->rek( 'UPDATE clients SET solde=\''.($new_solde).'\' WHERE id=\''.$_GET['id'].'\'');
+		
 		$erreur = AJAX_OK;
-		$reponse = "Commande de ".$eleve['prenom']." ".$eleve['nom']." passée avec succès. Nouveau solde : ".($eleve['solde']-1);
+		$reponse = "Commande de ".$eleve['prenom']." ".$eleve['nom']." passée avec succès. Nouveau solde : ".($new_solde);
 	}
 }
 
