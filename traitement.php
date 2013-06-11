@@ -46,7 +46,7 @@ function new_order()
 	{
 		$eleve = $sql->fetch();
 		
-		($sql->rek( 'UPDATE clients SET solde=\''.($eleve['solde']-1).'\' WHERE id=\''.$_GET['id'].'\''))
+		$sql->rek( 'UPDATE clients SET solde=\''.($eleve['solde']-1).'\' WHERE id=\''.$_GET['id'].'\'');
 		
 		$erreur = AJAX_OK;
 		$reponse = "Commande de ".$eleve['prenom']." ".$eleve['nom']." passée avec succès. Nouveau solde : ".($eleve['solde']-1);
