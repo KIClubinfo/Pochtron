@@ -37,7 +37,7 @@ include_once 'inclus/tete.html.php';
 							<div class="overview">	
 								<ul class="table_content">
 								<?php
-									$sql->rek( 'SELECT `id` ,prenom,nom,solde,active,nb_consos FROM clients ORDER BY nom ASC' );
+									$sql->rek( 'SELECT * FROM clients ORDER BY nom ASC' );
 									while($a = $sql->fetch())
 									{
 									?>
