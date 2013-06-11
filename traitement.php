@@ -46,16 +46,11 @@ function new_order()
 	{
 		$eleve = $sql->fetch();
 		
-		if ($sql->rek( 'UPDATE clients SET solde=\''.($eleve['solde']-1).'\' WHERE id=\''.$_GET['id'].'\''))
-		{
-			$erreur = AJAX_OK;
-			$reponse = "Commande de ".$eleve['prenom']." ".$eleve['nom']." passée avec succès. Nouveau solde : ".($eleve['solde']-1);
-		}
-		else
-		{
-			$erreur = BAD_REQUEST;
-			$reponse = "Un problème est survenue lors des échanges avec la base de données";
-		}
+		($sql->rek( 'UPDATE clients SET solde=\''.($eleve['solde']-1).'\' WHERE id=\''.$_GET['id'].'\''))
+		
+		$erreur = AJAX_OK;
+		$reponse = "Commande de ".$eleve['prenom']." ".$eleve['nom']." passée avec succès. Nouveau solde : ".($eleve['solde']-1);
+		
 	
 	}
 }

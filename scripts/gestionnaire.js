@@ -410,7 +410,7 @@ function valid_user(elem)
 	
 	$.ajax({
           url: "traitement.php",
-        data   : {id:my_id,consom:conso},
+        data   : {action:orderid:my_id,consom:conso},
           cache: false,
           dataType: "json",
         error : function(request, error) {          
