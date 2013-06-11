@@ -87,11 +87,11 @@ function new_order()
 				{
 					$new_solde -= $products['prix']*$order[$i][1];
 					$sql->rek('UPDATE produits SET qtt_reserve=\''.($products['qtt_reserve']-$order[$i][1]).'\', ventes=\''.($products['ventes']+$order[$i][1]).'\' WHERE id=\''.$products['id'].'\'', false);
+					$sql->rek('INSERT INTO commandes (id_user, timestamp, id_produit, qtte_produit) VALUES (\''.$_GET['id'].'\',\''.time().'\',\''.$products['id'].'\',\''.$order[$i][1].'\')', false);
 				}
 			}
 		}
-		
-		
+
 		$sql->rek( 'UPDATE clients SET solde=\''.($new_solde).'\' WHERE id=\''.$_GET['id'].'\'');
 		
 		$erreur = AJAX_OK;
