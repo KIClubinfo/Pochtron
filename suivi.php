@@ -39,7 +39,7 @@ $last_date = 0;
 $mois = Array('','Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre');
 $jours = Array('','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche');
 
-$sql->rek( "SELECT a.`timestamp`,a.`qtte_produit`,b.nom as `nom_produit`,CONCAT(c.prenom,' ',c.nom) as `nom_client` FROM commandes as a, clients as c, produits as b WHERE a.id_user = c.id AND a.id_produit = b.id ORDER BY DATE(SUBTIME(a.timestamp,'0 6:0:0')) DESC, timestamp ASC, qtte_produit ASC" );
+$sql->rek( "SELECT a.`timestamp`,a.`qtte_produit`,CONCAT(b.nom,' ',b.vol) as `nom_produit`,CONCAT(c.prenom,' ',c.nom) as `nom_client` FROM commandes as a, clients as c, produits as b WHERE a.id_user = c.id AND a.id_produit = b.id ORDER BY DATE(SUBTIME(a.timestamp,'0 6:0:0')) DESC, timestamp ASC, qtte_produit ASC" );
 
 while($a = $sql->fetch()){
   $t = strtotime($a['timestamp']);
