@@ -57,7 +57,7 @@ include_once 'inclus/tete.html.php';
 											<span class="solde"><?php echo $a['solde'];?></span>
 											<span class="not_shown"><?php echo $a['prenom'];?> <?php echo $a['nom'];?> <?php echo $a['prenom'];?> <?php echo substr($a['prenom'],0,1).substr($a['nom'],0,1);?></span>
 											<span class="selected">0</span>
-											<span class="stars"><?php for($i=0;$i<$a['litres_bus']/10;$i++) echo '<img src="images/icones/icons/star.png" />'; ?></span>
+											<span class="stars"><?php for($i=0;$i<=$a['litres_bus']/10;$i++) echo '<img src="images/icones/icons/star.png" title="'.$a['litre_bus'].' litre(s )bu(s)"/>'; ?></span>
 											<span class="distinctions"><img src="images/icones/icons/medal_gold_1.png" /><img src="images/icones/icons/medal_gold_2.png" /><img src="images/icones/icons/medal_gold_3.png" /></span>
 											<span class="comment"></span>
 											<span class="active"><?php echo $a['active'];?></span>
