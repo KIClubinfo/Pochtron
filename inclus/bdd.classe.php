@@ -44,11 +44,17 @@ class rekSQL {
       }
 
       // Requète SQL
-      function rek($sql){
+      function rek($sql, $update_result = true){
             $this->nbrek++; // On incrémente le compteur de requêtes
             $this->derek = $sql;
-            if($this->result = mysql_query($sql))
-                  return $this->result;
+            if($temp_result = mysql_query($sql))
+			{
+				if ($update_result)	
+				{
+					$this->result = $temp_result;
+					return $this->result;
+				}
+			}
             else{
                   $this->erreur('Impossible d\'exécuter une requête.');
                   return false;
