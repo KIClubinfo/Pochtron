@@ -773,6 +773,15 @@ div.bloc ol{
   margin-left: 20px;
 }
 
+
+table.suivi time{
+  font-size: 70%;
+}
+table.suivi td{
+    padding: 5px !important;
+    vertical-align: middle !important;
+    white-space: nowrap;
+}
 table.suivi tr.spacer td{
     height: 15px;
     padding: 2px 5px 2px 5px;
@@ -781,7 +790,6 @@ table.suivi tr.spacer td{
     background-color: rgba(255,128,0,0.5);
     color: white;
 }
-
 table.suivi tr[class^="spacer-"] td{
     height: 15px;
     padding: 2px 5px 2px 5px;
@@ -804,9 +812,24 @@ table.suivi tr.sess-b{
     background-color: rgba(38,110,255,0.2) !important;
 }
 table.suivi{
+    width: 50% !important;
+    display: inline-block;
+    vertical-align: top;
+}
+table.consos{
+    max-width: 45% !important;
     width: auto !important;
-    max-width: 50% !important;
+    margin-left: 5%;
+    display: inline-block;
+    vertical-align: top;
+}
+table.consos:after{
+    content:" ";
+    display: block;
 }
 table.suivi td{
     white-space: nowrap;
+}
+table.suivi + table.consos {
+    margin-top: 15px;
 }
