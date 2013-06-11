@@ -170,7 +170,7 @@ include_once 'inclus/tete.html.php';
 	</div>
   </div>
  
-
+<img src="" alt="" id="pict_viewer">
 <script type="text/javascript" src="scripts/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="scripts/jquery.jgrowl.js"></script>
 <script type="text/javascript" src="scripts/scroll.js"></script>
