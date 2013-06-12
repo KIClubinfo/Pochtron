@@ -26,11 +26,7 @@ include_once 'inclus/tete.html.php';
     
     <tbody>
 <?php
-//$thead = '<table class="lignes events suivi"><thead><tr><th>Date</th><th>Client</th><th>Consommation</th></tr></thead>';
 
-$tend = '</tbody></table>';
-
-//echo $thead;
 
 // Comptabilisation des produits consommés
 $consos = Array();
@@ -49,18 +45,16 @@ while($a = $sql->fetch()){
   if(abs($last_date - strtotime($a['timestamp'])) > _NBH_SESSION*3600 or $sess=='0'){ // On change de session
     
     if($sess!='0'){
-	echo $tend;
+	echo '</tbody></table>';
 	
 	affiche_consos($consos,$session);
 	
-	//echo $thead;
     }
     
     // Nouvelle session
     $session = $jours[intval(date('N',$t))] . ' ' . date('d',$t) . ' ' . $mois[intval(date('n',$t))];
     
     $sess = ($sess == 'a') ? 'b' : 'a';
-   // echo "<tr class='spacer-$sess'><td colspan='3'>Session : <strong>$session</strong></td></tr>";
 	echo '<table class="lignes events suivi"><thead><tr><th colspan="3">Foyer du '.$session.'</th></tr></thead><tbody>';
 	echo '<tr><th>Date</th><th>Client</th><th>Consommation</th></tr>';
     $last_date = strtotime($a['timestamp']);
@@ -73,8 +67,8 @@ while($a = $sql->fetch()){
   echo "<tr class='sess-$sess'><td><time>$heure</time></td><td>{$a['nom_client']}</td><td>{$a['nom_produit']} (<strong>{$a['qtte_produit']}</strong>)</td></tr>";
 }
 
-echo $tend;
-	affiche_consos($consos,$session);
+echo '</tbody></table>';
+affiche_consos($consos,$session);
 ?>
   </div>
 <?php
