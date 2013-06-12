@@ -544,7 +544,7 @@ img#pict_viewer{
     position: absolute;
     left: 30%;
     top: 50%;
-    border: 1px solid black;
+    border: 10px solid white;
     z-index: 105;
     box-shadow: 0 0 3px #1E1E1E;
 }
