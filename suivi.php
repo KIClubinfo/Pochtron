@@ -6,7 +6,7 @@ include_once 'inclus/zoneadmin.inc.php';
 
 // Affichage sous forme graphique des produits vendus
 function affiche_consos($consos,$session){
-    echo '<table class="lignes consos"><thead><tr><th colspan="2">'.$session.'</th></tr><tr><th>Produit</th><th>Quantitée vendue</th></tr></thead><tbody>';
+    echo '<table class="lignes consos"><thead><tr><th colspan="2">Foyer du '.$session.'</th></tr><tr><th>Produit</th><th>Quantitée vendue</th></tr></thead><tbody>';
     
     foreach($consos[$session] as $produit => $qtt){
 	echo "<tr><td>$produit</td><td>$qtt</td></tr>";
@@ -26,10 +26,11 @@ include_once 'inclus/tete.html.php';
     
     <tbody>
 <?php
-$thead = '<table class="lignes events suivi"><thead><tr><th>Date</th><th>Client</th><th>Consommation</th></tr></thead>';
+//$thead = '<table class="lignes events suivi"><thead><tr><th>Date</th><th>Client</th><th>Consommation</th></tr></thead>';
+
 $tend = '</tbody></table>';
 
-echo $thead;
+//echo $thead;
 
 // Comptabilisation des produits consommés
 $consos = Array();
@@ -52,14 +53,16 @@ while($a = $sql->fetch()){
 	
 	affiche_consos($consos,$session);
 	
-	echo $thead;
+	//echo $thead;
     }
     
     // Nouvelle session
     $session = $jours[intval(date('N',$t))] . ' ' . date('d',$t) . ' ' . $mois[intval(date('n',$t))];
     
     $sess = ($sess == 'a') ? 'b' : 'a';
-    echo "<tr class='spacer-$sess'><td colspan='3'>Session : <strong>$session</strong></td></tr>";
+   // echo "<tr class='spacer-$sess'><td colspan='3'>Session : <strong>$session</strong></td></tr>";
+	echo '<table class="lignes events suivi"><thead><tr><th colspan="3">Foyer du '.$session.'</th></tr></thead><tbody>';
+	echo '<tr><th>Date</th><th>Client</th><th>Consommation</th></tr>';
     $last_date = strtotime($a['timestamp']);
     $consos[$session] = Array();
   }
