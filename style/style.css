@@ -834,12 +834,12 @@ table.suivi + table.consos {
     margin-top: 15px;
 }
 
-table.consos th:nth-child(1), table.consos td:nth-child(1) {
+table.consos tr th:nth-child(1), table.consos tr td:nth-child(1) {
     text-align: center;
-    width: 60%;
+    width: 30%;
 }
 
-table.consos th:nth-child(2), table.consos td:nth-child(2) {
+table.consos tr th:nth-child(2), table.consos tr td:nth-child(2) {
     text-align: center;
-    width: 40%;
+    width: 20%;
 }
