@@ -818,7 +818,7 @@ table.suivi{
 }
 table.consos{
     max-width: 45% !important;
-    width: auto !important;
+    width: 30% !important;
     margin-left: 5%;
     display: inline-block;
     vertical-align: top;
@@ -832,4 +832,14 @@ table.suivi td{
 }
 table.suivi + table.consos {
     margin-top: 15px;
+}
+
+table.consos th:nth-child(1), table.consos td:nth-child(1) {
+    text-align: center;
+    width: 60%;
+}
+
+table.consos th:nth-child(2), table.consos td:nth-child(2) {
+    text-align: center;
+    width: 40%;
 }
