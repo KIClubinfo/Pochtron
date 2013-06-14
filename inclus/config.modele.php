@@ -11,6 +11,9 @@ define('_DELAI_ADMIN',10*60); // Temps max d'inactivité avant déconnexion, en 
 // Afficher les erreurs MySQL ?
 define('_AFF_ERR_SQL',true);
 
+ // Nombre d'heure sans commande avant le début d'une nouvelle session
+define('_NBH_SESSION', 8);
+
 // Connexion au serveur MySQL
 if($_SERVER['REMOTE_ADDR']=='127.0.0.1'){ // Serveur local
   define('_ENLOCAL', true);

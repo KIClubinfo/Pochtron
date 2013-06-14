@@ -1,6 +1,5 @@
 <?php
 define('page_titre', "Historique des commandes &bull; Caisse Foyer");
-define('_NBH_SESSION', 8); // Nombre d'heure sans commande avant le début d'une nouvelle session
 
 include_once 'inclus/zoneadmin.inc.php';
 
