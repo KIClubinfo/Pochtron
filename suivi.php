@@ -20,15 +20,17 @@ $head_HTML = '<script type="text/javascript" src="scripts/admin.js"></script>';
 include_once 'inclus/tete.html.php';
 
 ?>
-  <div class="central-haut bloc-largeur journal">
+  <div class="central-haut bloc-largeur journal suivi">
    <a href="./administration.php" class="maison">Retour</a>
     <h1>Journal des consommations</h1>
     
 <?php
 
+ob_start();
 
 // Comptabilisation des produits consommés
 $consos = Array();
+$sessions = Array();
 
 $sess = '0'; // Bascule la couleur du fond
 $last_date = 0;
@@ -52,9 +54,10 @@ while($a = $sql->fetch()){
     
     // Nouvelle session
     $session = $jours[intval(date('N',$t))] . ' ' . date('d',$t) . ' ' . $mois[intval(date('n',$t))];
+    $sessions[$session] = $t;
     
     $sess = ($sess == 'a') ? 'b' : 'a';
-    echo '<table class="lignes events suivi"><thead><tr><th colspan="3">Foyer du '.$session.'</th></tr>';
+    echo '<table class="lignes events suivi" id="'.$t.'"><thead><tr><th colspan="3">Foyer du '.$session.'</th></tr>';
     echo '<tr><th>Date</th><th>Client</th><th>Consommation</th></tr></thead><tbody>';
     $last_date = strtotime($a['timestamp']);
     $consos[$session] = Array();
@@ -68,6 +71,16 @@ while($a = $sql->fetch()){
 
 echo '</tbody></table>';
 affiche_consos($consos,$session);
+$contenu = ob_get_clean();
+
+echo '<h2>Liste des foyers</h2><ul class="liste-foyers">';
+foreach($sessions as $session_nom => $session_id) {
+    echo "<li><a href='suivi.php#$session_id'>Foyer du $session_nom</a></li>";
+}
+
+echo '</ul>
+<h2>Détail des commandes</h2>';
+echo $contenu;
 ?>
   </div>
 <?php

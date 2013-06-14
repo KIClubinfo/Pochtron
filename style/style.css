@@ -843,3 +843,13 @@ table.consos tr th:nth-child(2), table.consos tr td:nth-child(2) {
     text-align: center;
     width: 20%;
 }
+
+div.suivi h2{
+    text-align: left;
+    margin-left: 8%;
+}
+div.suivi ul.liste-foyers{
+    text-align: left;
+    margin-left: 10%;
+    margin-bottom: 30px;
+}
