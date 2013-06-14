@@ -855,3 +855,45 @@ div.suivi ul.liste-foyers{
     margin-left: 10%;
     margin-bottom: 30px;
 }
+
+div.ajout-futs {
+    height: 200px;
+}
+div.ajout-futs div.txt-fut{
+    background-image: url(../images/fut-biere.png);
+    background-repeat: no-repeat;
+    background-position: 95% center;
+    padding-right: 100px;
+}
+div.ajout-futs .moitie{
+    display: inline-block;
+    width: 48%;
+    vertical-align: top;
+    height: 100%;
+}
+div.ajout-futs .moitie + .moitie{
+    margin-left: 2%;
+    vertical-align: top;
+}
+
+div.ajout-futs form label{
+   width: 30%;
+   display:inline-block;
+   text-align: right;
+   vertical-align: middle;
+}
+div.ajout-futs form label:after{
+   vertical-align: middle;
+}
+div.ajout-futs form label + input{
+   width: 60%;
+   vertical-align: top;
+}
+div.ajout-futs input[type="submit"]{
+   margin-top: 20px;
+}
+
+td.grise{
+    color: rgba(255,255,255,0.2);
+    font-style: italic;
+}
