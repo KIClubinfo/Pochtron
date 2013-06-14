@@ -5,7 +5,7 @@ $head_HTML = '<script src="scripts/highcharts/js/highcharts.js"></script><script
 
 include_once 'inclus/tete.html.php';
 
-$notif = '';
+$notif = '<div class="notif estompe">Merci de signaler ici chaque fût sorti de la torche :)</div>';
 
 if(!empty($_GET['rajouter']) and !empty($_POST['nb']) and !empty($_POST['type']) and isset($_POST['respo'])){
     // Sécurisation des données
