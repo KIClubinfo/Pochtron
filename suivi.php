@@ -24,7 +24,6 @@ include_once 'inclus/tete.html.php';
    <a href="./administration.php" class="maison">Retour</a>
     <h1>Journal des consommations</h1>
     
-    <tbody>
 <?php
 
 
@@ -55,8 +54,8 @@ while($a = $sql->fetch()){
     $session = $jours[intval(date('N',$t))] . ' ' . date('d',$t) . ' ' . $mois[intval(date('n',$t))];
     
     $sess = ($sess == 'a') ? 'b' : 'a';
-	echo '<table class="lignes events suivi"><thead><tr><th colspan="3">Foyer du '.$session.'</th></tr>';
-	echo '<tr><th>Date</th><th>Client</th><th>Consommation</th></tr></thead><tbody>';
+    echo '<table class="lignes events suivi"><thead><tr><th colspan="3">Foyer du '.$session.'</th></tr>';
+    echo '<tr><th>Date</th><th>Client</th><th>Consommation</th></tr></thead><tbody>';
     $last_date = strtotime($a['timestamp']);
     $consos[$session] = Array();
   }
