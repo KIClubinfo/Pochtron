@@ -49,7 +49,7 @@ $jours = Array('','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanc
 $d_limit = (isset($_GET['affiche_tous'])) ?  '' : 'AND TO_DAYS(NOW()) - TO_DAYS(a.timestamp) <= 90';
 
 
-$sql->rek( "SELECT SUM(nb),type,min(date) as date FROM futs GROUP BY DATE(SUBTIME(date,'0 6:0:0')),type ORDER BY DATE(SUBTIME(date,'0 6:0:0')) DESC, nb DESC" );
+$sql->rek( "SELECT SUM(nb) as nb,type,min(date) as date FROM futs GROUP BY DATE(SUBTIME(date,'0 6:0:0')),type ORDER BY DATE(SUBTIME(date,'0 6:0:0')) DESC, nb DESC" );
 while($a = $sql->fetch()){
     $t = strtotime($a['date']);
     $session = $jours[intval(date('N',$t))] . ' ' . date('d',$t) . ' ' . $mois[intval(date('n',$t))];
