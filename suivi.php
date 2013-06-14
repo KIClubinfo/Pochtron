@@ -25,6 +25,9 @@ include_once 'inclus/tete.html.php';
     <h1>Journal des consommations</h1>
     
 <?php
+if(empty($_GET['affiche_tous'])){
+    ?><div class="notif estompe">Seuls les foyers des trois derniers mois sont affichés, mais vous pouvez choisir de <a href="suivi.php?affiche_tous=1">tous les afficher</a>.</div><?php
+}
 
 ob_start();
 
@@ -37,7 +40,9 @@ $last_date = 0;
 $mois = Array('','Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre');
 $jours = Array('','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche');
 
-$sql->rek( "SELECT a.`timestamp`,a.`qtte_produit`,CONCAT(b.nom,' ',b.vol) as `nom_produit`,CONCAT(c.prenom,' ',c.nom) as `nom_client` FROM commandes as a, clients as c, produits as b WHERE a.id_user = c.id AND a.id_produit = b.id ORDER BY DATE(SUBTIME(a.timestamp,'0 6:0:0')) DESC, timestamp ASC, qtte_produit ASC" );
+$d_limit = (isset($_GET['affiche_tous'])) ?  '' : 'AND TO_DAYS(NOW()) - TO_DAYS(a.timestamp) <= 90';
+
+$sql->rek( "SELECT a.`timestamp`,a.`qtte_produit`,CONCAT(b.nom,' ',b.vol) as `nom_produit`,CONCAT(c.prenom,' ',c.nom) as `nom_client` FROM commandes as a, clients as c, produits as b WHERE a.id_user = c.id AND a.id_produit = b.id $d_limit ORDER BY DATE(SUBTIME(a.timestamp,'0 6:0:0')) DESC, timestamp ASC, qtte_produit ASC" );
 
 while($a = $sql->fetch()){
   $t = strtotime($a['timestamp']);
@@ -75,11 +80,12 @@ $contenu = ob_get_clean();
 
 echo '<h2>Liste des foyers</h2><ul class="liste-foyers">';
 foreach($sessions as $session_nom => $session_id) {
-    echo "<li><a href='suivi.php#$session_id'>Foyer du $session_nom</a></li>";
+    $_SERVER['REQUEST_URI'] = str_replace("'",'',$_SERVER['REQUEST_URI']); // On empêche l'injection de code
+    echo "<li><a href='{$_SERVER['REQUEST_URI']}#$session_id'>Foyer du $session_nom</a></li>";
 }
 
-echo '</ul>
-<h2>Détail des commandes</h2>';
+echo '<li><a href="suivi.php?affiche_tous=1">Voir tous la liste complète des foyers</a></li>
+</ul><h2>Détail des commandes</h2>';
 echo $contenu;
 ?>
   </div>

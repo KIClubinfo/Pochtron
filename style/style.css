@@ -372,7 +372,9 @@ h1 + .notif{
 }
 .notif + table,
 .notif + div,
-.notif + form{
+.notif + form,
+.notif + h1,
+.notif + h2{
   margin-top: 10px;
 }
 
