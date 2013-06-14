@@ -81,7 +81,7 @@ $contenu = ob_get_clean();
 echo '<h2>Liste des foyers</h2><ul class="liste-foyers">';
 foreach($sessions as $session_nom => $session_id) {
     $_SERVER['REQUEST_URI'] = str_replace("'",'',$_SERVER['REQUEST_URI']); // On empêche l'injection de code
-    echo "<li><a href='{$_SERVER['REQUEST_URI']}#$session_id'>Foyer du $session_nom</a></li>";
+    echo "<li>Foyer du <a href='{$_SERVER['REQUEST_URI']}#$session_id'>$session_nom</a></li>";
 }
 
 echo '<li><a href="suivi.php?affiche_tous=1">Voir tous la liste complète des foyers</a></li>
