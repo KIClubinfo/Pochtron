@@ -1,6 +1,8 @@
 <?php
 define('page_titre', "Gestion des fûts &bull; Caisse Foyer");
 
+$head_HTML = '<script src="scripts/highcharts/js/highcharts.js"></script><script type="text/javascript" src="scripts/highcharts/js/themes/gray.js"></script>';
+
 include_once 'inclus/tete.html.php';
 
 $notif = '';
@@ -43,34 +45,77 @@ if(!empty($_GET['ok']))
     <br>
     <input type="submit" value="Enregistrer" class="gros vert">
     </form>
-    <div class="darkbox moitie txt-fut">Merci de noter ici chaque fût sorti de la torche, ainsi que sa nature.</div>
-    </div>
+    <div class="darkbox moitie txt-fut" id="container">
+    </div></div>
+    
     <table class="lignes"><thead><tr><th>Date</th><th>Type</th><th>Nombre</th><th>Par</th></tr></thead><tbody>
 <?php
 
-// Comptabilisation des produits consommés
-$consos = Array();
-$sessions = Array();
-
-$sess = '0'; // Bascule la couleur du fond
-$last_date = 0;
+// Affichage du graphe
+$js_data = Array();
 
 $d_limit = (isset($_GET['affiche_tous'])) ?  '' : ' AND TO_DAYS(NOW()) - TO_DAYS(date) <= 90';
 
 $sql->rek( "SELECT date, nb, respo, type FROM futs WHERE nb > 0$d_limit ORDER BY date DESC" );
 
 while($a = $sql->fetch()){
-  $date = date('d/m/y (H:i)',strtotime($a['date']));
+  $t = strtotime($a['date']);
+  $date = date('d/m/y (H:i)',$t);
   if(empty($a['respo']))
     $respo = "<td class='grise'>Non renseigné...</td>";
   else
     $respo = "<td>{$a['respo']}</td>";
   
   echo "<tr><td><time>$date</time></td><td>{$a['type']}</td><td>{$a['nb']}</td>$respo</tr>";
+  
+  $t -= _NBH_SESSION * 3600; // Pour avoir un foyer sur un seul jour
+  $js_data[] = '[Date.UTC('.date('Y,m,d',$t).'),'.$a['nb'].']';
 }
 
 echo '</tbody></table>';
 ?>
   </div>
+    <script>
+    Highcharts.setOptions({
+	lang: {
+		shortMonths: ['Jan.', 'Fév.', 'Mars', 'Avr.', 'Mai', 'Juin', 
+			'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+		months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
+			'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+		weekdays: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
+	}
+});
+    $('#container').highcharts({
+        chart: {
+            type: 'spline'
+        },
+        title: {
+            text: ''
+        },
+        subtitle: {
+            text: ''
+        },
+        legend: {
+            enabled: false
+        },
+        xAxis: {
+	    type: 'datetime',
+	    dateTimeLabelFormats: {
+                    month: '%b %e',
+                    year: '%b'
+                }
+        },
+        yAxis: {
+            title: {
+                text: 'Nombre de futs'
+            },
+            min: 0
+        },
+        series: [{
+            name: 'Volume consommé',
+            data: [<?php echo implode(',',$js_data); ?>]
+        }]
+    });
+</script>
 <?php
 include 'inclus/pied.html.php';

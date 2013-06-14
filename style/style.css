@@ -863,7 +863,7 @@ div.ajout-futs div.txt-fut{
     background-image: url(../images/fut-biere.png);
     background-repeat: no-repeat;
     background-position: 95% center;
-    padding-right: 100px;
+/*     padding-right: 100px; */
 }
 div.ajout-futs .moitie{
     display: inline-block;
