@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `bar` (
 
 INSERT INTO `bar` (`id`, `val`) VALUES
 ('caisse', '0.00'),
-('version', '0.3');
+('version', '0.4');
 
 -- --------------------------------------------------------
 
@@ -138,3 +138,19 @@ INSERT INTO `produits` (`id`, `nom`, `vol`, `prix`, `icone`, `qtt_reserve`, `qtt
 (40, 'Smirnoff Ice', '0.33', '1.50', 'smirnoff_ice', 80, 20, 0),
 (41, 'Smithwick&#039;s Irish Ale', '0.50', '2.00', 'smithwick', 80, 20, 0),
 (42, 'Westmalle Blonde', '0.33', '2.00', 'westmalle', 80, 20, 0);
+
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `futs`
+--
+
+CREATE TABLE IF NOT EXISTS `futs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `nb` int(11) NOT NULL DEFAULT '0',
+  `respo` varchar(200) NOT NULL DEFAULT 'Non défini...',
+  `type` varchar(200) NOT NULL DEFAULT 'Kro',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Historique des fûts sortis de la torche.';
