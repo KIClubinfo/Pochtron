@@ -68,11 +68,17 @@ while($a = $sql->fetch()){
   
   echo "<tr><td><time>$date</time></td><td>{$a['type']}</td><td>{$a['nb']}</td>$respo</tr>";
   
-  $t -= _NBH_SESSION * 3600; // Pour avoir un foyer sur un seul jour
-  $js_data[] = '[Date.UTC('.date('Y,m,d',$t).'),'.$a['nb'].']';
+//   $t -= _NBH_SESSION * 3600; // Pour avoir un foyer sur un seul jour
+//   $js_data[] = '[Date.UTC('.date('Y,m,d',$t).'),'.$a['nb'].']';
 }
-
 echo '</tbody></table>';
+
+// Remplissage du graphe (tous types confondus)
+$sql->rek( "SELECT min(date) as date, sum(nb) as nb FROM futs WHERE nb > 0$d_limit GROUP BY DATE(SUBTIME(date,'0 6:0:0'))" );
+while($a = $sql->fetch()){
+  $js_data[] = '[Date.UTC('.date('Y,m,d',strtotime($a['date'])).'),'.$a['nb'].']';
+//   echo "<br>Trouvé {$a['nb']} fûts pour le ".date('Y,m,d',strtotime($a['date']));
+}
 ?>
   </div>
     <script>
