@@ -9,7 +9,7 @@ include_once 'inclus/tete.html.php';
 	
 	<div id="prompt_box">
 		<div class="title">
-			Ajouter Cash
+			Ajouter Cash<span class="but_close">x</span>
 		</div>
 		<div class="content">
 			
@@ -17,7 +17,7 @@ include_once 'inclus/tete.html.php';
 	</div>
 	<div id="popup_historique">
 		<div class="title">
-			Historiques des commandes
+			Historiques des commandes<span class="but_close">x</span>
 		</div>
 		<div class="content">
 			<table class="lignes">
@@ -26,7 +26,7 @@ include_once 'inclus/tete.html.php';
 					$sql->rek( 'SELECT c.id, c.qtte_produit, c.id_produit, c.timestamp, e.prenom, e.nom, p.nom AS produit, p.icone FROM commandes c, clients e, produits p WHERE c.id_user = e.id AND c.id_produit=p.id ORDER BY c.id DESC LIMIT 10' );
 					while($command = $sql->fetch())
 					{
-						echo '<tr><td>'.$command['timestamp'].'</td><td>'.$command['prenom'].' '.$command['nom'].'</td><td>'.$command['qtte_produit'].'x <img src="images/produits/'.$command['icone'].'.png" alt="'.$command['produit'].'" /></td><td>Ann.</td></tr>';
+						echo '<tr><td>'.$command['timestamp'].'</td><td>'.$command['prenom'].' '.$command['nom'].'</td><td>'.$command['qtte_produit'].'x <span class="miniature"><img src="images/produits/'.$command['icone'].'.png" alt="'.$command['produit'].'" /></span></td><td><img title="Annuler" class="cancel_command" src="images/icones/icons/cancel.png" alt="Annuler" /></td></tr>';
 					}
 				?>
 				</tbody>

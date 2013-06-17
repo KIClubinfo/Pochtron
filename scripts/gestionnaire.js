@@ -381,6 +381,12 @@ $(document).on('click',"#selected_eleves_table .table_row",function()
 		$(this).css("border-left","3px solid #12A332");
 });
 
+//Fermer boite de dialongue
+$(document).on('click',".but_close",function()
+{
+	$(this).parent().parent().css("display","none");
+});
+
 //Popup de détail de la commande
 $(document).on('mouseenter',".command_pop",function(){
 	$("#popup_commande .popup_content").html($(this).siblings(".command_details").html());

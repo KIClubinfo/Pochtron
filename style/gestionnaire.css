@@ -596,3 +596,42 @@ body > div > .content table
 {
 	margin:0;
 }
+
+.miniature
+{
+	display:inline-block;
+	height:25px;
+	line-height:20px;
+	width:25px;
+	background-color:white;
+	border:1px solid #555;
+	border-radius:2px;
+	vertical-align:middle;
+}
+
+.miniature img
+{
+	vertical-align:middle;
+	width:100%;
+}
+
+
+.cancel_command
+{
+	vertical-align:middle;
+	cursor:pointer;
+}
+
+.but_close
+{
+	position:absolute;
+	cursor:pointer;
+	right:15px;
+	font-weight:bold;
+	color:#BBB;
+}
+
+.but_close:hover
+{
+	color:white;
+}
