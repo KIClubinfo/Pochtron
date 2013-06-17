@@ -897,3 +897,32 @@ td.grise{
     color: rgba(255,255,255,0.2);
     font-style: italic;
 }
+
+
+.moitie{
+    display: inline-block;
+    width: 49%;
+    margin: 10px 0%;
+    vertical-align: top;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.moitie + .moitie{
+    margin-left: 1%;
+}
+
+#bestdrunks{
+    width: 48%;
+    margin-right: 1%;
+    float: left;
+    margin-bottom: 15px;
+}
+#bestproducts{
+    width: 48%;
+    float: left;
+    margin-bottom: 15px;
+}
+#consos2{
+    clear: both;
+    margin-top: 1%;
+}
