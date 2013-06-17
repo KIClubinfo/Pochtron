@@ -551,6 +551,7 @@ img#pict_viewer{
 
 #prompt_box
 {
+	display:none;
 	position:absolute;
 	overflow:hidden;
 	
@@ -571,18 +572,17 @@ img#pict_viewer{
 
 #popup_historique
 {
-	position:absolute;
+	position:fixed;
 	overflow:hidden;
 	
-	bottom:0;
-	right:20%;
+	bottom:30px;
+	right:-500px;
 	
 	background-color:#111;
 	margin:1px solid #666;
 	border-radius:5px;
 	
-	z-index:800;
-	
+	z-index:800;	
 }
 
 body > div > .title

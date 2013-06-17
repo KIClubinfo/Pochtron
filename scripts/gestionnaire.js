@@ -384,7 +384,15 @@ $(document).on('click',"#selected_eleves_table .table_row",function()
 //Fermer boite de dialongue
 $(document).on('click',".but_close",function()
 {
-	$(this).parent().parent().css("display","none");
+	$(this).parent().parent().css("right","-500px");
+});
+
+//Annuler ancienne commande
+$(document).on('click',".cancel_command",function()
+{
+	var id=$(this).parent().siblings('.id_command').text();
+	cancel_old_order(id);
+	$('#popup_historique').css("right","-500px");
 });
 
 //Popup de détail de la commande
@@ -478,7 +486,32 @@ function add_extern_user()
 
 function show_stats()
 {
-	alert('Non encore disponible');
+	$('#popup_historique').animate({"right":"10px"});
 }
+
+function cancel_old_order(id_order)
+{
+	var GET_args =  {'action':'cancel', 'id' : id_order};//Arguments de la requète GET
+	ajax_url("traitement.php", GET_args, histo_callback, histo_error);//Appel AJAX
+}
+
+//Fonction de callback après annulation ancienne commande
+function histo_callback(code_erreur, reponse, GET_args)
+{
+	if(code_erreur==AJAX_OK)
+			$.jGrowl(reponse, { group:'green_popup', life: 10000 });
+                    else
+			$.jGrowl(reponse, { group:'red_popup', life: 10000 });         
+}
+
+//Fonction de traitement d'erreur après upload (après réponse d'image_upload.php)
+function histo_error(code_erreur, reponse, GET_args)
+{
+	if(code_erreur==AJAX_OK)
+			$.jGrowl(reponse, { group:'green_popup', life: 10000 });
+                    else
+			$.jGrowl(reponse, { group:'red_popup', life: 10000 });    
+}
+
 
 /*------------------------------------------FIN #10----------------------------------------*/

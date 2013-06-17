@@ -26,7 +26,7 @@ include_once 'inclus/tete.html.php';
 					$sql->rek( 'SELECT c.id, c.qtte_produit, c.id_produit, c.timestamp, e.prenom, e.nom, p.nom AS produit, p.icone FROM commandes c, clients e, produits p WHERE c.id_user = e.id AND c.id_produit=p.id ORDER BY c.id DESC LIMIT 10' );
 					while($command = $sql->fetch())
 					{
-						echo '<tr><td>'.$command['timestamp'].'</td><td>'.$command['prenom'].' '.$command['nom'].'</td><td>'.$command['qtte_produit'].'x <span class="miniature"><img src="images/produits/'.$command['icone'].'.png" alt="'.$command['produit'].'" /></span></td><td><img title="Annuler" class="cancel_command" src="images/icones/icons/cancel.png" alt="Annuler" /></td></tr>';
+						echo '<tr><td class="id_command">'.$command['id'].'</td><td>'.$command['timestamp'].'</td><td>'.$command['prenom'].' '.$command['nom'].'</td><td>'.$command['qtte_produit'].'x <span class="miniature"><img src="images/produits/'.$command['icone'].'.png" alt="'.$command['produit'].'" /></span></td><td><img title="Annuler" class="cancel_command" src="images/icones/icons/cancel.png" alt="Annuler" /></td></tr>';
 					}
 				?>
 				</tbody>
@@ -201,6 +201,7 @@ include_once 'inclus/tete.html.php';
 <script type="text/javascript" src="scripts/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="scripts/jquery.jgrowl.js"></script>
 <script type="text/javascript" src="scripts/scroll.js"></script>
+<script type="text/javascript" src="scripts/ajax.js"></script>
 <script type="text/javascript" src="scripts/gestionnaire.js"></script>
  
 <?php
