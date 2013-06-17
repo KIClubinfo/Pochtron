@@ -83,7 +83,10 @@ while($a = $sql->fetch()){
             text: 'Consommation par produits'
         },
         subtitle: {
-            text: 'Ils pourraient pas tous boire de la kro, comme tout le monde ?'
+            text: 'Ils pourraient pas tous boire de la kro, comme tout le monde ?',
+            align: 'right',
+            verticalAlign: 'top',
+            y: 5
         },
         legend: {
 //             enabled: false
@@ -128,10 +131,14 @@ while($a = $sql->fetch()){
             type: 'spline'
         },
         title: {
-            text: 'Nombre de litres de boisson ingérés'
+            text: 'Nombre de litres de boisson ingérés',
+            align: 'left'
         },
         subtitle: {
-            text: ''
+            text: 'La bière ça fait pisser',
+            align: 'right',
+            verticalAlign: 'top',
+            y: 0
         },
         legend: {
             enabled: false
