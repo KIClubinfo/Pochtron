@@ -548,3 +548,51 @@ img#pict_viewer{
     z-index: 105;
     box-shadow: 0 0 3px #1E1E1E;
 }
+
+#prompt_box
+{
+	position:absolute;
+	overflow:hidden;
+	
+	width:500px;
+	height:200px;
+	
+	top:-100px;
+	left:-250px;
+	margin-left:50%;
+	margin-top:25%;
+	
+	background-color:#111;
+	margin:1px solid #666;
+	border-radius:5px;
+	
+	z-index:1000;
+}
+
+#popup_historique
+{
+	position:absolute;
+	overflow:hidden;
+	
+	bottom:0;
+	right:20%;
+	
+	background-color:#111;
+	margin:1px solid #666;
+	border-radius:5px;
+	
+	z-index:800;
+	
+}
+
+body > div > .title
+{
+	background-color:#050505;
+	padding:10px;
+	font-weight:bold;
+}
+
+body > div > .content table
+{
+	margin:0;
+}
