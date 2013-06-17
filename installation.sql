@@ -21,7 +21,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `bar` (
-  `id` enum('caisse','version') NOT NULL,
+  `id` enum('caisse','version','PIN1','PIN2') NOT NULL,
   `val` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -32,7 +32,9 @@ CREATE TABLE IF NOT EXISTS `bar` (
 
 INSERT INTO `bar` (`id`, `val`) VALUES
 ('caisse', '0.00'),
-('version', '0.4');
+('version', '0.4'),
+('PIN1', '120393'),
+('PIN2', '011091');
 
 -- --------------------------------------------------------
 
