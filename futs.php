@@ -118,7 +118,7 @@ while($a = $sql->fetch()){
             min: 0
         },
         series: [{
-            name: 'Volume consommé',
+            name: 'Fûts consommés',
             data: [<?php echo implode(',',$js_data); ?>]
         }]
     });

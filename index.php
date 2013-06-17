@@ -18,10 +18,11 @@ include_once 'inclus/tete.html.php';
       <li><a href="administration.php">Administration</a></li>
      </ul>
     <ul class="horizontal">
-      <li><a href="exportation.php">Exporter les données</a></li>
       <li><a href="futs.php">Gestion des fûts</a></li>
+      <li><a href="exportation.php">Exporter les données</a></li>
      </ul>
     <ul class="horizontal">
+      <li><a href="stats.php">Statistiques</a></li>
       <li><a href="apropos.php">À Propos...</a></li>
      </ul>
   </div>
