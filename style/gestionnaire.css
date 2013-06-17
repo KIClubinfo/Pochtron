@@ -548,3 +548,90 @@ img#pict_viewer{
     z-index: 105;
     box-shadow: 0 0 3px #1E1E1E;
 }
+
+#prompt_box
+{
+	display:none;
+	position:absolute;
+	overflow:hidden;
+	
+	width:500px;
+	height:200px;
+	
+	top:-100px;
+	left:-250px;
+	margin-left:50%;
+	margin-top:25%;
+	
+	background-color:#111;
+	margin:1px solid #666;
+	border-radius:5px;
+	
+	z-index:1000;
+}
+
+#popup_historique
+{
+	position:fixed;
+	overflow:hidden;
+	
+	bottom:30px;
+	right:-500px;
+	
+	background-color:#111;
+	margin:1px solid #666;
+	border-radius:5px;
+	
+	z-index:800;	
+}
+
+body > div > .title
+{
+	background-color:#050505;
+	padding:10px;
+	font-weight:bold;
+}
+
+body > div > .content table
+{
+	margin:0;
+}
+
+.miniature
+{
+	display:inline-block;
+	height:25px;
+	line-height:20px;
+	width:25px;
+	background-color:white;
+	border:1px solid #555;
+	border-radius:2px;
+	vertical-align:middle;
+}
+
+.miniature img
+{
+	vertical-align:middle;
+	width:100%;
+}
+
+
+.cancel_command
+{
+	vertical-align:middle;
+	cursor:pointer;
+}
+
+.but_close
+{
+	position:absolute;
+	cursor:pointer;
+	right:15px;
+	font-weight:bold;
+	color:#BBB;
+}
+
+.but_close:hover
+{
+	color:white;
+}

@@ -123,11 +123,28 @@ function add_cash()
 //Annuler une commande
 function cancel()
 {
+	$_GET['id'] = intval($_GET['id']);
 	global $erreur;
 	global $reponse;
+	global $sql;
+	
+	$sql->rek( 'SELECT c.id_user, c.id_produit, c.qtte_produit, p.prix, p.vol FROM commandes c, produits p WHERE c.id=\''.$_GET['id'].'\' AND p.id=c.id_produit');//Requète
+	
+	if ($sql->nbrlignes() != 1)
+	{
+		$erreur=INVALID_ID;
+		$reponse="Id invalide";
+	}
+	else
+	{
+		$commande = $sql->fetch();
+		$sql->rek('DELETE FROM commandes WHERE id=\''.$_GET['id'].'\'');
+		//$sql->rek('UPDATE  FROM commandes WHERE id=\''.$commande['user_id'].'\'');
+		
+	}
 	
 	$erreur = AJAX_NOT_IMPLEMENTED;
-	$reponse = "Commande annulée avec succès";
+	$reponse = "Fonction non encore implémentée";
 }
 
 /*/////////////////////////////CORPS/////////////////////////////*/
