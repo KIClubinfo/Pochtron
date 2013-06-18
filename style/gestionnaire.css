@@ -215,7 +215,7 @@
 }
  
  
-.table_content .not_shown, .table_content .selected, .table_content .id, .table_content .stars, .table_content .active, .table_content .distinctions, .table_content .active, .table_content .url_photo
+.table_content .not_shown, .table_content .selected, .table_content .id, .table_content .litres_bus, .table_content .active, .table_content .distinctions, .table_content .active, .table_content .url_photo
 {
 	display:none;
 }

@@ -188,7 +188,6 @@ function add_selected_eleve(eleve)
 	var id = $(eleve).attr("data-id");
 	var not_shown = $(eleve).children(".not_shown").text();
 	var selected = $(eleve).children(".selected").text();
-	var stars = $(eleve).children(".stars").html();
 	var distinctions = $(eleve).children(".distinctions").html();
 	var comment = $(eleve).children(".comment").html();
 	var active = $(eleve).children(".active").text();
@@ -203,7 +202,7 @@ function add_selected_eleve(eleve)
 	{
 		//Sélection de l'élève à proprement parlé
 		$(eleve).children(".selected").html(1); //Changement de l'état de l'élève afin de ne plus l'afficher dans la liste des élèves
-		$("#selected_eleves .table_content").append("<li data-id=\""+id+"\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/"+url_photo+".jpg\"></span><span class=\"full_name\">"+firstname+" "+surname+"<br />"+stars+"<br />Distinctions : "+distinctions+"</span><span class=\"order\"><span class=\"old_solde\">Ancien solde : "+solde+" €</span><br /><span class=\"command\">Commande : </span><br /><div class=\"command_pop\">Détails</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div><span class=\"new_solde\">Nouveau solde :  "+solde+" €</span></span><span class=\"actions\"><a href=\"javascript:return false;\" onClick=\"valid_user(this)\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a onClick=\"cancel_user(this)\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a><a onClick=\"add_cash(this)\" href=\"javascript:return false;\"><img alt=\"Ajout liquide\"  src=\"images/add.png\" /></a></span></li>");
+		$("#selected_eleves .table_content").append("<li data-id=\""+id+"\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/"+url_photo+".jpg\"></span><span class=\"full_name\">"+firstname+" "+surname+"<br /><span class=\"stars\">"+calcul_star(eleve)+"</span><br />Distinctions : "+distinctions+"</span><span class=\"order\"><span class=\"old_solde\">Ancien solde : "+solde+" €</span><br /><span class=\"command\">Commande : </span><br /><div class=\"command_pop\">Détails</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div><span class=\"new_solde\">Nouveau solde :  "+solde+" €</span></span><span class=\"actions\"><a href=\"javascript:return false;\" onClick=\"valid_user(this)\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a onClick=\"cancel_user(this)\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a><a onClick=\"add_cash(this)\" href=\"javascript:return false;\"><img alt=\"Ajout liquide\"  src=\"images/add.png\" /></a></span></li>");
 		$("#selected_eleves li").last().css("border-left","3px solid #12A332");
 		$(".cell_photo img").mouseover(function() {
 			$("#pict_viewer").attr("src",$(this).attr("src"));
@@ -429,23 +428,13 @@ function valid_user(elem)
 	var conso = $(elem).parent().parent().children(".order").children(".command_script").text();
 	var my_id = $(elem).parent().parent().attr("data-id");
 	
-	$.ajax({
-          url: "traitement.php",
-        data   : {action:"order",id:my_id,consom:conso},
-          cache: false,
-          dataType: "json",
-        error : function(request, error) {          
-                 $.jGrowl("Erreur : " + error, { group:'red_popup', life: 10000 });
-                },
-          success: function(data) {   
-		    if(data.code_erreur==AJAX_OK)
-			$.jGrowl(data.reponse, { group:'green_popup', life: 10000 });
-                    else
-			$.jGrowl(data.reponse, { group:'red_popup', life: 10000 });         
-                  }
-      });
-	  
-	  cancel_user(elem);
+	var this_eleve = $("#list_eleves .table_row[data-id=\""+my_id+"\"] .solde").text('Rafraichissement en cours');
+
+		
+	var GET_args =  {'action':'order', 'id' : my_id, 'consom':conso};//Arguments de la requète GET
+	ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
+		  
+	cancel_user(elem);
 }
 
 /*------------------------------------------FIN #8----------------------------------------*/
@@ -479,6 +468,17 @@ function add_cash(elem)
 	alert('Non encore disponible');
 }
 
+function calcul_star(elem)
+{
+	var litres_bus = parseFloat($('.litres_bus', elem).text());
+	var string_stars = '';
+	
+	for(var i=0;i<=litres_bus/10;i++) 
+		string_stars += '<img src="images/icones/icons/star.png" title="'+litres_bus+' litre(s) bu(s)"/>';
+
+	return string_stars;
+}
+
 function add_extern_user()
 {
 	alert('Non encore disponible');
@@ -499,21 +499,29 @@ function cancel_old_order(id_order)
 function ajax_callback(data, GET_args)
 {
 	$.jGrowl(data.reponse, { group:'green_popup', life: 10000 });
-	var this_eleve = $("#list_eleves .table_row[data-id=\""+data.id+"\"]");
-	$('.solde', this_eleve).text(data.solde);
 	
-	if ($('.selected', this_eleve).text() == '1')
+	var this_eleve = $("#list_eleves .table_row[data-id=\""+data.id+"\"]");
+	$('.solde', this_eleve).text(parseFloat(data.solde).toFixed(2));
+	$('.litres_bus', this_eleve).text(parseFloat(data.litres_bus).toFixed(2));
+	
+	if (GET_args['action']=='cancel')
 	{
-		var this_selected_eleve = $("#selected_eleves .table_row[data-id=\""+data.id+"\"]");
-		var old_solde = parseFloat($(".order .old_solde",this_selected_eleve).text().substring(14));
-		var new_solde = parseFloat($(".order .new_solde",this_selected_eleve).text().substring(15));
-		var diff_solde = new_solde - old_solde;
+		if ($('.selected', this_eleve).text() == '1')
+		{
+			var this_selected_eleve = $("#selected_eleves .table_row[data-id=\""+data.id+"\"]");
+			var old_old_solde = parseFloat($(".order .old_solde",this_selected_eleve).text().substring(14));
+			var old_new_solde = parseFloat($(".order .new_solde",this_selected_eleve).text().substring(15));
+			var diff_solde = old_new_solde - old_old_solde;
+			
+			var new_new_solde = parseFloat(data.solde)+parseFloat(diff_solde);
+			
+			$(".order .old_solde",this_selected_eleve).text('Ancien solde : '+parseFloat(data.solde).toFixed(2)+' €')
+			$(".order .new_solde",this_selected_eleve).text('Nouveau solde : '+new_new_solde.toFixed(2)+' €')
+			$(".full_name .stars", this_selected_eleve).html(calcul_star(this_eleve));
+		}
 		
-		var real_new_solde = parseFloat(data.solde)+parseFloat(diff_solde);
-		
-		$(".order .old_solde",this_selected_eleve).text('Ancien solde : '+data.solde+' €')
-		$(".order .new_solde",this_selected_eleve).text('Nouveau solde : '+real_new_solde+' €')
-		
+		$("#popup_historique tr[command-id=\""+GET_args['id']+"\"]").remove();
+		alert(GET_args['id']);
 	}
 }
 

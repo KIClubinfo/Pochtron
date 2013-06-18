@@ -26,7 +26,7 @@ include_once 'inclus/tete.html.php';
 					$sql->rek( 'SELECT c.id, c.qtte_produit, c.id_produit, c.timestamp, e.prenom, e.nom, p.nom AS produit, p.icone FROM commandes c, clients e, produits p WHERE c.id_user = e.id AND c.id_produit=p.id ORDER BY c.id DESC LIMIT 10' );
 					while($command = $sql->fetch())
 					{
-						echo '<tr><td class="id_command">'.$command['id'].'</td><td>'.$command['timestamp'].'</td><td>'.$command['prenom'].' '.$command['nom'].'</td><td>'.$command['qtte_produit'].'x <span class="miniature"><img src="images/produits/'.$command['icone'].'.png" alt="'.$command['produit'].'" /></span></td><td><img title="Annuler" class="cancel_command" src="images/icones/icons/cancel.png" alt="Annuler" /></td></tr>';
+						echo '<tr command-id="'.$command['id'].'"><td class="id_command">'.$command['id'].'</td><td>'.$command['timestamp'].'</td><td>'.$command['prenom'].' '.$command['nom'].'</td><td>'.$command['qtte_produit'].'x <span class="miniature"><img src="images/produits/'.$command['icone'].'.png" alt="'.$command['produit'].'" /></span></td><td><img title="Annuler" class="cancel_command" src="images/icones/icons/cancel.png" alt="Annuler" /></td></tr>';
 					}
 				?>
 				</tbody>
@@ -84,7 +84,7 @@ include_once 'inclus/tete.html.php';
 											<span class="solde"><?php echo $a['solde'];?></span>
 											<span class="not_shown"><?php echo $a['prenom'];?> <?php echo $a['nom'];?> <?php echo $a['prenom'];?> <?php echo substr($a['prenom'],0,1).substr($a['nom'],0,1);?></span>
 											<span class="selected">0</span>
-											<span class="stars"><?php for($i=0;$i<=$a['litres_bus']/10;$i++) echo '<img src="images/icones/icons/star.png" title="'.$a['litres_bus'].' litre(s) bu(s)"/>'; ?></span>
+											<span class="litres_bus"><?php echo $a['litres_bus']; ?></span>
 											<span class="distinctions"><img src="images/icones/icons/medal_gold_1.png" /><img src="images/icones/icons/medal_gold_2.png" /><img src="images/icones/icons/medal_gold_3.png" /></span>
 											<span class="comment"></span>
 											<span class="active"><?php echo $a['active'];?></span>
