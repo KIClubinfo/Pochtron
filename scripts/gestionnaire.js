@@ -521,7 +521,6 @@ function ajax_callback(data, GET_args)
 		}
 		
 		$("#popup_historique tr[command-id=\""+GET_args['id']+"\"]").remove();
-		alert(GET_args['id']);
 	}
 }
 
