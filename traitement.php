@@ -17,6 +17,7 @@ define('INVALID_ORDER',301);
 $erreur=-1;
 $reponse='';
 date_default_timezone_set('Europe/Paris');
+$return_array=array();
 
 //Include pour l'objet $bdd notamment
 include_once 'inclus/tete.inc.php';
@@ -39,6 +40,7 @@ function parse_order($string_order)
 //Prendre une nouvelle commande
 function new_order()
 {
+	global $return_array;
 	global $erreur;
 	global $reponse;
 	global $sql;
@@ -97,6 +99,12 @@ function new_order()
 				$new_solde -= $products['prix']*$order[$i][1];
 				$new_nb_consos += $order[$i][1];
 				$new_litres_bus += $products['vol']*$order[$i][1];
+				
+				$return_array['id']=$eleve['id'];
+				$return_array['solde']=$new_solde;
+				$return_array['nb_consos']=$new_nb_consos;
+				$return_array['litres_bus']=$new_litres_bus;
+				
 				$sql->rek('UPDATE produits SET qtt_reserve=\''.($products['qtt_reserve']-$order[$i][1]).'\', ventes=\''.($products['ventes']+$order[$i][1]).'\' WHERE id=\''.$products['id'].'\'', false);
 				$sql->rek('INSERT INTO commandes (id_user, timestamp, id_produit, qtte_produit) VALUES (\''.$_GET['id'].'\',\''.date("Y-m-d H:i:s").'\',\''.$products['id'].'\',\''.$order[$i][1].'\')', false);
 			}
@@ -105,8 +113,11 @@ function new_order()
 
 		$sql->rek( 'UPDATE clients SET solde=\''.($new_solde).'\', litres_bus=\''.($new_litres_bus).'\', nb_consos=\''.($new_nb_consos).'\' WHERE id=\''.$_GET['id'].'\'');
 		
+		
 		$erreur = AJAX_OK;
 		$reponse = "Commande de ".$eleve['prenom']." ".$eleve['nom']." passée avec succès. Nouveau solde : ".($new_solde);
+		
+		return $return_array;
 	}
 }
 
@@ -120,16 +131,38 @@ function add_cash()
 	$reponse = "Le solde de l'élève a bien été augmenté";
 }
 
+//Ajouter du liquide à un élève
+function extern_order()
+{
+	global $erreur;
+	global $reponse;
+	static $return_array;
+	
+	$erreur = AJAX_NOT_IMPLEMENTED;
+	$reponse = "Non implémenté";
+}
+
 //Annuler une commande
 function cancel()
 {
-	$_GET['id'] = intval($_GET['id']);
+	global $return_array;
 	global $erreur;
 	global $reponse;
 	global $sql;
 	
-	$sql->rek( 'SELECT c.id_user, c.id_produit, c.qtte_produit, p.prix, p.vol FROM commandes c, produits p WHERE c.id=\''.$_GET['id'].'\' AND p.id=c.id_produit');//Requète
+	if (!isset($_GET['id']))
+	{
+		$erreur=UNDEFINED_ID;
+		$reponse="Id indéfini";
+		return;
+	}
+	else
+		$_GET['id'] = intval($_GET['id']);
 	
+	
+	
+	$sql->rek( 'SELECT c.id_user AS client_id, c.id_produit AS produit_id, c.qtte_produit, p.qtt_reserve AS produit_qtte_reserve, p.ventes AS produit_ventes, p.prix AS produit_prix, p.vol AS produit_vol, e.solde AS client_solde, e.litres_bus AS client_litres_bus, e.nb_consos AS client_nb_consos, e.prenom AS client_prenom, e.nom AS client_nom FROM commandes c, produits p, clients e WHERE c.id=\''.$_GET['id'].'\' AND p.id=c.id_produit AND e.id=c.id_user');//Requète
+
 	if ($sql->nbrlignes() != 1)
 	{
 		$erreur=INVALID_ID;
@@ -138,15 +171,29 @@ function cancel()
 	else
 	{
 		$commande = $sql->fetch();
-		$sql->rek('DELETE FROM commandes WHERE id=\''.$_GET['id'].'\'');
-		//$sql->rek('UPDATE  FROM commandes WHERE id=\''.$commande['user_id'].'\'');
+				
+		$new_solde=$commande['client_solde'] + $commande['qtte_produit']*$commande['produit_prix'];
+		$new_nb_consos = $commande['client_nb_consos'] - $commande['qtte_produit'];
+		$new_litres_bus = $commande['client_litres_bus'] - $commande['qtte_produit']*$commande['produit_vol'];
+		$sql->rek( 'UPDATE clients SET solde=\''.($new_solde).'\', litres_bus=\''.($new_litres_bus).'\', nb_consos=\''.($new_nb_consos).'\' WHERE id=\''.$commande['client_id'].'\'');
 		
-	}
-	
-	$erreur = AJAX_NOT_IMPLEMENTED;
-	$reponse = "Fonction non encore implémentée";
+		$new_ventes=$commande['produit_ventes'] - $commande['qtte_produit'];
+		$new_qtte_reserve = $commande['produit_qtte_reserve'] + $commande['qtte_produit'];
+		$sql->rek('UPDATE produits SET qtt_reserve=\''.$new_qtte_reserve.'\', ventes=\''.$new_ventes.'\' WHERE id=\''.$commande['produit_id'].'\'', false);
+		
+		$sql->rek('DELETE FROM commandes WHERE id=\''.$_GET['id'].'\'');
+		
+		$return_array['id']=$commande['client_id'];
+		$return_array['solde']=$new_solde;
+		$return_array['nb_consos']=$new_nb_consos;
+		$return_array['litres_bus']=$new_litres_bus;
+		
+		$erreur = AJAX_OK;
+		$reponse = 'La commande de '.$commande['client_prenom'].' '.$commande['client_nom'].' a été annulée avec succès';
+	}	
 }
 
+$alias = array();
 /*/////////////////////////////CORPS/////////////////////////////*/
 if (isset($_GET['action']))
 {
@@ -161,6 +208,9 @@ if (isset($_GET['action']))
 		case "cancel":
 			cancel();
 			break;
+		case "extern":
+			extern_order();
+			break;
 		default:
 		   $erreur = INVALID_ACTION;
 		   $reponse = "Action incorrecte";
@@ -174,8 +224,13 @@ else
 
 ?>
 {
-	"code_erreur": "<?php echo $erreur; ?>",
+	<?php if (isset($return_array['id'])) 
+	{
+		foreach($return_array as $key => $value)
+		{ ?>"<?php echo $key; ?>":"<?php echo $value; ?>", 
+	<?php
+		}
+	}
+	?>"code_erreur": "<?php echo $erreur; ?>",
 	"reponse": "<?php echo $reponse;?>"
 }                                                         
-
-

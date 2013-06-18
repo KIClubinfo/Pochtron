@@ -9,11 +9,9 @@ function ajax_url(my_url, GET_args, callback_function, error_function)
 			success: function(data)
 			{ 
 				if (data.code_erreur=="0")
-					callback_function(data.code_erreur, data.reponse, GET_args);
+					callback_function(data, GET_args);
 				else
-				{
-					error_function(data.code_erreur, data.reponse, GET_args); 
-				}
+					error_function(data, GET_args); 
 			}
 		  });
 }

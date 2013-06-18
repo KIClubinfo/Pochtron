@@ -492,25 +492,35 @@ function show_stats()
 function cancel_old_order(id_order)
 {
 	var GET_args =  {'action':'cancel', 'id' : id_order};//Arguments de la requète GET
-	ajax_url("traitement.php", GET_args, histo_callback, histo_error);//Appel AJAX
+	ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
 }
 
-//Fonction de callback après annulation ancienne commande
-function histo_callback(code_erreur, reponse, GET_args)
+//Fonction de callback ajax
+function ajax_callback(data, GET_args)
 {
-	if(code_erreur==AJAX_OK)
-			$.jGrowl(reponse, { group:'green_popup', life: 10000 });
-                    else
-			$.jGrowl(reponse, { group:'red_popup', life: 10000 });         
+	$.jGrowl(data.reponse, { group:'green_popup', life: 10000 });
+	var this_eleve = $("#list_eleves .table_row[data-id=\""+data.id+"\"]");
+	$('.solde', this_eleve).text(data.solde);
+	
+	if ($('.selected', this_eleve).text() == '1')
+	{
+		var this_selected_eleve = $("#selected_eleves .table_row[data-id=\""+data.id+"\"]");
+		var old_solde = parseFloat($(".order .old_solde",this_selected_eleve).text().substring(14));
+		var new_solde = parseFloat($(".order .new_solde",this_selected_eleve).text().substring(15));
+		var diff_solde = new_solde - old_solde;
+		
+		var real_new_solde = parseFloat(data.solde)+parseFloat(diff_solde);
+		
+		$(".order .old_solde",this_selected_eleve).text('Ancien solde : '+data.solde+' €')
+		$(".order .new_solde",this_selected_eleve).text('Nouveau solde : '+real_new_solde+' €')
+		
+	}
 }
 
-//Fonction de traitement d'erreur après upload (après réponse d'image_upload.php)
-function histo_error(code_erreur, reponse, GET_args)
+//Fonction de traitement d'erreur ajax
+function ajax_error(data, GET_args)
 {
-	if(code_erreur==AJAX_OK)
-			$.jGrowl(reponse, { group:'green_popup', life: 10000 });
-                    else
-			$.jGrowl(reponse, { group:'red_popup', life: 10000 });    
+	$.jGrowl(data.reponse, { group:'red_popup', life: 10000 });
 }
 
 

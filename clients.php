@@ -219,20 +219,20 @@ $("table#clients input[type='image']").click(function(){
 
 
 
-function dlFBimg_post_Callback(erreur_id, reponse, old_GET_args)
+function dlFBimg_post_Callback(data, old_GET_args)
 {
-    var GET_args =  {'id' : old_GET_args.id, 'fb_id':reponse}; //Arguments de la requète GET
+    var GET_args =  {'id' : old_GET_args.id, 'fb_id':data.reponse}; //Arguments de la requète GET
     ajax_url("image_upload.php", GET_args, fonction_callback_upload, dlFBimg_err_Callback);//Appel AJAX
 
 }
 
-function dlFBimg_err_Callback(erreur_id, reponse, old_GET_args)
+function dlFBimg_err_Callback(data, old_GET_args)
 {
 //     alert("Erreur "+erreur_id+" : "+reponse);
-    $("#notifs").prepend('<div class="notif argh"><strong>Erreur ' + erreur_id + '</strong>Une erreur s\'est produite : <em>' + reponse + '</em></div>');
+    $("#notifs").prepend('<div class="notif argh"><strong>Erreur ' + data.code_erreur + '</strong>Une erreur s\'est produite : <em>' + data.reponse + '</em></div>');
 }
 
-function fonction_callback_upload(erreur_id, reponse, old_GET_args)
+function fonction_callback_upload(data, old_GET_args)
 {
     $("tr#c"+old_GET_args.id).find("img[class='ico-client']").attr("src","images/photos/"+old_GET_args.id+".jpg");
     $("#notifs").prepend('<div class="notif yeah estompe"><strong>Téléchargement réussi</strong>La photo de profil a bien été mise à jour pour cet invidu.</div>');

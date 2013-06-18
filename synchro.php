@@ -83,11 +83,11 @@ function refresh_prog_bar()
 }
 
 //Fonction de callback après recherche (après réponse d'image_search.php)
-function search_callback(code_erreur, reponse, GET_args)
+function search_callback(data, GET_args)
 {
-	if (code_erreur == "0")
+	if (data.code_erreur == "0")
 	{
-		 $("#clients tr .new_tof[data-id=\""+GET_args['id']+"\"]").html('<img src="https://graph.facebook.com/'+reponse+'/picture" title="Nouvelle photo" />').siblings(".checkbox").html('<input type="checkbox" checked="checked" />');     
+		 $("#clients tr .new_tof[data-id=\""+GET_args['id']+"\"]").html('<img src="https://graph.facebook.com/'+data.reponse+'/picture" title="Nouvelle photo" />').siblings(".checkbox").html('<input type="checkbox" checked="checked" />');     
 		 
 		 nb_done++;
 	}	 
@@ -107,16 +107,16 @@ function search_callback(code_erreur, reponse, GET_args)
 }
 
 //Fonction de traitement d'erreur après recherche (après réponse d'image_search.php)
-function search_error(code_erreur, reponse, GET_args)
+function search_error(data, GET_args)
 {
-	$("#clients tr .new_tof[data-id=\""+GET_args['id']+"\"]").html(reponse);
+	$("#clients tr .new_tof[data-id=\""+GET_args['id']+"\"]").html(data.reponse);
 	refresh_prog_bar();
 }
 
 //Fonction de callback après upload (après réponse d'image_upload.php)
-function upload_callback(code_erreur, reponse, GET_args)
+function upload_callback(data, GET_args)
 {
-	if (code_erreur == "0")
+	if (data.code_erreur == "0")
 	{
 		$("#clients tr .new_tof[data-id=\""+GET_args['id']+"\"]").siblings(".checkbox").html('<img src="images/icones/icons/accept.png" />');
 		$("#clients tr .new_tof[data-id=\""+GET_args['id']+"\"]").siblings(".prec_tof").html('<img class="ico-client" src="images/photos/'+GET_args['id']+'.jpg" />');
@@ -131,9 +131,9 @@ function upload_callback(code_erreur, reponse, GET_args)
 }
 
 //Fonction de traitement d'erreur après upload (après réponse d'image_upload.php)
-function upload_error(code_erreur, reponse, GET_args)
+function upload_error(data, GET_args)
 {
-	search_error(code_erreur, reponse, GET_args);
+	search_error(data, GET_args);
 }
 
 //Fonction de recherche d'image
