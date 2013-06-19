@@ -310,6 +310,8 @@ $(document).on('click',".product_item .product_button input",function()
 			{
 				//Récupération des données relatives à l'élève avant l'ajout du produit
 				var com_script = $(".order .command_script",this).text();//com_script contient alors la chaine parsée et représentative de la commande, envoyée au serveur lors de la validation
+				var temp_array = com_script.split(',');
+				var com_length = temp_array.length;
 				var old_solde = parseFloat($(".order .new_solde",this).text().substring(15));
 				var old_tot = parseFloat($(".order .details_tot",this).text().substring(8));
 				
@@ -332,7 +334,7 @@ $(document).on('click',".product_item .product_button input",function()
 					com_script = com_script.replace(regex_script, ","+id+":"+nb+",");
 					$(".order .command_script",this).html(com_script);//On remplace par la nouvelle quantité dans la chaine de commande parsée
 					
-					$(".order .command span[data-id=\""+id+"\"] span").text(nb);//Modification des quantités dans le détail de la commande
+					$(".order .command span[data-id=\""+id+"\"] span:nth-child(1)").text(nb);//Modification des quantités dans le détail de la commande
 					$(".order .details_item[data-id=\""+id+"\"] .left span").text(nb);//Ici aussi
 					
 					var new_prix = parseFloat($(".order .details_item[data-id=\""+id+"\"] .right").text());
@@ -342,12 +344,19 @@ $(document).on('click',".product_item .product_button input",function()
 				}
 				else //Sinon c'est pratiquement pareil
 				{
-					$(".order .command_script",this).append(id+":1,");
-					
-					$(".order .command", this).append("<span data-id=\""+id+"\"><span>1</span>x "+ img+"</span> ");
-					$(".order .command img", this).addClass("order_img").last().attr("data-id", id);
-					
-					$(".order .command_details .details_tot", this).before("<div class=\"details_item\" data-id=\""+id+"\"><span class=\"left\"><span>1</span> "+name+"</span><span class=\"right\">"+prix.toFixed(2)+" €</span></div>");
+					if (com_length >= 9)
+					{
+						$.jGrowl('Trop de produits sélectionnés', { group:'blue_popup', life: 10000 });
+					}
+					else
+					{
+						$(".order .command_script",this).append(id+":1,");
+						
+						$(".order .command", this).append("<span data-id=\""+id+"\"><span>1</span>x <span class=\"miniature\">"+ img+"</span></span> ");
+						$(".order .command img", this).last().attr("data-id", id);
+						
+						$(".order .command_details .details_tot", this).before("<div class=\"details_item\" data-id=\""+id+"\"><span class=\"left\"><span>1</span> "+name+"</span><span class=\"right\">"+prix.toFixed(2)+" €</span></div>");
+					}
 				}
 				
 				$(".order .new_solde",this).text("Nouveau solde : "+new_solde.toFixed(2)+" €");
@@ -429,7 +438,6 @@ function valid_user(elem)
 	var my_id = $(elem).parent().parent().attr("data-id");
 	
 	var this_eleve = $("#list_eleves .table_row[data-id=\""+my_id+"\"] .solde").text('Rafraichissement en cours');
-
 		
 	var GET_args =  {'action':'order', 'id' : my_id, 'consom':conso};//Arguments de la requète GET
 	ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
@@ -522,12 +530,30 @@ function ajax_callback(data, GET_args)
 		
 		$("#popup_historique tr[command-id=\""+GET_args['id']+"\"]").remove();
 	}
+	
+	if (GET_args['action']=='order')
+	{
+		var command_prod_qtte = data.command_prod_qtte.split(',');
+		var command_prod_icone = data.command_prod_icone.split(',');
+		var command_prod_id = data.command_prod_id.split(',');
+		for (var i=0;i<command_prod_id.length-2;i++)
+		{
+			$("#popup_historique tr:nth-child(1)").before('<tr command-id="'+(parseFloat(data.command_id)+i+1)+'"><td class="id_command">'+(parseFloat(data.command_id)+i+1)+'</td><td>'+data.command_timestamp+'</td><td>'+data.command_util+'</td><td>'+command_prod_qtte[i+1]+'x <span class="miniature"><img src="images/produits/'+command_prod_icone[i+1]+'.png" alt="'+command_prod_icone[i+1]+'" /></span></td><td><img title="Annuler" class="cancel_command" src="images/icones/icons/cancel.png" alt="Annuler" /></td></tr>');
+		}
+		
+		for (var i=1;i<$('#popup_historique tr').length-10;i++)
+		{
+			$('#popup_historique tr:last-child').remove();
+		}
+	}
 }
 
 //Fonction de traitement d'erreur ajax
 function ajax_error(data, GET_args)
 {
 	$.jGrowl(data.reponse, { group:'red_popup', life: 10000 });
+	
+	$("#list_eleves .table_row[data-id=\""+data.id+"\"] .solde").text(parseFloat(data.solde).toFixed(2));
 }
 
 

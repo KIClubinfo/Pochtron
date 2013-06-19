@@ -300,8 +300,8 @@
 .command_pop
 {
 	position:absolute;
-	right:0;
-	top:45px;
+	right:2px;
+	top:65px;
 }
 
 .command_script, .command_details
