@@ -155,26 +155,34 @@ jQuery.expr[':'].not_selected = function(a, i, m)
 };   
 
 //Fonction appelée lors de la pression de la touche "Entrée".
-function add_one_user()
+function enter_pressed()
 {
-	//Initialisations
-	var count = 0;
-	var pointor = 0;
 	
-	//Compte le nombre d'élève présents dans la liste des élèves (correspondant à la recherche).
-	$("#list_eleves_table .table_row" ).each(function (i) 
+	if ($('#prompt_box').css('display') != 'none')
 	{
-		if ( $(this).css('display') != "none" ) 
+		$('#prompt_box .buttons input[value="Ajouter"]').click();
+	}
+	else
+	{
+		//Initialisations
+		var count = 0;
+		var pointor = 0;
+		
+		//Compte le nombre d'élève présents dans la liste des élèves (correspondant à la recherche).
+		$("#list_eleves_table .table_row" ).each(function (i) 
 		{
-			pointor = this; //Pointe vers l'élève courant
-			count++;
-		} 
-	});
-	
-	//Si la liste ne compte qu'un seul élève
-	if (count == 1)
-	{
-		add_selected_eleve(pointor)
+			if ( $(this).css('display') != "none" ) 
+			{
+				pointor = this; //Pointe vers l'élève courant
+				count++;
+			} 
+		});
+		
+		//Si la liste ne compte qu'un seul élève
+		if (count == 1)
+		{
+			add_selected_eleve(pointor)
+		}
 	}
 }
 
@@ -392,8 +400,19 @@ $(document).on('click',"#selected_eleves_table .table_row",function()
 //Fermer boite de dialongue
 $(document).on('click',".but_close",function()
 {
-	$(this).parent().parent().css("right","-500px");
+	close_box($(this).parent().parent());
 });
+
+function close_box(elem)
+{
+	
+	if (elem.attr('id') == 'prompt_box')
+		elem.hide();
+	else
+		elem.animate({"right":"-500px"});
+		
+	$('#modal_screen').hide();
+}
 
 //Annuler ancienne commande
 $(document).on('click',".cancel_command",function()
@@ -473,7 +492,21 @@ function cancel_user(elem)
 /*------------------------------------------#10 FONCTIONS AUXILIAIRES----------------------------------------*/
 function add_cash(elem)
 {
-	alert('Non encore disponible');
+	$('#prompt_box .buttons').html('<td colspan="2"><input class="vert valid_users" type="submit" value="Ajouter" onClick="send_cash_request('+$(elem).parent().parent().attr("data-id")+')"> <input class="cancel" type="reset" value="Annuler" onClick="javascript:close_box($(\'#prompt_box\'));"></td>');
+	
+	$("#prompt_box").show();
+	$("#modal_screen").show();
+	$("#prompt_box input[name=\"pin\"]").focus()
+}
+
+function send_cash_request(id)
+{
+	var pin = $('#prompt_box input[name="pin"]').val();
+	var cash = $('#prompt_box input[name="added_cash"]').val();
+	var GET_args =  {'action':'add_cash', 'id' : id, 'pin':pin, 'cash':cash};//Arguments de la requète GET
+	ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
+	
+	close_box($('#prompt_box'));
 }
 
 function calcul_star(elem)
@@ -510,7 +543,22 @@ function ajax_callback(data, GET_args)
 	
 	var this_eleve = $("#list_eleves .table_row[data-id=\""+data.id+"\"]");
 	$('.solde', this_eleve).text(parseFloat(data.solde).toFixed(2));
-	$('.litres_bus', this_eleve).text(parseFloat(data.litres_bus).toFixed(2));
+	
+	if (GET_args['action']=='add_cash')
+	{
+		if ($('.selected', this_eleve).text() == '1')
+		{
+			var this_selected_eleve = $("#selected_eleves .table_row[data-id=\""+data.id+"\"]");
+			var old_old_solde = parseFloat($(".order .old_solde",this_selected_eleve).text().substring(14));
+			var old_new_solde = parseFloat($(".order .new_solde",this_selected_eleve).text().substring(15));
+			var diff_solde = old_new_solde - old_old_solde;
+			
+			var new_new_solde = parseFloat(data.solde)+parseFloat(diff_solde);
+			
+			$(".order .old_solde",this_selected_eleve).text('Ancien solde : '+parseFloat(data.solde).toFixed(2)+' €')
+			$(".order .new_solde",this_selected_eleve).text('Nouveau solde : '+new_new_solde.toFixed(2)+' €')
+		}
+	}
 	
 	if (GET_args['action']=='cancel')
 	{
@@ -526,6 +574,8 @@ function ajax_callback(data, GET_args)
 			$(".order .old_solde",this_selected_eleve).text('Ancien solde : '+parseFloat(data.solde).toFixed(2)+' €')
 			$(".order .new_solde",this_selected_eleve).text('Nouveau solde : '+new_new_solde.toFixed(2)+' €')
 			$(".full_name .stars", this_selected_eleve).html(calcul_star(this_eleve));
+			
+			$('.litres_bus', this_eleve).text(parseFloat(data.litres_bus).toFixed(2));
 		}
 		
 		$("#popup_historique tr[command-id=\""+GET_args['id']+"\"]").remove();
@@ -541,7 +591,9 @@ function ajax_callback(data, GET_args)
 			$("#popup_historique tr:nth-child(1)").before('<tr command-id="'+(parseFloat(data.command_id)+i+1)+'"><td class="id_command">'+(parseFloat(data.command_id)+i+1)+'</td><td>'+data.command_timestamp+'</td><td>'+data.command_util+'</td><td>'+command_prod_qtte[i+1]+'x <span class="miniature"><img src="images/produits/'+command_prod_icone[i+1]+'.png" alt="'+command_prod_icone[i+1]+'" /></span></td><td><img title="Annuler" class="cancel_command" src="images/icones/icons/cancel.png" alt="Annuler" /></td></tr>');
 		}
 		
-		for (var i=1;i<$('#popup_historique tr').length-10;i++)
+		$('.litres_bus', this_eleve).text(parseFloat(data.litres_bus).toFixed(2));
+		
+		for (var i=0;i<$('#popup_historique tr').length-9;i++)
 		{
 			$('#popup_historique tr:last-child').remove();
 		}

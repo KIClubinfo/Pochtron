@@ -12,6 +12,9 @@ define('UNDEFINED_ID',200);
 define('INVALID_ID',201);
 define('EMPTY_ORDER',300);
 define('INVALID_ORDER',301);
+define('UNDEFINED_PIN', 500);
+define('INVALID_PIN', 501);
+define('UNDEFINED_CASH', 600);
 
 //Initialisations
 date_default_timezone_set('Europe/Paris');
@@ -41,7 +44,6 @@ function parse_order($string_order)
 function new_order()
 {
 	global $return_array;
-
 	global $sql;
 	
 	if (!isset($_GET['id']))
@@ -143,17 +145,87 @@ function new_order()
 //Ajouter du liquide à un élève
 function add_cash()
 {
-
+	global $return_array;
+	global $sql;
+	$caisse = 0;
+	$pin_nb = 0;
 	
-	$return_array['code_erreur'] = AJAX_NOT_IMPLEMENTED;
-	$return_array['reponse'] = "Le solde de l'élève a bien été augmenté";
+	if (!isset($_GET['id']))
+	{
+		$return_array['code_erreur']=UNDEFINED_ID;
+		$return_array['reponse']="Id indéfini";
+		return;
+	}
+	
+	if (!isset($_GET['pin']))
+	{
+		$return_array['code_erreur']=UNDEFINED_PIN;
+		$return_array['reponse']="Pin indéfini";
+		return;
+	}
+	
+	if (!isset($_GET['cash']))
+	{
+		$return_array['code_erreur']=UNDEFINED_CASH;
+		$return_array['reponse']="Montant indéfini";
+		return;
+	}
+	
+	$_GET['id'] = intval($_GET['id']); // Empêche l'injection SQL
+	$_GET['cash'] = intval($_GET['cash']); 
+	
+	$sql->rek( 'SELECT * FROM bar WHERE id IN (\'caisse\', \'PIN1\', \'PIN2\')');//Requète
+	while ($bar = $sql->fetch())
+	{
+		switch($bar['id'])
+		{
+			case 'caisse' :
+				$caisse = $bar['val'];
+				break;
+			default :
+				if ($_GET['pin'] == $bar['val'])
+					$pin_nb = $bar['id'];
+			
+		}
+	}
+	
+	
+	if ($pin_nb)
+	{
+		$sql->rek( 'SELECT * FROM clients WHERE id=\''.$_GET['id'].'\'');//Requète
+
+		if ($sql->nbrlignes() != 1)
+		{
+			$return_array['code_erreur']=INVALID_ID;
+			$return_array['reponse']="Id invalide";
+		}
+		else
+		{
+			$eleve = $sql->fetch();
+			$new_solde = $eleve['solde']+$_GET['cash'];
+			$new_caisse = $caisse + $_GET['cash'];
+			
+			$sql->rek( 'UPDATE clients SET solde=\''.($new_solde).'\' WHERE id=\''.$_GET['id'].'\'');
+			$sql->rek( "UPDATE `bar` SET `val`='$new_caisse' WHERE id='caisse'" );
+			
+			$return_array['solde'] = $new_solde;
+			$return_array['id'] = $eleve['id'];
+			$return_array['code_erreur'] = AJAX_OK;
+			$return_array['reponse'] = "Le solde de ".$eleve['prenom']." ".$eleve['nom']." a bien été augmenté";
+		}
+	}
+	else
+	{
+		$return_array['code_erreur'] = INVALID_PIN;
+		$return_array['reponse'] = "Pin invalide";
+	}
 }
 
 //Ajouter du liquide à un élève
 function extern_order()
 {
-
-	static $return_array;
+	global $return_array;
+	global $sql;
 	
 	$return_array['code_erreur'] = AJAX_NOT_IMPLEMENTED;
 	$return_array['reponse'] = "Non implémenté";
@@ -163,7 +235,6 @@ function extern_order()
 function cancel()
 {
 	global $return_array;
-
 	global $sql;
 	
 	if (!isset($_GET['id']))

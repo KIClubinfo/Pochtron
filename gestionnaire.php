@@ -11,9 +11,25 @@ include_once 'inclus/tete.html.php';
 		<div class="title">
 			Ajouter Cash<span class="but_close">x</span>
 		</div>
-		<div class="content">
-			
+		<div class="content cash">
+			<table>
+				<tbody>
+					<tr>
+						<td class="label">PIN :</td>
+						<td class="input"><input type="password" name="pin" min="0" step="0.10"  size="4" value=""></td>
+					</tr>
+					<tr>
+						<td class="label">Augmenter de :</td>
+						<td class="input"><input type="number" name="added_cash" min="0" step="0.10" size="4" value="0.00"></td>
+					</tr>
+					<tr class="buttons">
+						
+					</tr>
+				</tbody>
+			</table>
 		</div>
+	</div>
+	<div id="modal_screen">
 	</div>
 	<div id="popup_historique">
 		<div class="title">
@@ -189,7 +205,7 @@ include_once 'inclus/tete.html.php';
 			</div>
 			<div class="article_content">
 				<input class="vert valid_users" type="submit" value="Valider" onClick="valid_all_users()">
-				<input class="cancel" type="reset" value="Annuler une commande" onClick="cancel_all_users()">
+				<input class="cancel" type="reset" value="Annuler" onClick="cancel_all_users()">
 				<input class="vert add_extern_user" type="submit" value="Client externe" onClick="add_extern_user()">
 				<input class="cancel" type="reset" value="Historique" onClick="show_stats()">
 			</div>

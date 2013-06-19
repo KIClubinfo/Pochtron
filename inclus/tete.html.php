@@ -13,4 +13,4 @@ include_once 'inclus/tete.inc.php';
 <title><?php echo (defined('page_titre')) ? page_titre : _TITRE_PAR_DEFAUT; ?></title>
 <link rel="shortcut icon" href="images/favicon.png">
 <?php if(!empty($head_HTML)) echo $head_HTML; ?>
-</head><body onKeyPress="if (event.keyCode == 13) add_one_user()" >
+</head><body onKeyPress="if (event.keyCode == 13) enter_pressed()" >

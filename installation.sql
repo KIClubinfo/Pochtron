@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `bar` (
 INSERT INTO `bar` (`id`, `val`) VALUES
 ('caisse', '0.00'),
 ('version', '0.4'),
-('PIN1', '120393'),
-('PIN2', '011091');
+('PIN1', '1203'),
+('PIN2', '0110');
 
 -- --------------------------------------------------------
 

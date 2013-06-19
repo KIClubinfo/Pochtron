@@ -39,9 +39,9 @@ if(isset($_GET['rajouter'])){
       <div class="notif">Il est aussi possible de <a href="caisse.php">retirer de l'argent de la caisse</a>, c'est pas compliqué.</div>
     <form method="POST" action="caisse.php?modif=1&amp;rajouter=1">
     <table class="darkbox">
-    <tr><th>Solde actuel</td><td class="solde" id="soldeactuel"><?php echo $solde; ?></td></tr>
-    <tr><th>Crédit</td><td class="solde"><input type="number" name="retrait" min="0" step="0.10" onchange="modif_solde(-this.value)" value="5"></td></tr>
-    <tr><th>Futur solde</td><td class="solde" id="solderestant"><?php echo $solde; ?></td></tr>
+    <tr><td>Solde actuel</td><td class="solde" id="soldeactuel"><?php echo $solde; ?></td></tr>
+    <tr><td>Crédit</td><td class="solde"><input type="number" name="retrait" min="0" step="0.10" onchange="modif_solde(-this.value)" value="5"></td></tr>
+    <tr><td>Futur solde</td><td class="solde" id="solderestant"><?php echo $solde; ?></td></tr>
     <tr><td colspan="2"><input type="text" name="motif" placeholder="Pourquoi rajouter de l'argent en caisse maintenant ?" title="Motif du crédit" required="required"></td></tr>
     <tr><td colspan="2"><input type="submit" value="Créditer" class="gros"></td></tr>
     </table>

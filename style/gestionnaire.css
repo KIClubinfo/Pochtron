@@ -570,6 +570,15 @@ img#pict_viewer{
 	z-index:1000;
 }
 
+#prompt_box .label
+{
+	width:50%;
+	text-align:right;
+	font-weight:bold;
+	font-size:0.8em;
+	padding-right:10px;
+}
+
 #popup_historique
 {
 	position:fixed;
@@ -592,10 +601,40 @@ body > div > .title
 	font-weight:bold;
 }
 
-body > div > .content table
+#prompt_box .content
+{
+	padding:10px;
+}	
+
+#prompt_box table
+{
+	margin-top:5px;
+	width:100%;
+}
+
+#prompt_box td
+{
+	line-height:40px;
+	height:40px;
+}
+
+#prompt_box input
+{
+	margin-bottom:8px;
+}
+
+#prompt_box .buttons
+{
+	text-align:right;
+	padding-right:50px;
+}
+
+#popup_historique table
 {
 	margin:0;
 }
+
+
 
 .miniature
 {
@@ -634,4 +673,15 @@ body > div > .content table
 .but_close:hover
 {
 	color:white;
+}
+
+#modal_screen
+{
+	position:absolute;
+	width:100%;
+	height:100%;
+	z-index:799;
+	opacity:0.3;
+	background-color:black;
+	display:none;
 }
