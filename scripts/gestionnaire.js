@@ -459,7 +459,14 @@ $(document).on('click',".add_cash",function(e)
 
 $(document).on('click',".valid_user",function(e)
 {
-	valid_user(this);	
+	if ($(this).parent().parent().attr('data-id') != 'extern')
+	{
+		valid_user(this);
+	}
+	else
+	{
+		get_pin(0, this)
+	}
 	e.stopPropagation();
 });
 
@@ -486,7 +493,7 @@ function valid_all_users()
 	});
 	
 	if (is_there_extern == 1)
-		get_pin();
+		get_pin(1);
 }
 
 function valid_user(elem)
@@ -549,16 +556,37 @@ function send_cash_request(id)
 	close_box($('#prompt_box_cash'));
 }
 
-function get_pin()
+function get_pin(all, elem=0)
 {
-	$('#prompt_box_pin .buttons').html('<td colspan="2"><input class="vert valid_users" type="submit" value="Valider" onClick="javascript:valid_extern_user();"> <input class="cancel" type="reset" value="Annuler" onClick="javascript:close_box($(\'#prompt_box_pin\'));"></td>');
+	if (all)
+	{
+		$('#prompt_box_pin .buttons').html('<td colspan="2"><input class="vert valid_users" type="submit" value="Valider" onClick="javascript:valid_all_extern_user();"> <input class="cancel" type="reset" value="Annuler" onClick="javascript:close_box($(\'#prompt_box_pin\'));"></td>');
+	}
+	else
+	{
+		$('#prompt_box_pin .buttons').html('<td colspan="2"><input class="vert valid_users" type="submit" value="Valider" onClick="javascript:valid_extern_user(elem);"> <input class="cancel" type="reset" value="Annuler" onClick="javascript:close_box($(\'#prompt_box_pin\'));"></td>');
+
+	}
+	$('#prompt_box_pin .buttons').html('<td colspan="2"><input class="vert valid_users" type="submit" value="Valider" onClick="javascript:valid_all_extern_user();"> <input class="cancel" type="reset" value="Annuler" onClick="javascript:close_box($(\'#prompt_box_pin\'));"></td>');
 
 	$("#prompt_box_pin").show();
 	$("#modal_screen").show();
 	$("#prompt_box_pin input[name=\"pin\"]").focus();
 }
 
-function valid_extern_user()
+function valid_extern_user(elem)
+{
+	var pin = $('#prompt_box_pin input[name="pin"]').val();
+	
+	var GET_args =  {'action':'extern_order', 'pin':pin, 'consom':$(elem).parent().parent().children('.command_script').text()};//Arguments de la requète GET
+	ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
+
+	cancel_user(elem);
+	
+	close_box($('#prompt_box_pin'));
+}
+
+function valid_all_extern_user()
 {
 	var pin = $('#prompt_box_pin input[name="pin"]').val();
 	
