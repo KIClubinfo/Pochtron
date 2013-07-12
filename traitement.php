@@ -227,8 +227,83 @@ function extern_order()
 	global $return_array;
 	global $sql;
 	
-	$return_array['code_erreur'] = AJAX_NOT_IMPLEMENTED;
-	$return_array['reponse'] = "Non implémenté";
+	$caisse = 0;
+	$pin_nb = 0;
+	
+	if (!isset($_GET['pin']))
+	{
+		$return_array['code_erreur']=UNDEFINED_PIN;
+		$return_array['reponse']="Pin indéfini";
+		return;
+	}
+	
+	$sql->rek( 'SELECT * FROM bar WHERE id IN (\'caisse\', \'PIN1\', \'PIN2\')');//Requète
+	while ($bar = $sql->fetch())
+	{
+		switch($bar['id'])
+		{
+			case 'caisse' :
+				$caisse = $bar['val'];
+				break;
+			default :
+				if ($_GET['pin'] == $bar['val'])
+					$pin_nb = $bar['id'];
+			
+		}
+	}
+	
+	if ($pin_nb)
+	{
+		$order = parse_order(htmlspecialchars($_GET['consom'], ENT_QUOTES, 'UTF-8'));
+		
+		if (!isset($_GET['consom']) || ($_GET['consom'] == ','))
+		{
+			$return_array['code_erreur']=EMPTY_ORDER;
+			$return_array['reponse']="Commande vide";
+			return;
+		}
+		
+		if (count($order) < 1)
+		{
+			$return_array['code_erreur']=INVALID_ORDER;
+			$return_array['reponse']="Commande invalide";
+			return;
+		}
+		
+		array_multisort($order, SORT_ASC);
+		
+		$rek_in='';
+		for ($i=0;$i<count($order);$i++) $rek_in = $rek_in.$order[$i][0].',';
+		$rek_in = substr($rek_in, 0, strlen($rek_in)-1);
+		
+		$i=0;
+
+		$new_caisse = $caisse;
+		
+		$sql->rek( 'SELECT * FROM produits WHERE id IN ('.$rek_in.') ORDER BY id ASC');
+		while($products = $sql->fetch())
+		{
+			if ($products['id']==$order[($i)][0])
+			{			
+				$new_caisse += $products['prix']*$order[$i][1];
+				$sql->rek('UPDATE produits SET qtt_reserve=\''.($products['qtt_reserve']-$order[$i][1]).'\', ventes=\''.($products['ventes']+$order[$i][1]).'\' WHERE id=\''.$products['id'].'\'', false);
+				$sql->rek('INSERT INTO commandes (id_user, timestamp, id_produit, qtte_produit) VALUES (\'32000\',\''.date("Y-m-d H:i:s").'\',\''.$products['id'].'\',\''.$order[$i][1].'\')', false);
+			}
+			$i++;
+		}
+		
+		$sql->rek( "UPDATE `bar` SET `val`='$new_caisse' WHERE id='caisse'" );
+		
+		
+		$return_array['code_erreur'] = AJAX_OK;
+		$return_array['reponse'] = "Commande externe passée avec succès.";
+		
+	}
+	else
+	{
+		$return_array['code_erreur'] = INVALID_PIN;
+		$return_array['reponse'] = "Pin invalide";
+	}
 }
 
 //Annuler une commande
@@ -307,7 +382,7 @@ if (isset($_GET['action']))
 		case "cancel":
 			cancel();
 			break;
-		case "extern":
+		case "extern_order":
 			extern_order();
 			break;
 		case "refresh_histo":

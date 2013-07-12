@@ -158,9 +158,17 @@ jQuery.expr[':'].not_selected = function(a, i, m)
 function enter_pressed()
 {
 	
-	if ($('#prompt_box').css('display') != 'none')
+	if ($('#prompt_box_cash').css('display') != 'none')
 	{
-		$('#prompt_box .buttons input[value="Ajouter"]').click();
+		$('#prompt_box_cash .buttons input[value="Ajouter"]').click();
+	}
+	else if ($('#prompt_box_extern').css('display') != 'none')
+	{
+		$('#prompt_box_extern .buttons input[value="Ajouter"]').click();
+	}
+	else if ($('#prompt_box_pin').css('display') != 'none')
+	{
+		$('#prompt_box_pin .buttons input[value="Valider"]').click();
 	}
 	else
 	{
@@ -210,7 +218,7 @@ function add_selected_eleve(eleve)
 	{
 		//Sélection de l'élève à proprement parlé
 		$(eleve).children(".selected").html(1); //Changement de l'état de l'élève afin de ne plus l'afficher dans la liste des élèves
-		$("#selected_eleves .table_content").append("<li data-id=\""+id+"\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/"+url_photo+".jpg\"></span><span class=\"full_name\">"+firstname+" "+surname+"<br /><span class=\"stars\">"+calcul_star(eleve)+"</span><br />Distinctions : "+distinctions+"</span><span class=\"order\"><span class=\"old_solde\">Ancien solde : "+solde+" €</span><br /><span class=\"command\">Commande : </span><br /><div class=\"command_pop\">Détails</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div><span class=\"new_solde\">Nouveau solde :  "+solde+" €</span></span><span class=\"actions\"><a href=\"javascript:return false;\" onClick=\"valid_user(this)\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a onClick=\"cancel_user(this)\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a><a onClick=\"add_cash(this)\" href=\"javascript:return false;\"><img alt=\"Ajout liquide\"  src=\"images/add.png\" /></a></span></li>");
+		$("#selected_eleves .table_content").append("<li data-id=\""+id+"\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/"+url_photo+".jpg\"></span><span class=\"full_name\">"+firstname+" "+surname+"<br /><span class=\"stars\">"+calcul_star(eleve)+"</span><br />Distinctions : "+distinctions+"</span><span class=\"order\"><span class=\"old_solde\">Ancien solde : "+solde+" €</span><br /><span class=\"command\">Commande : </span><br /><div class=\"command_pop\">Détails</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div><span class=\"new_solde\">Nouveau solde :  "+solde+" €</span></span><span class=\"actions\"><a href=\"javascript:return false;\" class=\"valid_user\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a class=\"cancel_user\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a><a class=\"add_cash\" href=\"javascript:return false;\"><img alt=\"Ajout liquide\"  src=\"images/add.png\" /></a></span></li>");
 		$("#selected_eleves li").last().css("border-left","3px solid #12A332");
 		$(".cell_photo img").mouseover(function() {
 			$("#pict_viewer").attr("src",$(this).attr("src"));
@@ -342,8 +350,8 @@ $(document).on('click',".product_item .product_button input",function()
 					com_script = com_script.replace(regex_script, ","+id+":"+nb+",");
 					$(".order .command_script",this).html(com_script);//On remplace par la nouvelle quantité dans la chaine de commande parsée
 					
-					$(".order .command span[data-id=\""+id+"\"] span:nth-child(1)").text(nb);//Modification des quantités dans le détail de la commande
-					$(".order .details_item[data-id=\""+id+"\"] .left span").text(nb);//Ici aussi
+					$(".order .command span[data-id=\""+id+"\"] span:nth-child(1)", this).text(nb);//Modification des quantités dans le détail de la commande
+					$(".order .details_item[data-id=\""+id+"\"] .left span", this).text(nb);//Ici aussi
 					
 					var new_prix = parseFloat($(".order .details_item[data-id=\""+id+"\"] .right").text());
 					new_prix += prix;//Maj du prix
@@ -367,9 +375,11 @@ $(document).on('click',".product_item .product_button input",function()
 					}
 				}
 				
-				$(".order .new_solde",this).text("Nouveau solde : "+new_solde.toFixed(2)+" €");
-				$(".order .details_tot",this).text("Total : "+new_tot.toFixed(2)+" €");
-
+				if ($(this).attr("data-id") != 'extern')
+				{
+					$(".order .new_solde",this).text("Nouveau solde : "+new_solde.toFixed(2)+" €");
+					$(".order .details_tot",this).text("Total : "+new_tot.toFixed(2)+" €");
+				}
 			} 
 		});
 	});
@@ -406,10 +416,13 @@ $(document).on('click',".but_close",function()
 function close_box(elem)
 {
 	
-	if (elem.attr('id') == 'prompt_box')
+	if (elem.attr('class') == 'prompt_box')
 		elem.hide();
 	else
 		elem.animate({"right":"-500px"});
+		
+	$('#prompt_box_extern input[name="name"]').val('');
+	$('.prompt_box input[name="pin"]').val('');
 		
 	$('#modal_screen').hide();
 }
@@ -438,6 +451,23 @@ $(document).on('click',"#list_eleves_table .table_row",function(){
 		add_selected_eleve(this);
 });
 
+$(document).on('click',".add_cash",function(e)
+{
+	add_cash(this);	
+	e.stopPropagation();
+});
+
+$(document).on('click',".valid_user",function(e)
+{
+	valid_user(this);	
+	e.stopPropagation();
+});
+
+$(document).on('click',".cancel_user",function(e)
+{
+	cancel_user(this);	
+	e.stopPropagation();
+});
 
 /*------------------------------------------FIN #7----------------------------------------*/
 
@@ -445,10 +475,18 @@ $(document).on('click',"#list_eleves_table .table_row",function(){
 
 function valid_all_users()
 {
+	var is_there_extern = 0;
+	
 	$("#selected_eleves_table .table_row" ).each(function (i) 
 	{
-		valid_user($(".actions > a",this));
+		if ($(this).attr('data-id') == 'extern')
+			is_there_extern = 1;
+		else
+			valid_user($(".actions > a",this));
 	});
+	
+	if (is_there_extern == 1)
+		get_pin();
 }
 
 function valid_user(elem)
@@ -457,12 +495,14 @@ function valid_user(elem)
 	var my_id = $(elem).parent().parent().attr("data-id");
 	
 	var this_eleve = $("#list_eleves .table_row[data-id=\""+my_id+"\"] .solde").text('Rafraichissement en cours');
-		
+	
 	var GET_args =  {'action':'order', 'id' : my_id, 'consom':conso};//Arguments de la requète GET
 	ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
 		  
 	cancel_user(elem);
 }
+
+
 
 /*------------------------------------------FIN #8----------------------------------------*/
 
@@ -492,22 +532,49 @@ function cancel_user(elem)
 /*------------------------------------------#10 FONCTIONS AUXILIAIRES----------------------------------------*/
 function add_cash(elem)
 {
-	$('#prompt_box .buttons').html('<td colspan="2"><input class="vert valid_users" type="submit" value="Ajouter" onClick="send_cash_request('+$(elem).parent().parent().attr("data-id")+')"> <input class="cancel" type="reset" value="Annuler" onClick="javascript:close_box($(\'#prompt_box\'));"></td>');
+	$('#prompt_box_cash .buttons').html('<td colspan="2"><input class="vert valid_users" type="submit" value="Ajouter" onClick="send_cash_request('+$(elem).parent().parent().attr("data-id")+')"> <input class="cancel" type="reset" value="Annuler" onClick="javascript:close_box($(\'#prompt_box_cash\'));"></td>');
 	
-	$("#prompt_box").show();
+	$("#prompt_box_cash").show();
 	$("#modal_screen").show();
-	$("#prompt_box input[name=\"pin\"]").focus()
+	$("#prompt_box_cash input[name=\"pin\"]").focus()
 }
 
 function send_cash_request(id)
 {
-	var pin = $('#prompt_box input[name="pin"]').val();
-	var cash = $('#prompt_box input[name="added_cash"]').val();
+	var pin = $('#prompt_box_cash input[name="pin"]').val();
+	var cash = $('#prompt_box_cash input[name="added_cash"]').val();
 	var GET_args =  {'action':'add_cash', 'id' : id, 'pin':pin, 'cash':cash};//Arguments de la requète GET
 	ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
 	
-	close_box($('#prompt_box'));
+	close_box($('#prompt_box_cash'));
 }
+
+function get_pin()
+{
+	$('#prompt_box_pin .buttons').html('<td colspan="2"><input class="vert valid_users" type="submit" value="Valider" onClick="javascript:valid_extern_user();"> <input class="cancel" type="reset" value="Annuler" onClick="javascript:close_box($(\'#prompt_box_pin\'));"></td>');
+
+	$("#prompt_box_pin").show();
+	$("#modal_screen").show();
+	$("#prompt_box_pin input[name=\"pin\"]").focus();
+}
+
+function valid_extern_user()
+{
+	var pin = $('#prompt_box_pin input[name="pin"]').val();
+	
+	$("#selected_eleves_table .table_row[data-id=\"extern\"]" ).each(function (i) 
+	{
+		var GET_args =  {'action':'extern_order', 'pin':pin, 'consom':$('.command_script',this).text()};//Arguments de la requète GET
+		ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
+
+		cancel_user($(".actions > a", this));
+	});
+	
+	close_box($('#prompt_box_pin'));
+	
+
+}
+
 
 function calcul_star(elem)
 {
@@ -522,7 +589,25 @@ function calcul_star(elem)
 
 function add_extern_user()
 {
-	alert('Non encore disponible');
+	$('#prompt_box_extern .buttons').html('<td colspan="2"><input class="vert valid_users" type="submit" value="Ajouter" onClick="javascript:insert_extern_user();"> <input class="cancel" type="reset" value="Annuler" onClick="javascript:close_box($(\'#prompt_box_extern\'));"></td>');
+	
+	$("#prompt_box_extern").show();
+	$("#modal_screen").show();
+	$("#prompt_box_extern input[name=\"name\"]").focus()
+}
+
+function insert_extern_user()
+{
+	var name='Anonyme';
+	
+	if ($('#prompt_box_extern input[name="name"]').val() != '')
+		name = $('#prompt_box_extern input[name="name"]').val();
+		
+	$("#selected_eleves .table_content").append("<li data-id=\"extern\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/sans_photo.jpg\"></span><span class=\"full_name\">"+name+"<br /></span><span class=\"order\"><span class=\"command\">Commande : </span><br /><div class=\"command_pop\">Détails</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div><br /><span class=\"new_solde\">Les commandes externes doivent être immédiatement payées.</span></span><span class=\"actions\"><a href=\"javascript:return false;\" class=\"valid_user\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a class=\"cancel_user\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a></span></li>");
+	$("#selected_eleves li").last().css("border-left","3px solid #12A332");
+	
+	close_box($('#prompt_box_extern'));
+	resize_boxes();
 }
 
 function show_stats()

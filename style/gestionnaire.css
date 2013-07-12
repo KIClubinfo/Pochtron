@@ -1,4 +1,4 @@
-/******* AJOUTS CHARLES *********/
+/******* MODIFICATION PAR RAPPORT AU DESIGN *********/
 
 *{
   box-sizing: border-box;
@@ -7,10 +7,12 @@
 
 .central_large
 {
+	position: relative;
+	
 	width: 95%;
 	height: 90%;
+	
 	margin: auto;
-	position: relative;
 	top: 2%;
 }
 
@@ -24,14 +26,15 @@
 .gestion > div 
 {
 	position:relative;
-	vertical-align:top;
-	top:0%;
 	overflow:hidden;
+	
+	vertical-align:top;
 }
 
 .gestion #eleves
 {
 	display:inline-block;
+	
 	width:59%;
 	height:90%;
 }
@@ -39,18 +42,21 @@
 .gestion #produits
 {
 	display:inline-block;
+	
 	width:39%;
 	height:90%;
+	
 	text-align:left;
 }
 
-/***************** MISE EN FORME DES ARTICLES ***********************/
+/***************** LES QUATRES SECTIONS DE LA PAGE ***********************/
 
 .gestion  article
 {
-	width:100%;
 	position:relative;
 	overflow:hidden;
+	
+	width:100%;
 }
 
 .gestion #list_eleves
@@ -60,79 +66,58 @@
 
 .gestion #selected_eleves
 {
-	top:10px;
 	height:60%;
+	
+	top:10px;
 }
 
 .gestion #user_actions
 {
 	top:10px;
+	
 	text-align:center;
 	vertical-align:middle;
 }
 
+.gestion #produits
+{
+	height:100%;
+}
+
+/***************** MISE EN FORME D'UNE SECTION A PROPREMENT PARLER ***********************/
 
 .gestion .article_title
 {
-	background-color:#1B1B1B;
 	width:200px;
 	height:24px;
+	
 	line-height:24px;
-	font-size:80%;
-	border-color: #1A1819 #1A1819 -moz-use-text-color;
-    border-image: none;
-    border-radius: 5px 5px 0 0;
-    border-style: solid solid none;
-    border-width: 1px 1px 0;
+	
 	margin-left:10px;
 	padding:0 7px;
 	
+	background-color:#1B1B1B;
+	
+	border-color: #1A1819 #1A1819 -moz-use-text-color;
+	border-width: 1px 1px 0;
+	border-style: solid solid none;
+    border-radius: 5px 5px 0 0;
+	
+		
+	font-size:80%;	
 }
 
 .gestion .article_content
 {
-	width:100%;
 	position:relative;
-    border-radius: 5px 5px 5px 5px;
+	
+	width:100%;
+	
+    border-radius: 5px;
     border:1px solid #1A1819;
 }
 
 /***************** MISE EN FORME DES TABLES ELEVES ***********************/
-
-
-.gestion .table_title
-{
-	width:100%;
-	line-height:50px;
-	height:50px;
-	font-weight:bold;
-	background-color:#1B1B1B;
-}
-
-.scroll_bar
-{
-	position:relative;
-	height:100%;
-	width:100%;
-}
-
-.gestion .table_content /*ATTENTION ENFANT DE LA SCROLL BAR ET NON L'INVERSE */
-{
-	height:88%;
-	width:100%;
-}
-
-.gestion .table_row
-{
-	position:relative;
-	list-style-type:none; 
-	cursor:pointer;
-}
-
- .table_row:nth-child(2n+1) 
- {
-    background-color: rgba(0, 0, 0, 0.1);
-}
 
 #list_eleves_table, #selected_eleves_table
 {
@@ -140,6 +125,45 @@
 	width:100%;
 	text-align:left;
 	position:relative;
+}
+
+.gestion .table_title
+{
+	width:100%;
+	height:50px;
+	
+	line-height:50px;
+	
+	background-color:#1B1B1B;
+	
+	font-weight:bold;
+}
+
+.scroll_bar
+{
+	position:relative;
+	
+	width:100%;
+	height:100%;
+}
+
+.gestion .table_content /*ATTENTION ENFANT DE LA SCROLL BAR ET NON L'INVERSE */
+{
+	width:100%;
+	height:88%;
+}
+
+.gestion .table_row
+{
+	position:relative;
+	
+	list-style-type:none; 
+	cursor:pointer;
+}
+
+ .table_row:nth-child(2n+1) 
+ {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
  #list_eleves_table .table_row
@@ -549,14 +573,13 @@ img#pict_viewer{
     box-shadow: 0 0 3px #1E1E1E;
 }
 
-#prompt_box
+.prompt_box
 {
 	display:none;
 	position:absolute;
 	overflow:hidden;
 	
 	width:500px;
-	height:200px;
 	
 	top:-100px;
 	left:-250px;
@@ -570,7 +593,7 @@ img#pict_viewer{
 	z-index:1000;
 }
 
-#prompt_box .label
+.prompt_box .label
 {
 	width:50%;
 	text-align:right;
@@ -578,6 +601,14 @@ img#pict_viewer{
 	font-size:0.8em;
 	padding-right:10px;
 }
+
+#prompt_box_extern.label
+{
+	width:40%;
+	
+}
+
+
 
 #popup_historique
 {
@@ -601,35 +632,35 @@ body > div > .title
 	font-weight:bold;
 }
 
-#prompt_box .content
+.prompt_box .content
 {
 	padding:10px;
 }	
 
-#prompt_box table
+.prompt_box table
 {
 	margin-top:5px;
 	width:100%;
 }
 
-#prompt_box td
+.prompt_box td
 {
 	line-height:40px;
 	height:40px;
 }
 
-#prompt_box input
+.prompt_box input
 {
 	margin-bottom:8px;
 }
 
-#prompt_box .buttons
+.prompt_box .buttons
 {
 	text-align:right;
 	padding-right:50px;
 }
 
-#popup_historique table
+.popup_historique table
 {
 	margin:0;
 }

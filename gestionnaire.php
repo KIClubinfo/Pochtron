@@ -7,11 +7,11 @@ $head_HTML = '<link rel="stylesheet" href="style/gestionnaire.css"><link rel="st
 include_once 'inclus/tete.html.php';
 ?>
 	
-	<div id="prompt_box">
+	<div id="prompt_box_cash" class="prompt_box">
 		<div class="title">
 			Ajouter Cash<span class="but_close">x</span>
 		</div>
-		<div class="content cash">
+		<div class="content">
 			<table>
 				<tbody>
 					<tr>
@@ -21,6 +21,42 @@ include_once 'inclus/tete.html.php';
 					<tr>
 						<td class="label">Augmenter de :</td>
 						<td class="input"><input type="number" name="added_cash" min="0" step="0.10" size="4" value="0.00"></td>
+					</tr>
+					<tr class="buttons">
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="prompt_box_extern" class="prompt_box">
+		<div class="title">
+			Ajouter un client externe<span class="but_close">x</span>
+		</div>
+		<div class="content">
+			<table>
+				<tbody>
+					<tr>
+						<td class="label">Nom :</td>
+						<td class="input"><input type="text" name="name"></td>
+					</tr>
+					<tr class="buttons">
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="prompt_box_pin" class="prompt_box">
+		<div class="title">
+			Sécurité :<span class="but_close">x</span>
+		</div>
+		<div class="content">
+			<table>
+				<tbody>
+					<tr>
+						<td class="label">PIN :</td>
+						<td class="input"><input type="password" name="pin" min="0" step="0.10"  size="4" value=""></td>
 					</tr>
 					<tr class="buttons">
 						
