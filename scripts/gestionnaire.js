@@ -118,6 +118,21 @@ function resize_boxes()
 	//Coloration de la liste des élèves sélectionnés
 	var it = 0;
 	
+	//Redimensionnement des boutons produits
+	if (width <= 1400)
+	{
+		var product_width = ($("#produits_disponibles").width())/4-20;
+		$("#produits_disponibles .product_item").css({"width": product_width, "height": product_width});
+		$("#produits_disponibles .product_img").css({"height": product_width*0.75, "line-height": product_width*0.75+"px"});
+		$("#produits_disponibles .product_button").css({"height": product_width*0.3, "line-height": product_width*0.3+"px"});
+		$("#produits_disponibles .product_order").css({"height": product_width*0.3, "line-height": product_width*0.3+"px"});
+
+	}
+	else
+	{
+		$("#produits_disponibles .product_item, .product_img, .product_button, .product_order").removeAttr('style');
+	}
+	
 	$("#selected_eleves_table .table_row" ).each(function (i) 
 	{
 		if ( $(this).css('display') != "none" ) 
@@ -218,10 +233,11 @@ function add_selected_eleve(eleve)
 	{
 		//Sélection de l'élève à proprement parlé
 		$(eleve).children(".selected").html(1); //Changement de l'état de l'élève afin de ne plus l'afficher dans la liste des élèves
-		$("#selected_eleves .table_content").append("<li data-id=\""+id+"\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/"+url_photo+".jpg\"></span><span class=\"full_name\">"+firstname+" "+surname+"<br /><span class=\"stars\">"+calcul_star(eleve)+"</span><br />Distinctions : "+distinctions+"</span><span class=\"order\"><span class=\"old_solde\">Ancien solde : "+solde+" €</span><br /><span class=\"command\">Commande : </span><br /><div class=\"command_pop\">Détails</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div><span class=\"new_solde\">Nouveau solde :  "+solde+" €</span></span><span class=\"actions\"><a href=\"javascript:return false;\" class=\"valid_user\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a class=\"cancel_user\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a><a class=\"add_cash\" href=\"javascript:return false;\"><img alt=\"Ajout liquide\"  src=\"images/add.png\" /></a></span></li>");
+		$("#selected_eleves .table_content").append("<li data-id=\""+id+"\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/"+url_photo+".jpg\"></span><span class=\"full_name\">"+firstname+" "+surname+"<br /><span class=\"stars\">"+calcul_star(eleve)+"</span><br />"+distinctions+"</span><span class=\"order\">Ancien solde : <span class=\"old_solde\">"+solde+" €</span><br />Nouveau solde : <span class=\"new_solde\">"+solde+" €</span><br /><span class=\"command\"></span><br /><div class=\"command_pop\">Détails de la commande</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div></span><span class=\"actions\"><a href=\"javascript:return false;\" class=\"valid_user\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a class=\"cancel_user\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a><a class=\"add_cash\" href=\"javascript:return false;\"><img alt=\"Ajout liquide\"  src=\"images/add.png\" /></a></span></li>");
 		$("#selected_eleves li").last().css("border-left","5px solid rgb(18, 163, 50)");
 		$(".cell_photo img").mouseover(function() {
 			$("#pict_viewer").stop();
+			$("#pict_viewer").clearQueue();
 			$("#pict_viewer").attr("src",$(this).attr("src"));
 			$("#pict_viewer").delay(10).fadeIn();
 		    });
@@ -311,80 +327,93 @@ search();
 /*------------------------------------------#7 EVENEMENTS----------------------------------------*/
 
 //Clic sur un produit
-$(document).on('click',".product_item .product_button input",function()
+$(document).on('click',".product_item .product_button input",function(e)
 {
-		//Récupération des données relatives au produit sélectionné
-		var id = $(this).attr("data-id");
-		var name = $(this).parent().siblings(".product_name").text();
-		var img = $(this).parent().siblings(".product_img").html();
-		var prix = parseFloat($(this).val());
-		
-		//Pour chaque élève de la liste des élèves sélectionnés
-		$("#selected_eleves_table .table_row" ).each(function () 
-		{
-			//Dans le cas où l'élève de cette liste n'est pas déselectionné (afin de l'exclure momentanément de la sélection)
-			if ( $(this).css("border-left-width") == "3px" ) 
-			{
-				//Récupération des données relatives à l'élève avant l'ajout du produit
-				var com_script = $(".order .command_script",this).text();//com_script contient alors la chaine parsée et représentative de la commande, envoyée au serveur lors de la validation
-				var temp_array = com_script.split(',');
-				var com_length = temp_array.length;
-				var old_solde = parseFloat($(".order .new_solde",this).text().substring(15));
-				var old_tot = parseFloat($(".order .details_tot",this).text().substring(8));
-				
-				//Calculs du nouveau solde et du total de la commande
-				var new_solde = old_solde - prix;
-				var new_tot = old_tot + prix;
-				
-				//Edition du détail de la commande et de la chaine représentant la commande envoyée au serveur lors de la validation
-				
-				//Via une expression régulière, on cherche à savoir si le produit à ajouter fait déjà partie de la commande
-				var regex_script = new RegExp(","+id+":([0-9]+),", "i");
-				var pos = com_script.search(regex_script);
-				
-				
-				if (pos >= 0) //Si c'est le cas
-				{
-					regex_script.exec(com_script);//On récupère l'ancienne quantité
-					var nb = parseInt(RegExp.$1);
-					nb++;//On l'incrémente
-					com_script = com_script.replace(regex_script, ","+id+":"+nb+",");
-					$(".order .command_script",this).html(com_script);//On remplace par la nouvelle quantité dans la chaine de commande parsée
-					
-					$(".order .command span[data-id=\""+id+"\"] span:nth-child(1)", this).text(nb);//Modification des quantités dans le détail de la commande
-					$(".order .details_item[data-id=\""+id+"\"] .left span", this).text(nb);//Ici aussi
-					
-					var new_prix = parseFloat($(".order .details_item[data-id=\""+id+"\"] .right").text());
-					new_prix += prix;//Maj du prix
-					
-					$(".order .details_item[data-id=\""+id+"\"] .right").text(new_prix.toFixed(2)+" €");//Et on l'affiche
-				}
-				else //Sinon c'est pratiquement pareil
-				{
-					if (com_length >= 9)
-					{
-						$.jGrowl('Trop de produits sélectionnés', { group:'blue_popup', life: 10000 });
-					}
-					else
-					{
-						$(".order .command_script",this).append(id+":1,");
-						
-						$(".order .command", this).append("<span data-id=\""+id+"\"><span>1</span>x <span class=\"miniature\">"+ img+"</span></span> ");
-						$(".order .command img", this).last().attr("data-id", id);
-						
-						$(".order .command_details .details_tot", this).before("<div class=\"details_item\" data-id=\""+id+"\"><span class=\"left\"><span>1</span> "+name+"</span><span class=\"right\">"+prix.toFixed(2)+" €</span></div>");
-					}
-				}
-				
-				if ($(this).attr("data-id") != 'extern')
-				{
-					$(".order .new_solde",this).text("Nouveau solde : "+new_solde.toFixed(2)+" €");
-					$(".order .details_tot",this).text("Total : "+new_tot.toFixed(2)+" €");
-				}
-			} 
-		});
-	});
+	add_product(this);
+	e.stopPropagation();
+});
 
+$(document).on('click',".product_item", function()
+{
+	if ($('input',this).size() == 1)
+	{	
+		add_product($('input',this));
+	}
+});
+
+function add_product(elem)
+{
+	//Récupération des données relatives au produit sélectionné
+	var id = $(elem).attr("data-id");
+	var name = $(elem).parent().siblings(".product_name").text();
+	var img = $(elem).parent().siblings(".product_img").html();
+	var prix = parseFloat($(elem).val());
+	
+	//Pour chaque élève de la liste des élèves sélectionnés
+	$("#selected_eleves_table .table_row" ).each(function () 
+	{
+		//Dans le cas où l'élève de cette liste n'est pas déselectionné (afin de l'exclure momentanément de la sélection)
+		if ( $(this).css("border-left-color") == "rgb(18, 163, 50)" ) 
+		{
+			//Récupération des données relatives à l'élève avant l'ajout du produit
+			var com_script = $(".order .command_script",this).text();//com_script contient alors la chaine parsée et représentative de la commande, envoyée au serveur lors de la validation
+			var temp_array = com_script.split(',');
+			var com_length = temp_array.length;
+			var old_solde = parseFloat($(".order .new_solde",this).text());
+			var old_tot = parseFloat($(".order .details_tot",this).text().substring(7));
+			
+			//Calculs du nouveau solde et du total de la commande
+			var new_solde = old_solde - prix;
+			var new_tot = old_tot + prix;
+			//Edition du détail de la commande et de la chaine représentant la commande envoyée au serveur lors de la validation
+			
+			//Via une expression régulière, on cherche à savoir si le produit à ajouter fait déjà partie de la commande
+			var regex_script = new RegExp(","+id+":([0-9]+),", "i");
+			var pos = com_script.search(regex_script);
+			
+			
+			if (pos >= 0) //Si c'est le cas
+			{
+				regex_script.exec(com_script);//On récupère l'ancienne quantité
+				var nb = parseInt(RegExp.$1);
+				nb++;//On l'incrémente
+				com_script = com_script.replace(regex_script, ","+id+":"+nb+",");
+				$(".order .command_script",this).html(com_script);//On remplace par la nouvelle quantité dans la chaine de commande parsée
+				
+				$(".order .command span[data-id=\""+id+"\"] span:nth-child(1)", this).text(nb);//Modification des quantités dans le détail de la commande
+				$(".order .details_item[data-id=\""+id+"\"] .left span", this).text(nb);//Ici aussi
+				
+				var new_prix = parseFloat($(".order .details_item[data-id=\""+id+"\"] .right").text());
+				new_prix += prix;//Maj du prix
+				
+				$(".order .details_item[data-id=\""+id+"\"] .right").text(new_prix.toFixed(2)+" €");//Et on l'affiche
+			}
+			else //Sinon c'est pratiquement pareil
+			{
+				if (com_length >= 6)
+				{
+					$.jGrowl('Trop de produits sélectionnés', { group:'blue_popup', life: 10000 });
+				}
+				else
+				{
+					$(".order .command_script",this).append(id+":1,");
+					
+					$(".order .command", this).append("<span data-id=\""+id+"\"><span>1</span>x <span class=\"miniature\">"+ img+"</span></span> ");
+					$(".order .command img", this).last().attr("data-id", id);
+					
+					$(".order .command_details .details_tot", this).before("<div class=\"details_item\" data-id=\""+id+"\"><span class=\"left\"><span>1</span> "+name+"</span><span class=\"right\">"+prix.toFixed(2)+" €</span></div>");
+				}
+			}
+			
+			if ($(this).attr("data-id") != 'extern')
+			{
+				$(".order .new_solde",this).text(new_solde.toFixed(2)+" €");
+				$(".order .details_tot",this).text("Total : "+new_tot.toFixed(2)+" €");
+			}
+		} 
+	});
+}
+	
 //Variable globale pour mémoriser la couleur initiale de la ligne survolée.	
 var hover_color;
 
@@ -634,7 +663,7 @@ function insert_extern_user()
 	if ($('#prompt_box_extern input[name="name"]').val() != '')
 		name = $('#prompt_box_extern input[name="name"]').val();
 		
-	$("#selected_eleves .table_content").append("<li data-id=\"extern\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/sans_photo.jpg\"></span><span class=\"full_name\">"+name+"<br /></span><span class=\"order\"><span class=\"command\">Commande : </span><br /><div class=\"command_pop\">Détails</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div><br /><span class=\"new_solde\">Les commandes externes doivent être immédiatement payées.</span></span><span class=\"actions\"><a href=\"javascript:return false;\" class=\"valid_user\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a class=\"cancel_user\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a></span></li>");
+	$("#selected_eleves .table_content").append("<li data-id=\"extern\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/sans_photo.jpg\"></span><span class=\"full_name\">"+name+"<br /></span><span class=\"order\"><span class=\"new_solde\">Les commandes externes doivent être immédiatement payées.</span><br /><span class=\"command\"></span><br /><div class=\"command_pop\">Détails de la commande</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div></span><span class=\"actions\"><a href=\"javascript:return false;\" class=\"valid_user\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a class=\"cancel_user\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a></span></li>");
 	$("#selected_eleves li").last().css("border-left","5px solid rgb(18, 163, 50)");
 	
 	close_box($('#prompt_box_extern'));
@@ -665,14 +694,14 @@ function ajax_callback(data, GET_args)
 		if ($('.selected', this_eleve).text() == '1')
 		{
 			var this_selected_eleve = $("#selected_eleves .table_row[data-id=\""+data.id+"\"]");
-			var old_old_solde = parseFloat($(".order .old_solde",this_selected_eleve).text().substring(14));
-			var old_new_solde = parseFloat($(".order .new_solde",this_selected_eleve).text().substring(15));
+			var old_old_solde = parseFloat($(".order .old_solde",this_selected_eleve).text());
+			var old_new_solde = parseFloat($(".order .new_solde",this_selected_eleve).text());
 			var diff_solde = old_new_solde - old_old_solde;
 			
 			var new_new_solde = parseFloat(data.solde)+parseFloat(diff_solde);
 			
-			$(".order .old_solde",this_selected_eleve).text('Ancien solde : '+parseFloat(data.solde).toFixed(2)+' €')
-			$(".order .new_solde",this_selected_eleve).text('Nouveau solde : '+new_new_solde.toFixed(2)+' €')
+			$(".order .old_solde",this_selected_eleve).text(parseFloat(data.solde).toFixed(2)+' €')
+			$(".order .new_solde",this_selected_eleve).text(new_new_solde.toFixed(2)+' €')
 		}
 	}
 	
@@ -681,20 +710,23 @@ function ajax_callback(data, GET_args)
 		if ($('.selected', this_eleve).text() == '1')
 		{
 			var this_selected_eleve = $("#selected_eleves .table_row[data-id=\""+data.id+"\"]");
-			var old_old_solde = parseFloat($(".order .old_solde",this_selected_eleve).text().substring(14));
-			var old_new_solde = parseFloat($(".order .new_solde",this_selected_eleve).text().substring(15));
+			var old_old_solde = parseFloat($(".order .old_solde",this_selected_eleve).text());
+			var old_new_solde = parseFloat($(".order .new_solde",this_selected_eleve).text());
 			var diff_solde = old_new_solde - old_old_solde;
 			
 			var new_new_solde = parseFloat(data.solde)+parseFloat(diff_solde);
 			
-			$(".order .old_solde",this_selected_eleve).text('Ancien solde : '+parseFloat(data.solde).toFixed(2)+' €')
-			$(".order .new_solde",this_selected_eleve).text('Nouveau solde : '+new_new_solde.toFixed(2)+' €')
+			$(".order .old_solde",this_selected_eleve).text(parseFloat(data.solde).toFixed(2)+' €')
+			$(".order .new_solde",this_selected_eleve).text(new_new_solde.toFixed(2)+' €')
 			$(".full_name .stars", this_selected_eleve).html(calcul_star(this_eleve));
 			
 			$('.litres_bus', this_eleve).text(parseFloat(data.litres_bus).toFixed(2));
 		}
 		
 		$("#popup_historique tr[command-id=\""+GET_args['id']+"\"]").remove();
+		
+		if ($('#popup_historique tr').size() == 0)
+			$('#popup_historique tbody').html('<tr><td>Aucune commande disponible pour l\'annulation</td></tr>');
 	}
 	
 	if (GET_args['action']=='order')
@@ -704,7 +736,10 @@ function ajax_callback(data, GET_args)
 		var command_prod_id = data.command_prod_id.split(',');
 		for (var i=0;i<command_prod_id.length-2;i++)
 		{
-			$("#popup_historique tr:nth-child(1)").before('<tr command-id="'+(parseFloat(data.command_id)+i+1)+'"><td class="id_command">'+(parseFloat(data.command_id)+i+1)+'</td><td>'+data.command_timestamp+'</td><td>'+data.command_util+'</td><td>'+command_prod_qtte[i+1]+'x <span class="miniature"><img src="images/produits/'+command_prod_icone[i+1]+'.png" alt="'+command_prod_icone[i+1]+'" /></span></td><td><img title="Annuler" class="cancel_command" src="images/icones/icons/cancel.png" alt="Annuler" /></td></tr>');
+			if ($("#popup_historique tr > td").text() == "Aucune commande disponible pour l'annulation")
+				$("#popup_historique table").html('<tr command-id="'+(parseFloat(data.command_id)+i)+'"><td class="id_command">'+(parseFloat(data.command_id)+i)+'</td><td>'+data.command_timestamp+'</td><td>'+data.command_util+'</td><td>'+command_prod_qtte[i+1]+'x <span class="miniature"><img src="images/produits/'+command_prod_icone[i+1]+'.png" alt="'+command_prod_icone[i+1]+'" /></span></td><td><img title="Annuler" class="cancel_command" src="images/icones/icons/cancel.png" alt="Annuler" /></td></tr>');
+			else
+				$("#popup_historique tr:nth-child(1)").before('<tr command-id="'+(parseFloat(data.command_id)+i)+'"><td class="id_command">'+(parseFloat(data.command_id)+i)+'</td><td>'+data.command_timestamp+'</td><td>'+data.command_util+'</td><td>'+command_prod_qtte[i+1]+'x <span class="miniature"><img src="images/produits/'+command_prod_icone[i+1]+'.png" alt="'+command_prod_icone[i+1]+'" /></span></td><td><img title="Annuler" class="cancel_command" src="images/icones/icons/cancel.png" alt="Annuler" /></td></tr>');
 		}
 		
 		$('.litres_bus', this_eleve).text(parseFloat(data.litres_bus).toFixed(2));

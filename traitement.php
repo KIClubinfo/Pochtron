@@ -96,10 +96,8 @@ function new_order()
 		
 		$i=0;
 		
-		$sql->rek('SELECT id FROM commandes ORDER BY id DESC LIMIT 1');
-		$commandes = $sql->fetch();
 		
-		$return_array['command_id'] = $commandes['id'];
+		$return_array['command_id'] = '';
 		$return_array['command_timestamp'] = ',';
 		$return_array['command_util'] = ',';
 		$return_array['command_prod_qtte'] = ',';
@@ -122,6 +120,9 @@ function new_order()
 				
 				$sql->rek('UPDATE produits SET qtt_reserve=\''.($products['qtt_reserve']-$order[$i][1]).'\', ventes=\''.($products['ventes']+$order[$i][1]).'\' WHERE id=\''.$products['id'].'\'', false);
 				$sql->rek('INSERT INTO commandes (id_user, timestamp, id_produit, qtte_produit) VALUES (\''.$_GET['id'].'\',\''.date("Y-m-d H:i:s").'\',\''.$products['id'].'\',\''.$order[$i][1].'\')', false);
+				
+				if (!$i)
+					$return_array['command_id'] = mysql_insert_id();
 				
 				$return_array['command_timestamp'] = date("Y-m-d H:i:s");
 				$return_array['command_util'] = $eleve['prenom'].' '.$eleve['nom'];

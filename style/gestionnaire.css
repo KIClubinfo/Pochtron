@@ -2,9 +2,15 @@
 /********************** MODIFICATION PAR RAPPORT AU DESIGN **********************/
 /********************************************************************************/
 
+html
+{
+	min-width:1000px;
+	min-height:600px;
+}
+
 *{
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
 }
 
 .central_large
@@ -63,6 +69,8 @@
 	overflow:hidden;
 	
 	width:100%;
+	font-size:12px;
+	font-weight:bold;
 }
 
 .gestion #list_eleves
@@ -111,8 +119,8 @@
 	border-style: solid solid none;
     border-radius: 5px 5px 0 0;
 	
-		
-	font-size:80%;	
+	font-weight:bold;	
+	font-size:100%;	
 }
 
 .gestion .article_content
@@ -229,6 +237,7 @@
 	padding:0;
 	text-align:center;
 	line-height:85px;
+	vertical-align:middle;
 }
  
 #list_eleves_table .table_row span:not(.cell_photo),#list_eleves_table .table_title span:not(.cell_photo)
@@ -241,7 +250,6 @@
 	vertical-align:middle;
 	position:relative;
 	border:1px solid #DDD;
-	margin-top:5%;
 }
  
 #list_eleves_table .cell_photo img
@@ -251,9 +259,19 @@
  
 #selected_eleves_table .cell_photo img
  {
-	width:90%;
+	max-width:90%;
+	max-height:90%;
 }
- 
+
+.old_solde
+{
+	color:rgb(224, 80, 32);
+}
+
+.new_solde
+{
+	color:rgb(36, 131, 160);
+}
  
 .table_content .not_shown, .table_content .selected, .table_content .id, .table_content .litres_bus, .table_content .active, .table_content .distinctions, .table_content .active, .table_content .url_photo, .table_content .comment
 {
@@ -399,17 +417,21 @@
 
 .product_img
 {
-	width:100%;
-	background-color:white;
-	height:70px;
 	position:absolute;
-	top:0;
 	overflow:hidden;
+	
+	width:100%;
+	height:70px;
+	line-height:70px;
+	text-align:center;
+	
+	background-color:white;
 }
 
 .product_item img
 {
 	width:100%;
+	vertical-align:middle;
 }
 
 .product_button
@@ -427,6 +449,9 @@
 	line-height:30px;
 	text-align:center;
 	cursor:pointer;
+	font-weight:bold;
+	padding:0 !important;
+	font-size:0.8em;
 }
 
 .product_item .whole
@@ -465,6 +490,18 @@
 /********************************************************************************/
 /*************************** BOUTONS ACTIONS GLOBALES ***************************/
 /********************************************************************************/
+
+#user_actions .with_icon
+{
+	padding-left:23px !important;
+	padding-right:8px !important;
+}
+
+#user_actions .without_icon
+{
+	padding-left:8px !important;
+	padding-right:8px !important;
+}
 
 input.valid_users, input.valid_users:hover
 {
@@ -512,8 +549,7 @@ img#pict_viewer
 	
 	height:25px;
 	width:25px;
-	
-	vertical-align:middle;
+
 	line-height:20px;
 	
 	background-color:white;
@@ -523,8 +559,8 @@ img#pict_viewer
 
 .miniature img
 {
-	vertical-align:middle;
 	width:100%;
+	vertical-align:middle;
 }
 
 /********************************************************************************/
@@ -746,6 +782,17 @@ html body #jGrowl .black_popup, .black_popup
 /******************************* POPUP HISTORIQUE *******************************/
 /********************************************************************************/
 
+#popup_historique tr td:nth-child(2n+1)
+{
+	color:rgb(224, 80, 32);
+}
+
+#popup_historique tr td:nth-child(2n)
+{
+	color:rgb(36, 131, 160);
+}
+
+
 #popup_historique
 {
 	position:fixed;
@@ -758,7 +805,9 @@ html body #jGrowl .black_popup, .black_popup
 	margin:1px solid #666;
 	border-radius:5px;
 	
-	z-index:800;	
+	font-weight:bold;
+	font-size:0.8em;
+	z-index:800;
 }
 
 .popup_historique table

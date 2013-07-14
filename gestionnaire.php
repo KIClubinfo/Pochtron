@@ -73,7 +73,11 @@ include_once 'inclus/tete.html.php';
 			<table class="lignes">
 				<tbody>
 				<?php 
-					$sql->rek( 'SELECT c.id, c.qtte_produit, c.id_produit, c.timestamp, e.prenom, e.nom, p.nom AS produit, p.icone FROM commandes c, clients e, produits p WHERE c.id_user = e.id AND c.id_produit=p.id ORDER BY c.id DESC LIMIT 10' );
+					$sql->rek( 'SELECT c.id, c.qtte_produit, c.id_produit, c.timestamp, e.prenom, e.nom, p.nom AS produit, p.icone FROM commandes c, clients e, produits p WHERE c.id_user = e.id AND c.id_produit=p.id AND 	DATE(`timestamp`) = CURDATE() ORDER BY c.id DESC LIMIT 10' );
+					
+					if ($sql->nbrlignes() == 0)
+						echo '<tr><td>Aucune commande disponible pour l\'annulation</td></tr>';
+					
 					while($command = $sql->fetch())
 					{
 						echo '<tr command-id="'.$command['id'].'"><td class="id_command">'.$command['id'].'</td><td>'.$command['timestamp'].'</td><td>'.$command['prenom'].' '.$command['nom'].'</td><td>'.$command['qtte_produit'].'x <span class="miniature"><img src="images/produits/'.$command['icone'].'.png" alt="'.$command['produit'].'" /></span></td><td><img title="Annuler" class="cancel_command" src="images/icones/icons/cancel.png" alt="Annuler" /></td></tr>';
@@ -240,10 +244,10 @@ include_once 'inclus/tete.html.php';
 				Validation & Options
 			</div>
 			<div class="article_content">
-				<input class="vert valid_users" type="submit" value="Valider" onClick="valid_all_users()">
-				<input class="cancel" type="reset" value="Annuler" onClick="cancel_all_users()">
-				<input class="vert add_extern_user" type="submit" value="Client externe" onClick="add_extern_user()">
-				<input class="cancel" type="reset" value="Historique" onClick="show_stats()">
+				<input class="vert valid_users with_icon" type="submit" value="Valider" onClick="valid_all_users()">
+				<input class="cancel with_icon" type="reset" value="Annuler" onClick="cancel_all_users()">
+				<input class="vert add_extern_user without_icon" type="submit" value="Client externe" onClick="add_extern_user()">
+				<input class="cancel with_icon" type="reset" value="Historique" onClick="show_stats()">
 			</div>
 		</article>
 	</div>
