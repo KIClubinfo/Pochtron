@@ -135,6 +135,14 @@ function new_order()
 
 		$sql->rek( 'UPDATE clients SET solde=\''.($new_solde).'\', litres_bus=\''.($new_litres_bus).'\', nb_consos=\''.($new_nb_consos).'\' WHERE id=\''.$_GET['id'].'\'');
 		
+		// Vérification du solde du client
+		if( $new_solde <= 0 ){
+		    // Envoi d'un courriel à l'élève
+		    
+		    // TODO: gestion des courriels
+		    
+		    
+		}
 		
 		$return_array['code_erreur'] = AJAX_OK;
 		$return_array['reponse'] = "Commande de ".$eleve['prenom']." ".$eleve['nom']." passée avec succès. Nouveau solde : ".($new_solde);

@@ -1,4 +1,0 @@
-TODO pour Mickaël :
-
-Gestionnaire d'historique
-Gestionnaire de sessions
