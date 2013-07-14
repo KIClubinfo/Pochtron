@@ -65,8 +65,6 @@ include_once 'inclus/tete.html.php';
 			</table>
 		</div>
 	</div>
-	<div id="modal_screen">
-	</div>
 	<div id="popup_historique">
 		<div class="title">
 			Historiques des commandes<span class="but_close">x</span>
@@ -93,6 +91,8 @@ include_once 'inclus/tete.html.php';
 			Commande
 		</div>
 		</div>
+	</div>
+	<div id="modal_screen">
 	</div>
   <div class="central_large bloc gestion">
    <a href="./" class="maison">Retour</a>

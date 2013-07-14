@@ -1,4 +1,6 @@
-/******* MODIFICATION PAR RAPPORT AU DESIGN *********/
+/********************************************************************************/
+/********************** MODIFICATION PAR RAPPORT AU DESIGN **********************/
+/********************************************************************************/
 
 *{
   box-sizing: border-box;
@@ -21,7 +23,9 @@
 	text-align:center;
 }
 
-/***************** MISE EN FORME DES DEUX COLONNES ***********************/
+/********************************************************************************/
+/*********************** MISE EN FORME DES DEUX COLONNES ************************/
+/********************************************************************************/
 
 .gestion > div 
 {
@@ -49,7 +53,9 @@
 	text-align:left;
 }
 
-/***************** LES QUATRES SECTIONS DE LA PAGE ***********************/
+/********************************************************************************/
+/********************* LES QUATRES SECTIONS DE LA PAGE **************************/
+/********************************************************************************/
 
 .gestion  article
 {
@@ -84,7 +90,9 @@
 	height:100%;
 }
 
+/*****************************************************************************************/
 /***************** MISE EN FORME D'UNE SECTION A PROPREMENT PARLER ***********************/
+/*****************************************************************************************/
 
 .gestion .article_title
 {
@@ -110,6 +118,7 @@
 .gestion .article_content
 {
 	position:relative;
+	overflow:hidden;
 	
 	width:100%;
 	
@@ -117,7 +126,9 @@
     border:1px solid #1A1819;
 }
 
-/***************** MISE EN FORME DES TABLES ELEVES ***********************/
+/********************************************************************************/
+/********************* MISE EN FORME DES TABLES ELEVES **************************/
+/********************************************************************************/
 
 #list_eleves_table, #selected_eleves_table
 {
@@ -159,11 +170,12 @@
 	
 	list-style-type:none; 
 	cursor:pointer;
+
 }
 
- .table_row:nth-child(2n+1) 
- {
-    background-color: rgba(0, 0, 0, 0.1);
+.gestion .table_row:last-child
+{		
+	border-bottom:1px solid #1A1819;
 }
 
  #list_eleves_table .table_row
@@ -180,6 +192,10 @@
 	font-size:12px;
  }
  
+ #selected_eleves_table .table_row:last-child
+{
+	border-radius:0px 0 0 6px;
+}
  
 .table_row > span, .table_title  > span
  {
@@ -212,6 +228,7 @@
 	width:10%;
 	padding:0;
 	text-align:center;
+	line-height:85px;
 }
  
 #list_eleves_table .table_row span:not(.cell_photo),#list_eleves_table .table_title span:not(.cell_photo)
@@ -222,7 +239,6 @@
  .table_content .cell_photo img
 {
 	vertical-align:middle;
-	height:90%;
 	position:relative;
 	border:1px solid #DDD;
 	margin-top:5%;
@@ -235,16 +251,18 @@
  
 #selected_eleves_table .cell_photo img
  {
-	max-width:100%;
+	width:90%;
 }
  
  
-.table_content .not_shown, .table_content .selected, .table_content .id, .table_content .litres_bus, .table_content .active, .table_content .distinctions, .table_content .active, .table_content .url_photo
+.table_content .not_shown, .table_content .selected, .table_content .id, .table_content .litres_bus, .table_content .active, .table_content .distinctions, .table_content .active, .table_content .url_photo, .table_content .comment
 {
 	display:none;
 }
 
+/********************************************************************************/
 /***************** MISE EN FORME DE LA BARRE DE RECHERCHE ***********************/
+/********************************************************************************/
 
 .gestion #search_bar
 {
@@ -257,7 +275,6 @@
 	background-color:rgba(0, 0, 0, 0.4);
 	font-weight:bold;
 }
-
 
 #to_search
 {
@@ -273,9 +290,9 @@
     background-repeat: no-repeat;
 }
 
+/**********************************************************************************/
 /***************** MISE EN FORME DE LA SELECTION DES ELEVES ***********************/
-
-
+/**********************************************************************************/
 
 #selected_eleves_table .full_name
 {
@@ -319,8 +336,6 @@
 	vertical-align:middle;
 }
 
-
-
 .command_pop
 {
 	position:absolute;
@@ -347,10 +362,10 @@
 	right:3px;
 }
 
+/********************************************************************************/
+/*********************** MISE EN FORME DES PRODUITS *****************************/
+/********************************************************************************/
 
-
-
-/***************** MISE EN FORME DES PRODUITS ***********************/
 .product_item
 {
 	display:inline-block;
@@ -447,6 +462,74 @@
 	border-radius: 0px 0px 4px 0px;
 }	
 
+/********************************************************************************/
+/*************************** BOUTONS ACTIONS GLOBALES ***************************/
+/********************************************************************************/
+
+input.valid_users, input.valid_users:hover
+{
+      padding-left: 30px;
+	
+	background-image: url("../images/icones/icons/accept.png");
+    background-position: 7px center;
+    background-repeat: no-repeat;
+}
+
+input.cancel 
+{
+    padding-left: 30px;
+	
+	background-image: url("../images/icones/icons/cancel.png");
+    background-position: 7px center;
+    background-repeat: no-repeat;
+}
+
+/********************************************************************************/
+/******************************* ZOOM PHOTO PROFIL ******************************/
+/********************************************************************************/
+
+img#pict_viewer
+{
+    position: absolute;
+	display: none;
+	
+    left: 30%;
+    top: 50%;
+	
+    border: 10px solid white;
+    box-shadow: 0 0 3px #1E1E1E;
+	
+	z-index: 105;
+}
+
+/********************************************************************************/
+/****************************** MINIATURES PRODUITS *****************************/
+/********************************************************************************/
+
+.miniature
+{
+	display:inline-block;
+	
+	height:25px;
+	width:25px;
+	
+	vertical-align:middle;
+	line-height:20px;
+	
+	background-color:white;
+	border:1px solid #555;
+	border-radius:2px;
+}
+
+.miniature img
+{
+	vertical-align:middle;
+	width:100%;
+}
+
+/********************************************************************************/
+/*********************************** POPUPs**************************************/
+/********************************************************************************/
 
 html body #jGrowl .white_popup
 {
@@ -521,22 +604,27 @@ html body #jGrowl .black_popup, .black_popup
 
 #popup_commande
 {
-	display:none;
 	position:absolute;
+	display:none;
+	
 	width:200px;
 	min-height:100px;
+	
 	padding-bottom:20px;
+	
 	z-index:1000;
 }
 
 .popup_title
 {
-	padding:5px;
-	font-weight:bold;
 	height:30px;
 	line-height:30px;
+	
+	padding:5px;
+	
 	text-align:left;
 	font-size:12px;
+	font-weight:bold;
 }	
 
 .popup_content
@@ -546,32 +634,11 @@ html body #jGrowl .black_popup, .black_popup
 	font-size:12px;
 }
 
-input.valid_users, input.valid_users:hover
-{
-    background-image: url("../images/icones/icons/accept.png");
-    background-position: 7px center;
-    background-repeat: no-repeat;
-    padding-left: 30px;
-}
-
-input.cancel 
-{
-    background-image: url("../images/icones/icons/cancel.png");
-    background-position: 7px center;
-    background-repeat: no-repeat;
-    padding-left: 30px;
-}
 
 
-img#pict_viewer{
-    display: none;
-    position: absolute;
-    left: 30%;
-    top: 50%;
-    border: 10px solid white;
-    z-index: 105;
-    box-shadow: 0 0 3px #1E1E1E;
-}
+/********************************************************************************/
+/******************************** PROMPT BOXES***********************************/
+/********************************************************************************/
 
 .prompt_box
 {
@@ -593,13 +660,80 @@ img#pict_viewer{
 	z-index:1000;
 }
 
+.prompt_box .title, #popup_historique .title
+{
+	background-color:#050505;
+	padding:10px;
+	font-weight:bold;
+}
+
+.prompt_box .content
+{
+	padding:10px;
+}	
+
+.prompt_box .buttons
+{
+	text-align:right;
+	padding-right:50px;
+}
+
+.prompt_box table
+{
+	width:100%;
+	margin-top:5px;
+}
+
+.prompt_box td
+{
+	height:40px;
+	line-height:40px;
+}
+
 .prompt_box .label
 {
 	width:50%;
+	padding-right:10px;
+	
 	text-align:right;
+	
 	font-weight:bold;
 	font-size:0.8em;
-	padding-right:10px;
+}
+
+.prompt_box input
+{
+	margin-bottom:8px;
+}
+
+.but_close
+{
+	position:absolute;
+	
+	right:15px;
+	
+	font-weight:bold;
+	color:#BBB;
+	cursor:pointer;
+}
+
+.but_close:hover
+{
+	color:white;
+}
+
+#modal_screen
+{
+	position:absolute;
+	display:none;
+	
+	width:100%;
+	height:100%;
+	
+	background-color:black;
+	opacity:0.3;
+	
+	z-index:799;
 }
 
 #prompt_box_extern.label
@@ -608,7 +742,9 @@ img#pict_viewer{
 	
 }
 
-
+/********************************************************************************/
+/******************************* POPUP HISTORIQUE *******************************/
+/********************************************************************************/
 
 #popup_historique
 {
@@ -625,94 +761,13 @@ img#pict_viewer{
 	z-index:800;	
 }
 
-body > div > .title
-{
-	background-color:#050505;
-	padding:10px;
-	font-weight:bold;
-}
-
-.prompt_box .content
-{
-	padding:10px;
-}	
-
-.prompt_box table
-{
-	margin-top:5px;
-	width:100%;
-}
-
-.prompt_box td
-{
-	line-height:40px;
-	height:40px;
-}
-
-.prompt_box input
-{
-	margin-bottom:8px;
-}
-
-.prompt_box .buttons
-{
-	text-align:right;
-	padding-right:50px;
-}
-
 .popup_historique table
 {
 	margin:0;
 }
 
-
-
-.miniature
-{
-	display:inline-block;
-	height:25px;
-	line-height:20px;
-	width:25px;
-	background-color:white;
-	border:1px solid #555;
-	border-radius:2px;
-	vertical-align:middle;
-}
-
-.miniature img
-{
-	vertical-align:middle;
-	width:100%;
-}
-
-
 .cancel_command
 {
 	vertical-align:middle;
 	cursor:pointer;
-}
-
-.but_close
-{
-	position:absolute;
-	cursor:pointer;
-	right:15px;
-	font-weight:bold;
-	color:#BBB;
-}
-
-.but_close:hover
-{
-	color:white;
-}
-
-#modal_screen
-{
-	position:absolute;
-	width:100%;
-	height:100%;
-	z-index:799;
-	opacity:0.3;
-	background-color:black;
-	display:none;
 }

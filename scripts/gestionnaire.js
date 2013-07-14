@@ -219,10 +219,11 @@ function add_selected_eleve(eleve)
 		//Sélection de l'élève à proprement parlé
 		$(eleve).children(".selected").html(1); //Changement de l'état de l'élève afin de ne plus l'afficher dans la liste des élèves
 		$("#selected_eleves .table_content").append("<li data-id=\""+id+"\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/"+url_photo+".jpg\"></span><span class=\"full_name\">"+firstname+" "+surname+"<br /><span class=\"stars\">"+calcul_star(eleve)+"</span><br />Distinctions : "+distinctions+"</span><span class=\"order\"><span class=\"old_solde\">Ancien solde : "+solde+" €</span><br /><span class=\"command\">Commande : </span><br /><div class=\"command_pop\">Détails</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div><span class=\"new_solde\">Nouveau solde :  "+solde+" €</span></span><span class=\"actions\"><a href=\"javascript:return false;\" class=\"valid_user\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a class=\"cancel_user\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a><a class=\"add_cash\" href=\"javascript:return false;\"><img alt=\"Ajout liquide\"  src=\"images/add.png\" /></a></span></li>");
-		$("#selected_eleves li").last().css("border-left","3px solid #12A332");
+		$("#selected_eleves li").last().css("border-left","5px solid rgb(18, 163, 50)");
 		$(".cell_photo img").mouseover(function() {
+			$("#pict_viewer").stop();
 			$("#pict_viewer").attr("src",$(this).attr("src"));
-			$("#pict_viewer").delay(1000).fadeIn();
+			$("#pict_viewer").delay(10).fadeIn();
 		    });
 		$(".cell_photo img").mouseout(function() {
 			$("#pict_viewer").fadeOut();
@@ -401,10 +402,12 @@ $(document).on('mouseleave',".table_row",function(){
 //Clic sur un élève de la liste des élèves sélectionnés afin de le déselectionner momentanément
 $(document).on('click',"#selected_eleves_table .table_row",function()
 {
-	if ($(this).css("border-left-width") == "3px")
-		$(this).css("border-left","0px none #12A332");
+	if ($(this).css("border-left-color") == "rgb(18, 163, 50)")
+		$(this).css("border-left","5px solid #333");
 	else
-		$(this).css("border-left","3px solid #12A332");
+		$(this).css("border-left","5px solid rgb(18, 163, 50)");
+		
+	
 });
 
 //Fermer boite de dialongue
@@ -632,7 +635,7 @@ function insert_extern_user()
 		name = $('#prompt_box_extern input[name="name"]').val();
 		
 	$("#selected_eleves .table_content").append("<li data-id=\"extern\" class=\"table_row\"><span class=\"cell_photo\"><img src=\"images/photos/sans_photo.jpg\"></span><span class=\"full_name\">"+name+"<br /></span><span class=\"order\"><span class=\"command\">Commande : </span><br /><div class=\"command_pop\">Détails</div><div class=\"command_script\">,</div><div class=\"command_details\"><span class=\"details_tot\">Total : 0 €</span></div><br /><span class=\"new_solde\">Les commandes externes doivent être immédiatement payées.</span></span><span class=\"actions\"><a href=\"javascript:return false;\" class=\"valid_user\"><img alt=\"Valider la commande\"src=\"images/valid.png\" /></a> <a class=\"cancel_user\" href=\"javascript:return false;\"><img alt=\"Annuler cette commande\" src=\"images/cancel.png\" /></a></span></li>");
-	$("#selected_eleves li").last().css("border-left","3px solid #12A332");
+	$("#selected_eleves li").last().css("border-left","5px solid rgb(18, 163, 50)");
 	
 	close_box($('#prompt_box_extern'));
 	resize_boxes();
