@@ -228,6 +228,7 @@ function extern_order()
 	global $return_array;
 	global $sql;
 	
+	$_GET['name_user'] = mysql_real_escape_string($_GET['name_user']);
 	$caisse = 0;
 	$pin_nb = 0;
 	
@@ -288,7 +289,7 @@ function extern_order()
 			{			
 				$new_caisse += $products['prix']*$order[$i][1];
 				$sql->rek('UPDATE produits SET qtt_reserve=\''.($products['qtt_reserve']-$order[$i][1]).'\', ventes=\''.($products['ventes']+$order[$i][1]).'\' WHERE id=\''.$products['id'].'\'', false);
-				$sql->rek('INSERT INTO commandes (id_user, timestamp, id_produit, qtte_produit) VALUES (\'32000\',\''.date("Y-m-d H:i:s").'\',\''.$products['id'].'\',\''.$order[$i][1].'\')', false);
+				$sql->rek('INSERT INTO commandes_externes (name_user, timestamp, id_produit, qtte_produit) VALUES (\''.$_GET['name_user'].'\',\''.date("Y-m-d H:i:s").'\',\''.$products['id'].'\',\''.$order[$i][1].'\')', false);
 			}
 			$i++;
 		}

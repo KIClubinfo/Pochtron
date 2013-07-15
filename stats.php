@@ -32,7 +32,7 @@ while($a = $sql->fetch()){
     </thead>
     <tbody>
     <?php
-$sql->rek( " select count(*) as nb,p.nom from commandes as c, produits as p where c. id_produit = p.id  group by c.id_produit order by count(*) DESC LIMIT 10;" );
+$sql->rek( "select count(*) as nb,p.nom from commandes as c, produits as p where c. id_produit = p.id  group by c.id_produit order by count(*) DESC LIMIT 10;" );
 $r = 1;
 while($a = $sql->fetch()){
     echo '<tr><td>'.($r++).'</td><td>'.$a['nom'].'</td><td>'.$a['nb'].'</td></tr>';

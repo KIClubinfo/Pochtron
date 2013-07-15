@@ -610,7 +610,7 @@ function valid_extern_user(elem)
 {
 	var pin = $('#prompt_box_pin input[name="pin"]').val();
 	
-	var GET_args =  {'action':'extern_order', 'pin':pin, 'consom':$(elem).parent().parent().children('.command_script').text()};//Arguments de la requète GET
+	var GET_args =  {'action':'extern_order', 'pin':pin, 'consom':$(elem).parent().parent().children('.command_script').text(), name_user:$(elem).parent().parent().children('.full_name').text()};//Arguments de la requète GET
 	ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
 
 	cancel_user(elem);
@@ -624,7 +624,7 @@ function valid_all_extern_user()
 	
 	$("#selected_eleves_table .table_row[data-id=\"extern\"]" ).each(function (i) 
 	{
-		var GET_args =  {'action':'extern_order', 'pin':pin, 'consom':$('.command_script',this).text()};//Arguments de la requète GET
+		var GET_args =  {'action':'extern_order', 'pin':pin, 'consom':$('.command_script',this).text(), name_user:$('.full_name',this).text()};//Arguments de la requète GET
 		ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
 
 		cancel_user($(".actions > a", this));
