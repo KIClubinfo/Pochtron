@@ -32,7 +32,20 @@ while($a = $sql->fetch()){
     </thead>
     <tbody>
     <?php
-$sql->rek( "select count(*) as nb,p.nom from commandes as c, produits as p where c. id_produit = p.id  group by c.id_produit order by count(*) DESC LIMIT 10;" );
+$sql->rek( "SELECT SUM(qtte) AS nb, nom FROM
+(
+	SELECT c.qtte_produit as qtte, p.nom AS nom
+	FROM commandes as c, produits as p
+	WHERE c.id_produit = p.id
+	
+	UNION ALL
+	
+	SELECT c.qtte_produit as qtte, p.nom AS nom
+	FROM commandes_externes as c, produits as p
+	WHERE c.id_produit = p.id
+
+) t
+GROUP BY nom ORDER BY nb DESC LIMIT 10;" );
 $r = 1;
 while($a = $sql->fetch()){
     echo '<tr><td>'.($r++).'</td><td>'.$a['nom'].'</td><td>'.$a['nb'].'</td></tr>';
@@ -50,6 +63,7 @@ $litres = Array();
 $dates = Array();
 
 // Remplissage du graphe (tous types confondus)
+//Pré-requète : nombre de dates à afficher (afin d'initialiser les tableaux avec des 0)
 $sql->rek( "SELECT date
 FROM (
 	SELECT DATE(SUBTIME(timestamp,'0 6:0:0')) as date FROM commandes
@@ -63,6 +77,7 @@ while($a = $sql->fetch())
 	$dates[] = $a['date'];
 }
 
+//Récupération des stats à proprement parler
 $sql->rek( "SELECT date, SUM(qtte_produit) as qtte_produit, nom_produit, id_produit
 FROM (
     SELECT DATE(SUBTIME(a.timestamp,'0 6:0:0')) as date, a.qtte_produit as qtte_produit, CONCAT(b.nom,' ',b.vol,'L') as nom_produit, a.id_produit 
@@ -79,14 +94,12 @@ GROUP BY date, id_produit
 ORDER BY date DESC,id_produit;" );
 
 
-
 while($a = $sql->fetch()){
     // Si le produit n'est pas encore enregistré on l'enregistre
-	
-	
-    if(!isset($consommations[$a['nom_produit']])) 
-	{$consommations[$a['nom_produit']] = Array();
-		for ($i = 0;$i<count($dates);$i++)
+	if(!isset($consommations[$a['nom_produit']])) 
+	{
+		$consommations[$a['nom_produit']] = Array();
+		for ($i = 0;$i<count($dates);$i++)//On remplit avec des 0
 			$consommations[$a['nom_produit']][$dates[$i]] = '[Date.UTC('.date('Y,m,d',strtotime($dates[$i])).'),0]';
 	}
     // Et on ajoute le point du graphe correspondant
@@ -94,10 +107,23 @@ while($a = $sql->fetch()){
 }
 
 // Remplissage du graphe (tous types confondus)
-$sql->rek( "select sum( p.vol * c. qtte_produit ) as volume, DATE(SUBTIME(c.timestamp,'0 6:0:0')) as date from commandes as c, produits as p WHERE c.id_produit = p.id GROUP BY DATE(SUBTIME(c.timestamp,'0 6:0:0')) order by c.timestamp;" );
+$sql->rek( "SELECT SUM(volume) as volume_tot, date
+FROM (
+	SELECT p.vol * c.qtte_produit AS volume, DATE(SUBTIME(c.timestamp,'0 6:0:0')) AS date
+	FROM commandes AS c, produits AS p
+	WHERE c.id_produit = p.id
+	
+	UNION ALL
+	SELECT p.vol * c.qtte_produit AS volume, DATE(SUBTIME(c.timestamp,'0 6:0:0')) AS date
+	FROM commandes_externes AS c, produits AS p
+	WHERE c.id_produit = p.id
+	) T
+GROUP BY date
+ORDER BY date DESC;");
+
 while($a = $sql->fetch()){
     // On ajoute le point du graphe correspondant
-    $litres[] = '[Date.UTC('.date('Y,m,d',strtotime($a['date'])).'),'.$a['volume'].']';
+    $litres[] = '[Date.UTC('.date('Y,m,d',strtotime($a['date'])).'),'.$a['volume_tot'].']';
 }
 
 ?>
