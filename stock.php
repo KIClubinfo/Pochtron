@@ -190,7 +190,7 @@ $("table#stocks input[type='image']").click(function(){
     prix: $(this).closest("tr").find("input[name='prix']").val(),
     volume: $(this).closest("tr").find("input[name='volume']").val(),
     qtt_reserve: $(this).closest("tr").find("input[name='qtt_reserve']").val()
-  },
+  }, s
   function(data,status){
     if(status=="success" && data=="1"){
       $("#notifs").prepend('<div class="notif yeah estompe"><strong>Modification effectuée</strong>Ce produit a bien été modifié.</div>');
