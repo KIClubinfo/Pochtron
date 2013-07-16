@@ -62,7 +62,7 @@ $consommations = Array();
 $litres = Array();
 $dates = Array();
 
-// Remplissage du graphe (tous types confondus)
+// Remplissage du graphe affichant l'évolution de chaque produit
 //Pré-requète : nombre de dates à afficher (afin d'initialiser les tableaux avec des 0)
 $sql->rek( "SELECT date
 FROM (
@@ -95,15 +95,17 @@ ORDER BY date DESC,id_produit;" );
 
 
 while($a = $sql->fetch()){
+
+	$a['nom_produit'] = htmlspecialchars_decode($a['nom_produit'], ENT_QUOTES);
     // Si le produit n'est pas encore enregistré on l'enregistre
 	if(!isset($consommations[$a['nom_produit']])) 
 	{
 		$consommations[$a['nom_produit']] = Array();
 		for ($i = 0;$i<count($dates);$i++)//On remplit avec des 0
-			$consommations[$a['nom_produit']][$dates[$i]] = '[Date.UTC('.date('Y,m,d',strtotime($dates[$i])).'),0]';
+			$consommations[$a['nom_produit']][$dates[$i]] = '[Date.UTC('.date('Y,m,d',strtotime("-1 month", strtotime($dates[$i]))).'),0]';
 	}
     // Et on ajoute le point du graphe correspondant
-    $consommations[$a['nom_produit']][$a['date']] = '[Date.UTC('.date('Y,m,d',strtotime($a['date'])).'),'.$a['qtte_produit'].']';
+    $consommations[$a['nom_produit']][$a['date']] = '[Date.UTC('.date('Y,m,d',strtotime("-1 month", strtotime($a['date']))).'),'.$a['qtte_produit'].']';
 }
 
 // Remplissage du graphe (tous types confondus)
@@ -119,12 +121,14 @@ FROM (
 	WHERE c.id_produit = p.id
 	) T
 GROUP BY date
-ORDER BY date DESC;");
+ORDER BY date ASC;");
 
 while($a = $sql->fetch()){
     // On ajoute le point du graphe correspondant
-    $litres[] = '[Date.UTC('.date('Y,m,d',strtotime($a['date'])).'),'.$a['volume_tot'].']';
+    $litres[] = '[Date.UTC('.date('Y,m,d',strtotime("-1 month", strtotime($a['date']))).'),'.$a['volume_tot'].']';
 }
+
+print_r($litres);
 
 ?>
     <script>
