@@ -34,13 +34,13 @@ while($a = $sql->fetch()){
     <?php
 $sql->rek( "SELECT SUM(qtte) AS nb, nom FROM
 (
-	SELECT c.qtte_produit as qtte, p.nom AS nom
+	SELECT c.qtte_produit as qtte, CONCAT(p.nom,' ',p.vol,'L') AS nom
 	FROM commandes as c, produits as p
 	WHERE c.id_produit = p.id
 	
 	UNION ALL
 	
-	SELECT c.qtte_produit as qtte, p.nom AS nom
+	SELECT c.qtte_produit as qtte, CONCAT(p.nom,' ',p.vol,'L') AS nom
 	FROM commandes_externes as c, produits as p
 	WHERE c.id_produit = p.id
 
