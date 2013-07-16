@@ -49,7 +49,7 @@ $consommations = Array();
 $litres = Array();
 
 // Remplissage du graphe (tous types confondus)
-$sql->rek( "SELECT date, SUM(qtte_produit), nom_produit, id_produit
+$sql->rek( "SELECT date, SUM(qtte_produit) as qtte_produit, nom_produit, id_produit
 FROM (
     SELECT DATE(SUBTIME(a.timestamp,'0 6:0:0')) as date, a.qtte_produit as qtte_produit, CONCAT(b.nom,' ',b.vol,'L') as nom_produit, a.id_produit 
 	FROM commandes as a, produits as b 
