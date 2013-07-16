@@ -1,6 +1,6 @@
 function modif_solde(retrait){
   document.getElementById("solderestant").innerHTML = Math.round(( document.getElementById("soldeactuel").innerHTML - retrait)*100)/100;
-}
+} 
 
 // Estomper les éléments qui le demandent
 $(document).ready(function(){
