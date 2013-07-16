@@ -49,7 +49,20 @@ $consommations = Array();
 $litres = Array();
 
 // Remplissage du graphe (tous types confondus)
-$sql->rek( "SELECT DATE(SUBTIME(a.timestamp,'0 6:0:0')) as date,a.`qtte_produit`,CONCAT(b.nom,' ',b.vol,'L') as `nom_produit` FROM commandes as a, produits as b WHERE  a.id_produit = b.id GROUP BY a.id_produit,DATE(SUBTIME(a.timestamp,'0 6:0:0')) UNION SELECT DATE(SUBTIME(c.timestamp,'0 6:0:0')) as date,c.`qtte_produit`,CONCAT(b.nom,' ',b.vol,'L') as `nom_produit` FROM commandes_externes as c, produits as b WHERE  c.id_produit = b.id GROUP BY c.id_produit,DATE(SUBTIME(c.timestamp,'0 6:0:0')) ORDER BY date DESC;" );
+$sql->rek( "SELECT date, SUM(qtte_produit), nom_produit, id_produit
+FROM (
+    SELECT DATE(SUBTIME(a.timestamp,'0 6:0:0')) as date, a.qtte_produit as qtte_produit, CONCAT(b.nom,' ',b.vol,'L') as nom_produit, a.id_produit 
+	FROM commandes as a, produits as b 
+	WHERE  a.id_produit = b.id
+
+    UNION ALL
+
+    SELECT DATE(SUBTIME(a.timestamp,'0 6:0:0')) as date, a.qtte_produit as qtte_produit, CONCAT(b.nom,' ',b.vol,'L') as nom_produit, a.id_produit 
+	FROM commandes_externes as a, produits as b 
+	WHERE  a.id_produit = b.id
+) as t
+GROUP BY date, id_produit
+ORDER BY date DESC, id_produit;" );
 while($a = $sql->fetch()){
     // Si le produit n'est pas encore enregistré on l'enregistre
     if(!isset($consommations[$a['nom_produit']])) $consommations[$a['nom_produit']] = Array();
