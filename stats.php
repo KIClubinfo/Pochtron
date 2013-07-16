@@ -128,7 +128,6 @@ while($a = $sql->fetch()){
     $litres[] = '[Date.UTC('.date('Y,m,d',strtotime("-1 month", strtotime($a['date']))).'),'.$a['volume_tot'].']';
 }
 
-print_r($litres);
 
 ?>
     <script>

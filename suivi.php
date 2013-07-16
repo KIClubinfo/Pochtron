@@ -56,7 +56,14 @@ while($a = $sql->fetch()){
     @($futs[$session][$a['type']] = $a['nb']);
 }
 
-$sql->rek( "SELECT a.`timestamp`,a.`qtte_produit`,CONCAT(b.nom,' ',b.vol) as `nom_produit`,CONCAT(c.prenom,' ',c.nom) as `nom_client` FROM commandes as a, clients as c, produits as b WHERE a.id_user = c.id AND a.id_produit = b.id $d_limit ORDER BY DATE(SUBTIME(a.timestamp,'0 6:0:0')) DESC, timestamp ASC, qtte_produit ASC" );
+$sql->rek( "SELECT timestamp, qtte_produit, nom_produit, nom_client
+FROM (
+SELECT a.`timestamp`,a.`qtte_produit`,CONCAT(b.nom,' ',b.vol) as `nom_produit`,CONCAT(c.prenom,' ',c.nom) as `nom_client` FROM commandes as a, clients as c, produits as b WHERE a.id_user = c.id AND a.id_produit = b.id $d_limit
+UNION ALL
+SELECT a.`timestamp`,a.`qtte_produit`,CONCAT(b.nom,' ',b.vol) as `nom_produit`,CONCAT('Externe : ',a.name_user) as `nom_client` FROM commandes_externes as a, produits as b WHERE a.id_produit = b.id $d_limit
+) T
+
+ ORDER BY DATE(SUBTIME(timestamp,'0 6:0:0')) DESC, timestamp ASC, qtte_produit ASC;" );
 
 while($a = $sql->fetch()){
   $t = strtotime($a['timestamp']);
