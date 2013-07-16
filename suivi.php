@@ -98,7 +98,15 @@ while($a = $sql->fetch()){
 }
 
 echo '</tbody></table>';
+if (isset($session))
+{
 affiche_consos($consos,$session,$futs[$session]);
+}
+else
+{
+	echo 'Aucune commande enregistrée';
+}
+
 $contenu = ob_get_clean();
 
 echo '<h2>Liste des foyers</h2><ul class="liste-foyers">';

@@ -539,29 +539,6 @@ img#pict_viewer
 	z-index: 105;
 }
 
-/********************************************************************************/
-/****************************** MINIATURES PRODUITS *****************************/
-/********************************************************************************/
-
-.miniature
-{
-	display:inline-block;
-	
-	height:25px;
-	width:25px;
-
-	line-height:20px;
-	
-	background-color:white;
-	border:1px solid #555;
-	border-radius:2px;
-}
-
-.miniature img
-{
-	width:100%;
-	vertical-align:middle;
-}
 
 /********************************************************************************/
 /*********************************** POPUPs**************************************/
@@ -807,7 +784,7 @@ html body #jGrowl .black_popup, .black_popup
 	
 	font-weight:bold;
 	font-size:0.8em;
-	z-index:800;
+	z-index:10000;
 }
 
 .popup_historique table

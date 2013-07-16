@@ -120,7 +120,7 @@ include_once 'inclus/tete.html.php';
 							<div class="overview">	
 								<ul class="table_content">
 								<?php
-									$sql->rek( 'SELECT * FROM clients ORDER BY nom ASC' );
+									$sql->rek( 'SELECT * FROM clients WHERE active != \'inactif\' ORDER BY nom ASC' );
 									while($a = $sql->fetch())
 									{
 									?>
