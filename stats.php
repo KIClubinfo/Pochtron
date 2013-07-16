@@ -47,8 +47,22 @@ while($a = $sql->fetch()){
 // Affichage du graphe
 $consommations = Array();
 $litres = Array();
+$dates = Array();
 
 // Remplissage du graphe (tous types confondus)
+$sql->rek( "SELECT date
+FROM (
+	SELECT DATE(SUBTIME(timestamp,'0 6:0:0')) as date FROM commandes
+	UNION ALL
+	SELECT DATE(SUBTIME(timestamp,'0 6:0:0')) as date FROM commandes_externes
+) t
+GROUP BY date;");
+
+while($a = $sql->fetch())
+{
+	$dates[] = $a['date'];
+}
+
 $sql->rek( "SELECT date, SUM(qtte_produit) as qtte_produit, nom_produit, id_produit
 FROM (
     SELECT DATE(SUBTIME(a.timestamp,'0 6:0:0')) as date, a.qtte_produit as qtte_produit, CONCAT(b.nom,' ',b.vol,'L') as nom_produit, a.id_produit 
@@ -62,12 +76,21 @@ FROM (
 	WHERE  a.id_produit = b.id
 ) as t
 GROUP BY date, id_produit
-ORDER BY date DESC, id_produit;" );
+ORDER BY date DESC,id_produit;" );
+
+
+
 while($a = $sql->fetch()){
     // Si le produit n'est pas encore enregistré on l'enregistre
-    if(!isset($consommations[$a['nom_produit']])) $consommations[$a['nom_produit']] = Array();
+	
+	
+    if(!isset($consommations[$a['nom_produit']])) 
+	{$consommations[$a['nom_produit']] = Array();
+		for ($i = 0;$i<count($dates);$i++)
+			$consommations[$a['nom_produit']][$dates[$i]] = '[Date.UTC('.date('Y,m,d',strtotime($dates[$i])).'),0]';
+	}
     // Et on ajoute le point du graphe correspondant
-    $consommations[$a['nom_produit']][] = '[Date.UTC('.date('Y,m,d',strtotime($a['date'])).'),'.$a['qtte_produit'].']';
+    $consommations[$a['nom_produit']][$a['date']] = '[Date.UTC('.date('Y,m,d',strtotime($a['date'])).'),'.$a['qtte_produit'].']';
 }
 
 // Remplissage du graphe (tous types confondus)
