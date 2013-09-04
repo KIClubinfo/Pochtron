@@ -127,7 +127,7 @@ if ($erreur==-1) //On vérifie que tout s'est bien déroulé avant
 			}
 			else
 			{
-				$pict_groups = search_in_groups($fullname,'weitspirit');//Deuxième tentative : recherche dans le groupe WEI'T SPIRIT
+				$pict_groups = search_in_groups($fullname,'359646667495742');//Deuxième tentative : recherche dans le groupe WEI'T SPIRIT
 			
 				if ($pict_groups)
 				{
