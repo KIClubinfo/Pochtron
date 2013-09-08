@@ -221,6 +221,7 @@ function add_cash()
 			$return_array['id'] = $eleve['id'];
 			$return_array['code_erreur'] = AJAX_OK;
 			$return_array['reponse'] = "Le solde de ".$eleve['prenom']." ".$eleve['nom']." a bien été augmenté";
+			logue("Ajout de cash pour ".$eleve['prenom']." ".$eleve['nom']." : {$eleve['solde']}+{$_GET['cash']}=$new_solde (caisse à $new_caisse).","caisse","info");
 		}
 	}
 	else
