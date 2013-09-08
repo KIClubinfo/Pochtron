@@ -505,6 +505,9 @@ table.clients tbody td:first-child{
  padding: 2px;
   vertical-align: middle;
 }
+table.clients tbody td:last-child{
+ min-width: 95px;
+}
 
 
 form > table.lignes{
