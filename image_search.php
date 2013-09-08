@@ -127,18 +127,29 @@ if ($erreur==-1) //On vérifie que tout s'est bien déroulé avant
 			}
 			else
 			{
-				$pict_friends = search_in_friends($fullname,'me');//Seconde tentative : recherche dans les amis de Charles BOCHET
+				$pict_groups = search_in_groups($fullname,'359646667495742');//Deuxième tentative : recherche dans le groupe WEI'T SPIRIT
 			
-				if ($pict_friends)
+				if ($pict_groups)
 				{
-					$erreur = 0;
-					$reponse = $pict_friends;
+					$erreur=0;
+					$reponse = $pict_groups;
 					continue;
 				}
 				else
 				{
-					$erreur = 300;
-					$reponse = "Aucun résultat. Désolé";
+					$pict_friends = search_in_friends($fullname,'me');//Troisième tentative : recherche dans les amis de Charles BOCHET
+				
+					if ($pict_friends)
+					{
+						$erreur = 0;
+						$reponse = $pict_friends;
+						continue;
+					}
+					else
+					{
+						$erreur = 300;
+						$reponse = "Aucun résultat. Désolé";
+					}
 				}
 			}
 		}

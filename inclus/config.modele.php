@@ -1,7 +1,7 @@
 <?php
 
 // Logiciel
-define('_VERSION',0.5);
+define('_VERSION',0.6);
 define('_TITRE_PAR_DEFAUT','Caisse foyer '._VERSION); // Titre par défaut pour les pages du site
 
 // Accès administration

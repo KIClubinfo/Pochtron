@@ -227,7 +227,11 @@ function add_selected_eleve(eleve)
 	//Vérifie que l'élève n'est pas bloqué
 	if (active == 'bloqué')
 	{
-		alert("Client bloqué");
+		$.jGrowl('Client bloqué', { group:'blue_popup', life: 10000 });
+	}
+	else if (active == 'inactif')
+	{
+		$.jGrowl('Client désactivé', { group:'blue_popup', life: 10000 });
 	}
 	else
 	{
@@ -348,6 +352,7 @@ function add_product(elem)
 	var name = $(elem).parent().siblings(".product_name").text();
 	var img = $(elem).parent().siblings(".product_img").html();
 	var prix = parseFloat($(elem).val());
+	var is_one_selected = 0;
 	
 	//Pour chaque élève de la liste des élèves sélectionnés
 	$("#selected_eleves_table .table_row" ).each(function () 
@@ -383,10 +388,10 @@ function add_product(elem)
 				$(".order .command span[data-id=\""+id+"\"] span:nth-child(1)", this).text(nb);//Modification des quantités dans le détail de la commande
 				$(".order .details_item[data-id=\""+id+"\"] .left span", this).text(nb);//Ici aussi
 				
-				var new_prix = parseFloat($(".order .details_item[data-id=\""+id+"\"] .right").text());
+				var new_prix = parseFloat($(".order .details_item[data-id=\""+id+"\"] .right", this).text());
 				new_prix += prix;//Maj du prix
 				
-				$(".order .details_item[data-id=\""+id+"\"] .right").text(new_prix.toFixed(2)+" €");//Et on l'affiche
+				$(".order .details_item[data-id=\""+id+"\"] .right", this).text(new_prix.toFixed(2)+" €");//Et on l'affiche
 			}
 			else //Sinon c'est pratiquement pareil
 			{
@@ -398,20 +403,24 @@ function add_product(elem)
 				{
 					$(".order .command_script",this).append(id+":1,");
 					
-					$(".order .command", this).append("<span data-id=\""+id+"\"><span>1</span>x <span class=\"miniature\">"+ img+"</span></span> ");
-					$(".order .command img", this).last().attr("data-id", id);
+					$(".order .command", this).append("<span data-id=\""+id+"\"><span>1</span>x <span class=\"miniature\">"+img+"</span></span> ");
+					$(".order .command img", this).last().attr("data-id", id).attr('title',name.trim());
 					
 					$(".order .command_details .details_tot", this).before("<div class=\"details_item\" data-id=\""+id+"\"><span class=\"left\"><span>1</span> "+name+"</span><span class=\"right\">"+prix.toFixed(2)+" €</span></div>");
 				}
 			}
 			
 			if ($(this).attr("data-id") != 'extern')
-			{
 				$(".order .new_solde",this).text(new_solde.toFixed(2)+" €");
-				$(".order .details_tot",this).text("Total : "+new_tot.toFixed(2)+" €");
-			}
+	
+			$(".order .details_tot",this).text("Total : "+new_tot.toFixed(2)+" €");
+			
+			is_one_selected = 1;
 		} 
 	});
+	
+	if (!is_one_selected)
+		$.jGrowl('Vous devez d\'abord sélectionner un élève !', { group:'blue_popup', life: 10000 });
 }
 	
 //Variable globale pour mémoriser la couleur initiale de la ligne survolée.	
@@ -470,7 +479,7 @@ $(document).on('click',".cancel_command",function()
 //Popup de détail de la commande
 $(document).on('mouseenter',".command_pop",function(){
 	$("#popup_commande .popup_content").html($(this).siblings(".command_details").html());
-	$("#popup_commande").css({"display":"block", "top":$(this).offset().top-50, "left":$(this).offset().left+50});
+	$("#popup_commande").css({"display":"block", "top":$(this).offset().top-50, "left":$(this).offset().left+150});
 });
 
 //Idem
@@ -610,7 +619,7 @@ function valid_extern_user(elem)
 {
 	var pin = $('#prompt_box_pin input[name="pin"]').val();
 	
-	var GET_args =  {'action':'extern_order', 'pin':pin, 'consom':$(elem).parent().parent().children('.command_script').text()};//Arguments de la requète GET
+	var GET_args =  {'action':'extern_order', 'pin':pin, 'consom':$(elem).parent().parent().children('.command_script').text(), name_user:$(elem).parent().parent().children('.full_name').text()};//Arguments de la requète GET
 	ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
 
 	cancel_user(elem);
@@ -624,7 +633,7 @@ function valid_all_extern_user()
 	
 	$("#selected_eleves_table .table_row[data-id=\"extern\"]" ).each(function (i) 
 	{
-		var GET_args =  {'action':'extern_order', 'pin':pin, 'consom':$('.command_script',this).text()};//Arguments de la requète GET
+		var GET_args =  {'action':'extern_order', 'pin':pin, 'consom':$('.command_script',this).text(), name_user:$('.full_name',this).text()};//Arguments de la requète GET
 		ajax_url("traitement.php", GET_args, ajax_callback, ajax_error);//Appel AJAX
 
 		cancel_user($(".actions > a", this));
