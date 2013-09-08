@@ -508,6 +508,9 @@ table.clients tbody td:first-child{
 table.clients tbody td:last-child{
  min-width: 95px;
 }
+table.clients tbody td select{
+    width: auto;
+}
 
 
 form > table.lignes{
