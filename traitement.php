@@ -181,7 +181,7 @@ function add_cash()
 	}
 	
 	$_GET['id'] = intval($_GET['id']); // Empêche l'injection SQL
-	$_GET['cash'] = intval($_GET['cash']); 
+	$_GET['cash'] = floatval($_GET['cash']); 
 	
 	$sql->rek( 'SELECT * FROM bar WHERE id IN (\'caisse\', \'PIN1\', \'PIN2\')');//Requète
 	while ($bar = $sql->fetch())
