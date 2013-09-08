@@ -1,5 +1,5 @@
 <?php
-define('page_titre', "Caisse &bull; Caisse Foyer");
+define('page_titre', "Clients &bull; Caisse Foyer");
 
 include_once 'inclus/zoneadmin.inc.php';
 
