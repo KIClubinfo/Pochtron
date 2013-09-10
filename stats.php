@@ -11,7 +11,7 @@ include_once 'inclus/tete.html.php';
     <div class="notif estompe">Vous pouvez ici consulter l'évolution de la consommations des différents produits depuis le début du logiciel.</div>
     <div class="darkbox" id="consos"></div>
     <table class="lignes" id="bestdrunks">
-    <caption><span>Meilleurs buveurs du foyer <img class="action" src="images/icones/icons/bullet_go.png" alt="Voir tous" onclick="location.href='stats.php?L=1000" title="Voir le classement complet..."></span></caption>
+    <caption><span>Meilleurs buveurs du foyer <img class="action" src="images/icones/icons/bullet_go.png" alt="Voir tous" onclick="location.href='stats.php?L=1000'" title="Voir le classement complet..."></span></caption>
     <thead>
     <tr><th>Rang</th><th>Nom</th><th>Litres ingérés</th></tr>
     </thead>
