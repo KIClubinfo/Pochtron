@@ -17,7 +17,8 @@ include_once 'inclus/tete.html.php';
     </thead>
     <tbody>
     <?php
-$sql->rek( "select CONCAT(prenom,' ',nom) as nom, promo, litres_bus from clients WHERE active='activé' ORDER BY litres_bus DESC LIMIT 10;" );
+$lim = empty($_GET['L']) ? 10 : intval($_GET['L']);
+$sql->rek( "select CONCAT(prenom,' ',nom) as nom, promo, litres_bus from clients WHERE active='activé' ORDER BY litres_bus DESC LIMIT $lim;" );
 $r = 1;
 while($a = $sql->fetch()){
     echo '<tr><td>'.($r++).'</td><td>'.$a['nom'].(empty($a['promo']) ? '':" [{$a['promo']}]").'</td><td>'.$a['litres_bus'].'</td></tr>';
