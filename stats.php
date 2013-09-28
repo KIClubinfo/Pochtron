@@ -183,7 +183,8 @@ while($a = $sql->fetch()){
         <?php
         $series = Array();
         foreach($consommations as $nom => $js_data) {
-	    $nom = str_replace("'",'',$nom); // Pour empêcher l'injection JS
+	    
+	    $nom = str_replace("'","\'",html_entity_decode($nom,ENT_QUOTES,'utf-8')); // Pour empêcher l'injection JS
 	    
             $series[] = "{ name: '$nom', data: [" . implode(',',$js_data) . ']}';
         }
