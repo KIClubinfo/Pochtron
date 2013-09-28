@@ -597,7 +597,10 @@ function send_cash_request(id)
 	close_box($('#prompt_box_cash'));
 }
 
-function get_pin(all, elem=0)
+function get_pin(all){
+    get_pin(all, 0);
+}
+function get_pin(all, elem)
 {
 	if (all)
 	{
