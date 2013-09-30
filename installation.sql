@@ -69,7 +69,6 @@ CREATE TABLE IF NOT EXISTS `commandes` (
   `id_produit` smallint(5) NOT NULL,
   `qtte_produit` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
