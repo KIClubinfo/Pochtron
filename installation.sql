@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `promo` varchar(5) COLLATE utf8_bin NOT NULL,
   `distinction` enum('pookie','petit joueur','habitue','bide-a-biere','pochtron','bitumeux','roidufoyer','legende') COLLATE utf8_bin NOT NULL DEFAULT 'pookie',
   `litres_bus` decimal(6,2) NOT NULL,
+  `eq_kro` decimal(6,2) NOT NULL,
   `commentaire` text COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Liste de tous les clients du foyer';
@@ -70,6 +71,16 @@ CREATE TABLE IF NOT EXISTS `commandes` (
   `qtte_produit` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE IF NOT EXISTS `commandes_externes` (
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `name_user` varchar(50) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id_produit` smallint(6) NOT NULL,
+  `qtte_produit` smallint(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
