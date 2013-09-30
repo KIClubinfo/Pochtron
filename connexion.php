@@ -15,7 +15,6 @@ ob_start();
 
 $head_HTML = '<script type="text/javascript" src="scripts/admin.js"></script>';
 include_once 'inclus/tete.html.php';
-
 ?>
   <div class="central bloc caisse">
    <a href="./index.php" class="maison">Retour</a>
@@ -34,7 +33,7 @@ if(!empty($_POST['passe'])){
 	exit();
     }
     else{
-	logue("Tentative échouée de connexion à l'interface d'administration","connexion","warn");
+	logue("Tentative échouée de connexion à l'interface d'administration par {$_SERVER['REMOTE_ADDR']} [{$_SERVER['HTTP_USER_AGENT']}]","connexion","critique");
 	?><div class="notif argh estompe"><strong>Échec</strong>C'est refusé mon gars, ce n'est pas le bon mot de passe !</div><?php
       }
 }
