@@ -33,3 +33,43 @@
  
 }
 
+
+@media (max-width: 600px) {
+    #bestdrunks{
+	width: 100%;
+	margin: 15px 0 10px 0 !important;
+	float: none;
+	margin-bottom: 15px;
+    }
+    #bestproducts{
+	width: 100%;
+	margin: 15px 0 10px 0 !important;
+	float: none;
+	margin-bottom: 15px;
+    }
+    
+    ul.horizontal li{	
+	display: block;
+	/*   box-sizing: border-box; */
+	height: 80%;
+	width: 90%;
+	margin: 2.5% 4%;
+	
+	background-color: #3A3839;
+	border: 1px solid #4d4d4d;
+	border-radius: 2px;
+	transition: background-color 0.4s;
+	text-shadow: 0 -1px 0 #0D3860;
+    }
+    table.consos{
+	max-width: 100% !important;
+	width: auto !important;
+	margin: auto;
+	display: table;
+    }
+    
+    table.suivi{
+	width: auto !important;
+	display: table;
+    }
+}
