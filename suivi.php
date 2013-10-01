@@ -73,7 +73,7 @@ while($a = $sql->fetch()){
     
     if($sess!='0'){
 	echo '</tbody></table>';
-	
+	arsort($consos[$session]);
 	affiche_consos($consos,$session,$futs[$session]);
 	
     }
