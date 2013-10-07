@@ -353,6 +353,10 @@ div.caisse input[name="motif"]{
   font-size: 10.5px;
 }
 
+.half{
+    max-width: 50% !important;
+}
+
 /* Notification */
 .notif{
   padding: 8px 35px 8px 16px;
