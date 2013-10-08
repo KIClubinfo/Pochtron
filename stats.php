@@ -10,7 +10,7 @@ include_once 'inclus/tete.html.php';
     <h1>Statistiques</h1>
     <div class="notif estompe">Vous pouvez ici consulter l'évolution de la consommations des différents produits depuis le début du logiciel.</div>
     <div class="darkbox" id="consos"></div>
-    <table class="lignes" id="bestdrunks">
+    <table class="lignes lignes-hover" id="bestdrunks">
     <caption><span>Meilleurs buveurs du foyer <img class="action" src="images/icones/icons/bullet_go.png" alt="Voir tous" onclick="location.href='stats.php?L=1000'" title="Voir le classement complet..."></span></caption>
     <thead>
     <tr><th>Rang</th><th>Nom</th><th>Litres ingérés</th></tr>
@@ -19,10 +19,10 @@ include_once 'inclus/tete.html.php';
     <?php
 $lim = empty($_GET['L']) ? 10 : intval($_GET['L']);
 $cond = empty($_GET['all']) ? ' and `solde` > -5' : '';
-$sql->rek( "select CONCAT(prenom,' ',nom) as nom, promo, litres_bus from clients WHERE active='activé'$cond ORDER BY litres_bus DESC LIMIT $lim;" );
+$sql->rek( "select id, CONCAT(prenom,' ',nom) as nom, promo, litres_bus from clients WHERE active='activé'$cond ORDER BY litres_bus DESC LIMIT $lim;" );
 $r = 1;
 while($a = $sql->fetch()){
-    echo '<tr><td>'.($r++).'</td><td>'.$a['nom'].(empty($a['promo']) ? '':" [{$a['promo']}]").'</td><td>'.$a['litres_bus'].'</td></tr>';
+    echo '<tr onclick="location.href=\'stats-perso.php?id='.intval($a['id']).'\'"><td>'.($r++).'</td><td>'.$a['nom'].(empty($a['promo']) ? '':" [{$a['promo']}]").'</td><td>'.$a['litres_bus'].'</td></tr>';
 }
     ?>
     </tbody>

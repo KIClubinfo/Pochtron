@@ -374,6 +374,9 @@ div.caisse input[name="motif"]{
 /*   color: white; */
   font-weight: bold;
 }
+#stats-generales tr td:hover{
+  color: white;
+}
 
 /* Notification */
 .notif{
@@ -947,6 +950,9 @@ td.grise{
     margin-right: 1%;
     float: left;
     margin-bottom: 15px;
+}
+#bestdrunks tr[onclick]{
+    cursor: pointer;
 }
 #bestproducts{
     width: 48%;

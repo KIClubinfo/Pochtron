@@ -81,13 +81,26 @@ while($a = $sql->fetch()){
     // On ajoute la ligne
     $lignes[] = "['{$a['nom']}',{$a['nb']}]";
 }
+
 ?>
   <div class="central bloc">
+<?php
+$sql->rek( "select prenom, nom from clients where id='$iduser';");
+
+if($sql->nbrlignes() == 0){
+  ?><div class="notif argh"><strong>Erreur</strong>Cette personne est introuvable !</div><?php
+  include 'inclus/pied.html.php';
+  exit(0);
+}
+else{
+    $identuser = $sql->fetch();
+}
+?>
    <a href="./index.php" class="maison">Retour</a>
-    <h1>Statistiques personnelles</h1>
+    <h1>Statistiques personnelles : <?php echo $identuser['prenom'].' '.$identuser['nom']; ?></h1>
     <div class="darkbox" id="consos"></div>
     <table class="lignes" id="stats-generales">
-    <caption><span>Évolution de la consommation</span></caption>
+    <caption><span>Statistiques générales</span></caption>
     <?php
     
 // Remplissage du graphe
