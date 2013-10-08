@@ -353,8 +353,26 @@ div.caisse input[name="motif"]{
   font-size: 10.5px;
 }
 
-.half{
-    max-width: 50% !important;
+#repartition-produits{
+    width: 68% !important;
+    display: inline-block;
+}
+#stats-generales{
+    margin-left: 2%;
+    margin-top: 5px;
+    max-width: 30% !important;
+/*     display: inline-block; */
+    vertical-align: top;
+    float: right;
+}
+#stats-generales tr th:first-child {
+  border-left: 1px solid #1a1819 !important;
+}
+#stats-generales tr td{
+  font-size: 150%;
+  padding: 14px 4px;
+/*   color: white; */
+  font-weight: bold;
 }
 
 /* Notification */

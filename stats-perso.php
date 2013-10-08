@@ -5,24 +5,8 @@ $iduser = (empty($_GET['id'])) ? 1 : intval($_GET['id']);
 
 $head_HTML = '<script src="scripts/highcharts/js/highcharts.js"></script><script type="text/javascript" src="scripts/highcharts/js/themes/gray.js"></script><script type="text/javascript" src="scripts/admin.js"></script>';
 
+
 include_once 'inclus/tete.html.php';
-?>
-  <div class="central bloc">
-   <a href="./index.php" class="maison">Retour</a>
-    <h1>Statistiques</h1>
-    <div class="darkbox" id="consos"></div>
-    <div class="darkbox half" id="repartition-produits"></div>
-<!--    <table class="lignes half">
-    <caption><span>Statistiques générales</span></caption>
-    <tbody>
-    <tr>
-    <th></th>
-    <td></td>
-    </tr>
-    </tbody>
-    </table>-->
-    </div>
-<?php
 
 // Affichage du graphe
 $consommations = Array();
@@ -82,8 +66,52 @@ while($a = $sql->fetch()){
     $litres[] = '[Date.UTC('.date('Y,m,d',strtotime("-1 month", strtotime($a['date']))).'),'.$a['volume_tot'].']';
 }
 
+$max_consos = 0;
+$best_conso = "Aucune";
+// Remplissage du graphe
+$sql->rek( "select produits.nom, sum(qtte_produit) as nb from commandes inner join produits on commandes.id_produit = produits.id where id_user='$iduser' group by id_produit limit 15;");
 
+$lignes = Array();
+while($a = $sql->fetch()){
+    if($a['nb'] > $max_consos){
+	$max_consos = $a['nb'];
+	$best_conso = $a['nom'];
+    }
+    $a['nom'] = str_replace("'","\'",$a['nom']);
+    // On ajoute la ligne
+    $lignes[] = "['{$a['nom']}',{$a['nb']}]";
+}
 ?>
+  <div class="central bloc">
+   <a href="./index.php" class="maison">Retour</a>
+    <h1>Statistiques personnelles</h1>
+    <div class="darkbox" id="consos"></div>
+    <table class="lignes" id="stats-generales">
+    <caption><span>Évolution de la consommation</span></caption>
+    <?php
+    
+// Remplissage du graphe
+$sql->rek( "select 'consos' as a,sum( qtte_produit ) as b from commandes where id_user='$iduser' union select 'solde',CONCAT(solde,' €') from clients where id='$iduser' union select 'litresbus', litres_bus from clients where id='$iduser';");
+
+$titres = Array('consos' => 'Nombre de consos'
+		,'solde' => 'Solde actuel'
+		,'litresbus' => 'Litres ingérés');
+		
+while($a = $sql->fetch()){
+    // On ajoute la ligne
+    if($a['a'] == 'consos') $a['b'] = intval($a['b']);
+    echo "<tr><th>{$titres[$a['a']]}</th></tr><tr><td>{$a['b']}</td></tr>";
+}
+echo "<tr><th>Boisson préférée</th></tr><tr><td>$best_conso ($max_consos)</td></tr>";
+?>
+<!--    <tr>
+     <th>Classement général</th>
+    </tr>
+    <tr>
+     <td>En attente...</td>
+    </tr>-->
+    </table>
+    <div class="darkbox" id="repartition-produits"></div>
     <script>
     Highcharts.setOptions({
 	lang: {
@@ -207,15 +235,6 @@ while($a = $sql->fetch()){
 	},
         series: [{ type: 'pie', name: 'Consos', data: [<?php
         
-// Remplissage du graphe
-$sql->rek( "select produits.nom, sum(qtte_produit) as nb from commandes inner join produits on commandes.id_produit = produits.id where id_user='$iduser' group by id_produit limit 15;");
-
-$lignes = Array();
-while($a = $sql->fetch()){
-    $a['nom'] = str_replace("'","\'",$a['nom']);
-    // On ajoute la ligne
-    $lignes[] = "['{$a['nom']}',{$a['nb']}]";
-}
 echo implode(',',$lignes);
         ?>]}]
     });
