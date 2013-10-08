@@ -77,7 +77,7 @@ while($a = $sql->fetch()){
 	$max_consos = $a['nb'];
 	$best_conso = $a['nom'];
     }
-    $a['nom'] = str_replace("'","\'",$a['nom']);
+    $a['nom'] = str_replace("'","\'",html_entity_decode($a['nom'],ENT_QUOTES,'utf-8'));
     // On ajoute la ligne
     $lignes[] = "['{$a['nom']}',{$a['nb']}]";
 }
