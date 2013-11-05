@@ -47,6 +47,7 @@ include_once 'inclus/tete.html.php';
       <li><a href="clients.php#nouveauclient">Ajouter un client</a></li>
       <li><a href="stock.php#nouveauproduit">Ajouter un produit</a></li>
       <li><a href="suivi.php">Voir le suivi des consommations</a></li>
+	  <!--<li><a href="refresh.php">Rafraichir les statistiques utilisateurs</a></li>-->
       <li><a href="journal.php">Voir le journal du logiciel</a></li>
       <li><a href="mailto:mickael.bergem@eleves.enpc.fr,charles.bochet@eleves.enpc.fr?Subject=[App Foyer] ">Contacter le support technique</a></li>
      </ul>
