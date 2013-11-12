@@ -3,7 +3,7 @@ define('page_titre', "Statistiques personnelles &bull; Caisse Foyer");
 
 $iduser = (empty($_GET['id'])) ? 1 : intval($_GET['id']);
 
-$head_HTML = '<script src="scripts/highcharts/js/highcharts.js"></script><script type="text/javascript" src="scripts/highcharts/js/themes/gray.js"></script><script type="text/javascript" src="scripts/admin.js"></script>';
+$head_HTML = '<script src="scripts/highcharts/js/highcharts.js"></script><script src="scripts/highcharts/js/themes/gridgray.js"></script><script type="text/javascript" src="scripts/highcharts/js/themes/gray.js"></script><script type="text/javascript" src="scripts/admin.js"></script>';
 
 
 include_once 'inclus/tete.html.php';
@@ -11,6 +11,7 @@ include_once 'inclus/tete.html.php';
 // Affichage du graphe
 $consommations = Array();
 $litres = Array();
+$litres_cumules = Array();
 $dates = Array();
 
 // Remplissage du graphe affichant l'évolution de chaque produit
@@ -61,9 +62,12 @@ FROM (
 GROUP BY date
 ORDER BY date ASC;");
 
+$litres_cumules_tmp = 0;
 while($a = $sql->fetch()){
     // On ajoute le point du graphe correspondant
     $litres[] = '[Date.UTC('.date('Y,m,d',strtotime("-1 month", strtotime($a['date']))).'),'.$a['volume_tot'].']';
+    $litres_cumules_tmp += floatval($a['volume_tot']);
+    $litres_cumules[] = '[Date.UTC('.date('Y,m,d',strtotime("-1 month", strtotime($a['date']))).'),'.$litres_cumules_tmp.']';
 }
 
 $max_consos = 0;
@@ -125,7 +129,9 @@ echo "<tr><th>Boisson préférée</th></tr><tr><td>$best_conso ($max_consos)</td
     </tr>-->
     </table>
     <div class="darkbox" id="repartition-produits"></div>
+    <div class="darkbox" id="consos_empile"></div>
     <script>
+    Highcharts.setOptions(Highcharts.theme_gray);
     Highcharts.setOptions({
 	lang: {
 		shortMonths: ['Jan.', 'Fév.', 'Mars', 'Avr.', 'Mai', 'Juin', 
@@ -250,6 +256,49 @@ echo "<tr><th>Boisson préférée</th></tr><tr><td>$best_conso ($max_consos)</td
         
 echo implode(',',$lignes);
         ?>]}]
+    });
+    
+    var highchartsOptions = Highcharts.setOptions(Highcharts.theme_gridgray);
+    $('#consos_empile').highcharts({
+        chart: {
+            type: 'area'
+        },
+        title: {
+            text: 'Nombre de litres de boisson ingérés (cumulés)',
+            align: 'left',
+            y: 5
+        },
+        subtitle: {
+            text: 'Tss...',
+            align: 'right',
+            verticalAlign: 'top',
+            y: 5
+        },
+        legend: {
+            enabled: false
+        },
+        xAxis: {
+        type: 'datetime',
+        dateTimeLabelFormats: {
+                    month: '%b %e',
+                    year: '%b'
+                }
+        },
+        yAxis: {
+            title: {
+                text: 'Volume en Litres'
+            },
+            min: 0
+        },
+        tooltip: {
+            pointFormat: 'Volume vendu : <strong>{point.y:,.0f}L</strong>',
+            dateTimeLabelFormats: {
+                    month: '%b %e',
+            day: '%A %e %B',
+                    year: '%b'
+            }
+        },
+        series: [{ name: 'Volume ingéré', data: [<?php echo implode(',',$litres_cumules); ?>]}]
     });
 </script>
 <?php

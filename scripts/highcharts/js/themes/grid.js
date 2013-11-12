@@ -3,7 +3,7 @@
  * @author Torstein Hønsi
  */
 
-Highcharts.theme = {
+Highcharts.theme_grid = {
 	colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
 	chart: {
 		backgroundColor: {
@@ -100,4 +100,4 @@ Highcharts.theme = {
 };
 
 // Apply the theme
-var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
+// var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
